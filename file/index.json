@@ -1,4 +1,19 @@
 {
-  "materie": ["AI-ML", "Informatica", "Robotica", "Sistemi e Reti", "TPSIT", "Tecnologie Informatiche"],
-  "files": []
+  "materie": [
+    "AI-ML",
+    "Informatica",
+    "Robotica",
+    "Sistemi e Reti",
+    "TPSIT",
+    "Tecnologie Informatiche"
+  ],
+  "files": [
+    {
+      "nome": "laboratorio memoria dinamica",
+      "materia": "Informatica",
+      "path": "file/informatica/laboratorio-memoria-dinamica.html",
+      "size": 50026,
+      "data": "2026-10-27T21:27:27.022Z"
+    }
+  ]
 }
