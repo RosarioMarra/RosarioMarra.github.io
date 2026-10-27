@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Laboratorio malloc e free</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: una colonna di laboratorio, sei postazioni in sequenza; la griglia di celle dell'heap è il motivo ricorrente (blu occupata, grigio libera, come nelle slide) */
+:root{
+  --bg:#F3F5F9; --surface:#FFFFFF; --sunk:#E9EDF3; --ink:#17202C; --muted:#586374; --line:#D6DCE5;
+  --stack:#0C7F82; --stack-soft:#DCF1F1;
+  --heap:#2B55CC; --heap-soft:#DDE5FB; --heap-ink:#FFFFFF;
+  --leak:#C8402A; --leak-soft:#FBE3DE;
+  --warn:#9A6A00; --warn-soft:#FBF0D3;
+  --ok:#1B7C45; --ok-soft:#DDF2E5;
+  --cell-free:#E2E6ED;
+  --f-display:"Schibsted Grotesk", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Schibsted Grotesk", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E131A; --surface:#161E29; --sunk:#1D2734; --ink:#E4E9F1; --muted:#97A2B3; --line:#2A3544;
+  --stack:#43BFC2; --stack-soft:#14373A;
+  --heap:#7096FF; --heap-soft:#1E2B4D; --heap-ink:#0E131A;
+  --leak:#FF7B63; --leak-soft:#3D1F1A;
+  --warn:#EDB43E; --warn-soft:#3A2E12;
+  --ok:#4CC683; --ok-soft:#163222;
+  --cell-free:#232D3A; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0E131A; --surface:#161E29; --sunk:#1D2734; --ink:#E4E9F1; --muted:#97A2B3; --line:#2A3544;
+  --stack:#43BFC2; --stack-soft:#14373A;
+  --heap:#7096FF; --heap-soft:#1E2B4D; --heap-ink:#0E131A;
+  --leak:#FF7B63; --leak-soft:#3D1F1A;
+  --warn:#EDB43E; --warn-soft:#3A2E12;
+  --ok:#4CC683; --ok-soft:#163222;
+  --cell-free:#232D3A; color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{color-scheme:light}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:0 96px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top, 0px);z-index:10;background:var(--bg)}
+.wrap{max-width:980px;margin:0 auto}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;line-height:1.15;margin:0}
+p{margin:0}
+code,.mono{font-family:var(--f-mono);font-size:.9em}
+:focus-visible{outline:2px solid var(--heap);outline-offset:2px}
+button{font:inherit;color:inherit;cursor:pointer}
+
+/* Hero */
+.hero{padding-block:40px 24px;display:grid;gap:18px}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.hero h1{font-size:clamp(34px,6vw,58px);font-weight:800;letter-spacing:-.02em}
+.hero h1 .m{font-family:var(--f-mono);font-weight:600;color:var(--heap);font-size:.82em}
+.hero .lead{font-size:18px;color:var(--muted);max-width:62ch}
+.agenda{display:flex;gap:3px;border-radius:8px;overflow:hidden;margin-top:6px}
+.agenda a{display:flex;flex-direction:column;justify-content:space-between;gap:6px;padding:10px 10px 8px;min-width:0;text-decoration:none;color:var(--ink);background:var(--surface);border-top:4px solid var(--heap);font-size:13px;line-height:1.25}
+.agenda a:hover{background:var(--sunk)}
+.agenda a b{font-family:var(--f-mono);font-size:12px;color:var(--muted);font-weight:400}
+.agenda a.done{border-top-color:var(--ok)}
+.agenda-legend{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);font-family:var(--f-mono)}
+@media (max-width:640px){.agenda{flex-direction:column}.agenda a{flex:none!important;flex-direction:row;border-top:0;border-left:4px solid var(--heap)}.agenda a.done{border-left-color:var(--ok)}}
+
+/* Sections */
+section.act{margin-top:28px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:clamp(18px,3vw,30px);display:grid;gap:18px;scroll-margin-top:16px}
+.act-head{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap}
+.act-num{font-family:var(--f-mono);font-weight:600;font-size:13px;background:var(--ink);color:var(--bg);border-radius:6px;padding:4px 8px;flex:none}
+.act-title{flex:1 1 260px;min-width:0;display:grid;gap:4px}
+.act-title h2{font-size:clamp(22px,3vw,28px);font-weight:800}
+.act-title p{color:var(--muted)}
+.timer-btn{flex:none;border:1px solid var(--line);background:var(--sunk);border-radius:999px;padding:6px 12px;font-size:13px;font-family:var(--f-mono)}
+.timer-btn:hover{border-color:var(--heap)}
+.done-badge{display:none;font-size:12px;font-weight:600;color:var(--ok);background:var(--ok-soft);border-radius:999px;padding:4px 10px}
+section.act.is-done .done-badge{display:inline-block}
+.howto{font-size:14px;color:var(--muted);border-left:3px solid var(--line);padding-left:12px}
+
+.btn{border:1px solid var(--ink);background:var(--ink);color:var(--bg);border-radius:8px;padding:9px 16px;font-weight:600;font-size:15px}
+.btn:hover{opacity:.88}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--ink)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.feedback{font-size:15px;font-weight:500;min-height:1.4em}
+.feedback.ok{color:var(--ok)} .feedback.bad{color:var(--leak)}
+
+/* 1. Stack o heap */
+.sh-list{display:grid;gap:8px}
+.sh-item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+.sh-item code{font-size:14px;word-break:break-word}
+.sh-item .why{grid-column:1/-1;font-size:14px;color:var(--muted);display:none}
+.sh-item.checked .why{display:block}
+.sh-item.right{border-color:var(--ok)} .sh-item.wrong{border-color:var(--leak)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{border:0;background:transparent;padding:6px 12px;font-size:14px;font-weight:600}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"][data-v="stack"]{background:var(--stack);color:#fff}
+.seg button[aria-pressed="true"][data-v="heap"]{background:var(--heap);color:var(--heap-ink)}
+@media (max-width:520px){.sh-item{grid-template-columns:1fr}}
+
+/* 2. Byte */
+.calc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:18px;background:var(--bg);border-radius:12px;padding:16px}
+@media (max-width:720px){.calc{grid-template-columns:1fr}}
+.calc label{font-size:13px;color:var(--muted);display:grid;gap:4px}
+.calc select,.calc input[type=number]{font:inherit;font-family:var(--f-mono);padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink)}
+.calc-out{display:grid;gap:10px;min-width:0}
+.calc-expr{font-family:var(--f-mono);font-size:15px;overflow-x:auto;white-space:nowrap;padding-bottom:2px}
+.calc-expr .k{color:var(--heap);font-weight:600}
+.big{font-family:var(--f-mono);font-size:30px;font-weight:600;font-variant-numeric:tabular-nums}
+.bytes{display:flex;flex-wrap:wrap;gap:2px}
+.bytes i{width:10px;height:10px;border-radius:2px;background:var(--heap);display:block}
+.bytes i.sep{margin-right:4px}
+.quiz-grid{display:grid;gap:8px}
+.qrow{display:grid;grid-template-columns:minmax(0,1fr) 110px 28px;gap:10px;align-items:center;padding:8px 12px;border:1px solid var(--line);border-radius:10px}
+.qrow code{font-size:14px;overflow-x:auto;white-space:nowrap;display:block}
+.qrow input{font:inherit;font-family:var(--f-mono);width:100%;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);text-align:right}
+.qrow .mark{font-weight:800;text-align:center}
+.qrow.right{border-color:var(--ok)} .qrow.right .mark{color:var(--ok)}
+.qrow.wrong{border-color:var(--leak)} .qrow.wrong .mark{color:var(--leak)}
+.qrow small{color:var(--muted);display:block;font-size:12px}
+.out-box{font-family:var(--f-mono);font-size:14px;background:var(--sunk);border-radius:8px;padding:12px;display:grid;gap:6px}
+.out-box label{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.out-box input{width:80px;font:inherit;padding:3px 6px;border:1px solid var(--line);border-radius:5px;background:var(--surface);color:var(--ink);text-align:right}
+.out-box input.right{border-color:var(--ok)} .out-box input.wrong{border-color:var(--leak)}
+
+/* 3. Simulatore */
+.sim{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:16px}
+@media (max-width:820px){.sim{grid-template-columns:1fr}}
+.panel{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:14px;display:grid;gap:10px;align-content:start;min-width:0}
+.panel h3{font-size:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.panel h3 span{font-family:var(--f-mono);text-transform:none;letter-spacing:0;color:var(--muted);font-weight:400;font-size:12px}
+.panel.stack h3{color:var(--stack)} .panel.heap h3{color:var(--heap)}
+.heap-grid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:4px}
+.cell{position:relative;border-radius:6px;background:var(--cell-free);padding:16px 2px 6px;text-align:center;min-height:52px;transition:background .25s}
+.cell .addr{position:absolute;top:3px;left:4px;font-family:var(--f-mono);font-size:9px;color:var(--muted)}
+.cell .val{font-family:var(--f-mono);font-size:12px;font-variant-numeric:tabular-nums;color:var(--muted);opacity:.55;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+.cell .tag{position:absolute;top:2px;right:3px;font-family:var(--f-mono);font-size:10px;font-weight:600;background:var(--surface);color:var(--heap);border-radius:4px;padding:0 4px;line-height:1.4}
+.cell.used{background:var(--heap-soft)}
+.cell.used .val{opacity:1;color:var(--ink)}
+.cell.used.junk .val{color:var(--warn);font-style:italic}
+.cell.used.init{background:var(--heap)}
+.cell.used.init .val,.cell.used.init .addr{color:var(--heap-ink)}
+.cell.leak{background:repeating-linear-gradient(135deg,var(--leak-soft) 0 6px,transparent 6px 12px),var(--leak-soft);outline:2px solid var(--leak);outline-offset:-2px}
+.cell.leak .val{color:var(--leak);opacity:1}
+.cell.leak .tag{color:var(--leak)}
+.cell.flash{animation:flash .7s}
+.cell.boom{animation:boom .7s}
+@keyframes flash{0%{box-shadow:0 0 0 3px var(--ok)}100%{box-shadow:0 0 0 0 transparent}}
+@keyframes boom{0%,40%{box-shadow:0 0 0 3px var(--leak)}100%{box-shadow:0 0 0 0 transparent}}
+@media (prefers-reduced-motion:reduce){.cell.flash,.cell.boom{animation:none}}
+@media (max-width:460px){.cell .addr{display:none}.cell{padding-top:12px}.cell .val{font-size:10.5px}}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--muted)}
+.legend span{display:inline-flex;gap:6px;align-items:center}
+.legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.vars{width:100%;border-collapse:collapse;font-family:var(--f-mono);font-size:13px}
+.vars td{padding:6px 4px;border-bottom:1px solid var(--line);vertical-align:top}
+.vars td:first-child{color:var(--muted);white-space:nowrap}
+.vars td:nth-child(2){font-weight:600;color:var(--stack)}
+.vars .null{color:var(--muted)} .vars .dang{color:var(--leak)}
+.vars-empty{font-size:13px;color:var(--muted)}
+.console{grid-column:1/-1;display:grid;gap:8px}
+.cmdline{display:flex;gap:8px;align-items:stretch}
+.cmdline input{flex:1;min-width:0;font-family:var(--f-mono);font-size:15px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)}
+.cmdline input:focus{border-color:var(--heap);outline:none}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px dashed var(--line);background:var(--surface);border-radius:6px;padding:4px 8px;font-family:var(--f-mono);font-size:12px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chip:hover{border-style:solid;border-color:var(--heap)}
+.log{font-family:var(--f-mono);font-size:13px;background:var(--sunk);border-radius:8px;padding:10px 12px;height:190px;overflow:auto;display:flex;flex-direction:column;gap:4px}
+.log div{white-space:pre-wrap;word-break:break-word}
+.log .in{color:var(--muted)}
+.log .ok{color:var(--ok)} .log .err{color:var(--leak)} .log .warn{color:var(--warn)} .log .info{color:var(--ink)}
+.missions{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px}
+.mission{display:grid;grid-template-columns:22px minmax(0,1fr);gap:8px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:14px;align-items:start}
+.mission .box{width:20px;height:20px;border-radius:5px;border:2px solid var(--line);display:grid;place-items:center;font-size:13px;font-weight:800;color:transparent}
+.mission.done{border-color:var(--ok);background:var(--ok-soft)}
+.mission.done .box{border-color:var(--ok);background:var(--ok);color:var(--surface)}
+.mission b{display:block}
+.mission span.h{color:var(--muted);font-size:13px}
+
+/* 4. Codice */
+.code{font-family:var(--f-mono);font-size:14px;background:var(--sunk);border-radius:10px;padding:12px 0;overflow-x:auto}
+.cline{display:grid;grid-template-columns:34px minmax(max-content,1fr) auto;gap:10px;align-items:center;padding:4px 12px 4px 0}
+.cline .ln{color:var(--muted);text-align:right;font-size:12px}
+.cline pre{margin:0;font:inherit;white-space:pre}
+.cline.right{background:var(--ok-soft)} .cline.wrong{background:var(--leak-soft)}
+.cline select{font:inherit;font-family:var(--f-body);font-size:13px;padding:3px 6px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink)}
+.steps{display:flex;flex-wrap:wrap;gap:6px;font-size:13px}
+.steps span{padding:3px 10px;border-radius:999px;background:var(--bg);border:1px solid var(--line)}
+.steps b{font-family:var(--f-mono)}
+
+/* 5. Bug */
+.bugs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:12px}
+.bug{border:1px solid var(--line);border-radius:12px;padding:14px;display:grid;gap:10px;align-content:start;min-width:0}
+.bug h3{font-size:15px;font-weight:600}
+.bug pre{margin:0;font-family:var(--f-mono);font-size:13px;background:var(--sunk);border-radius:8px;padding:10px 12px;overflow-x:auto}
+.bug .opts{display:flex;flex-wrap:wrap;gap:6px}
+.bug .opts button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 10px;font-size:13px}
+.bug .opts button:hover{border-color:var(--ink)}
+.bug .opts button.right{background:var(--ok);border-color:var(--ok);color:var(--surface)}
+.bug .opts button.wrong{background:var(--leak-soft);border-color:var(--leak);color:var(--leak);text-decoration:line-through}
+.bug .expl{font-size:14px;color:var(--muted);display:none}
+.bug.solved{border-color:var(--ok)} .bug.solved .expl{display:block}
+
+/* 6. Completa */
+.fill{font-family:var(--f-mono);font-size:14px;background:var(--sunk);border-radius:10px;padding:14px 16px;overflow-x:auto;white-space:pre;line-height:1.75}
+.fill input{font:inherit;padding:1px 6px;border:1px solid var(--heap);border-radius:5px;background:var(--surface);color:var(--ink);width:var(--w,10ch)}
+.fill input.right{border-color:var(--ok);background:var(--ok-soft)} .fill input.wrong{border-color:var(--leak);background:var(--leak-soft)}
+.bonus{display:grid;gap:8px;padding-left:0;margin:0;list-style:none}
+.bonus li{padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:15px}
+.bonus li b{font-family:var(--f-mono);color:var(--heap);margin-right:6px}
+
+/* 7. Ripasso */
+.review{display:grid;gap:8px}
+details.rq{border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+details.rq summary{cursor:pointer;font-weight:600;list-style:none;display:flex;gap:10px}
+details.rq summary::-webkit-details-marker{display:none}
+details.rq summary::before{content:"+";font-family:var(--f-mono);color:var(--heap);width:12px;flex:none}
+details.rq[open] summary::before{content:"−"}
+details.rq p{margin-top:8px;color:var(--muted);padding-left:22px}
+.ticket{background:var(--bg);border-radius:12px;padding:16px;display:grid;gap:8px}
+.ticket h3{font-size:17px}
+.ticket ol{margin:0;padding-left:20px;display:grid;gap:4px}
+
+/* Timer */
+.timer{position:fixed;right:calc(16px + env(safe-area-inset-right, 0px));bottom:calc(16px + env(safe-area-inset-bottom, 0px));z-index:20;background:var(--ink);color:var(--bg);border-radius:14px;padding:10px 12px 10px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.timer .t-label{font-size:12px;opacity:.75}
+.timer .t-time{font-family:var(--f-mono);font-size:24px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1}
+.timer button{background:transparent;border:1px solid currentColor;border-radius:8px;padding:4px 8px;font-size:12px;color:inherit;opacity:.85}
+.timer.over{background:var(--leak);animation:pulse 1s infinite alternate}
+@keyframes pulse{to{opacity:.8}}
+@media (prefers-reduced-motion:reduce){.timer.over{animation:none}}
+footer{margin-top:28px;font-size:13px;color:var(--muted)}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow">Linguaggio C · Laboratorio di 60 minuti</div>
+    <h1>Allocazione dinamica:<br>mettiamo le mani nell'<span class="m">heap</span></h1>
+    <p class="lead">Sei attività per provare <code>malloc</code>, <code>calloc</code>, <code>free</code> e <code>sizeof</code>. Il simulatore al centro mostra la memoria cella per cella: ogni quadratino è un <code>int</code> da 4 byte.</p>
+    <nav class="agenda" id="agenda" aria-label="Scaletta"></nav>
+    <div class="agenda-legend"><span>0'</span><span>30'</span><span>60'</span></div>
+  </header>
+
+  <!-- 1 -->
+  <section class="act" id="a1" data-min="6">
+    <div class="act-head">
+      <span class="act-num">01</span>
+      <div class="act-title"><h2>Stack o heap?</h2><p>Riscaldamento. Per ogni elemento decidi dove vive in memoria.</p></div>
+      <span class="done-badge">Completata</span>
+      <button class="timer-btn" data-timer="a1">⏱ 6 min</button>
+    </div>
+    <div class="sh-list" id="shList"></div>
+    <div class="row"><button class="btn" id="shCheck">Controlla</button><span class="feedback" id="shFb"></span></div>
+  </section>
+
+  <!-- 2 -->
+  <section class="act" id="a2" data-min="9">
+    <div class="act-head">
+      <span class="act-num">02</span>
+      <div class="act-title"><h2>Quanti byte?</h2><p>Usa il calcolatore per capire <code>sizeof</code>, poi rispondi senza aiuti.</p></div>
+      <span class="done-badge">Completata</span>
+      <button class="timer-btn" data-timer="a2">⏱ 9 min</button>
+    </div>
+    <div class="calc">
+      <div class="row" style="align-items:end">
+        <label for="cType">Tipo
+          <select id="cType"><option>char</option><option selected>int</option><option>float</option><option>double</option></select></label>
+        <label for="cN">Numero di elementi
+          <input type="number" id="cN" min="1" max="200" value="10"></label>
+      </div>
+      <div class="calc-out">
+        <div class="calc-expr" id="cExpr"></div>
+        <div class="big" id="cBig"></div>
+        <div class="bytes" id="cBytes" aria-hidden="true"></div>
+      </div>
+    </div>
+    <p class="howto">Valori di riferimento, come nelle slide: <code>char</code> 1 byte, <code>int</code> 4, <code>float</code> 4, <code>double</code> 8. Su altre piattaforme possono cambiare: per questo si scrive <code>sizeof</code>.</p>
+    <div class="quiz-grid" id="byteQuiz"></div>
+    <div class="out-box" id="outBox">
+      <div style="font-family:var(--f-body);font-size:14px;color:var(--muted)">Il programma delle slide, ma con <code>numero = 30</code>. Completa l'output:</div>
+      <label>Numero elementi: <input id="o1" inputmode="numeric" aria-label="Numero elementi"></label>
+      <label>Dimensione elemento: <input id="o2" inputmode="numeric" aria-label="Dimensione elemento"></label>
+      <label>Bytes allocati: <input id="o3" inputmode="numeric" aria-label="Bytes allocati"></label>
+    </div>
+    <div class="row"><button class="btn" id="byteCheck">Controlla</button><span class="feedback" id="byteFb"></span></div>
+  </section>
+
+  <!-- 3 -->
+  <section class="act" id="a3" data-min="18">
+    <div class="act-head">
+      <span class="act-num">03</span>
+      <div class="act-title"><h2>Il simulatore dell'heap</h2><p>Scrivi istruzioni C e guarda cosa succede alla memoria. Completa le sette missioni.</p></div>
+      <span class="done-badge">Completata</span>
+      <button class="timer-btn" data-timer="a3">⏱ 18 min</button>
+    </div>
+    <div class="missions" id="missions"></div>
+    <div class="sim">
+      <div class="panel heap">
+        <h3>Heap <span id="heapInfo">128 byte · 32 int</span></h3>
+        <div class="heap-grid" id="heapGrid"></div>
+        <div class="legend">
+          <span><i style="background:var(--cell-free)"></i>libera</span>
+          <span><i style="background:var(--heap-soft)"></i>allocata, valore indeterminato</span>
+          <span><i style="background:var(--heap)"></i>allocata e scritta</span>
+          <span><i style="background:var(--leak-soft);outline:2px solid var(--leak);outline-offset:-2px"></i>memory leak</span>
+        </div>
+      </div>
+      <div class="panel stack">
+        <h3>Stack <span>variabili di main</span></h3>
+        <div id="vars"></div>
+      </div>
+      <div class="console">
+        <form class="cmdline" id="cmdForm" autocomplete="off">
+          <input id="cmd" spellcheck="false" placeholder="es. int *a = (int *) malloc(sizeof(int) * 5);" aria-label="Istruzione C">
+          <button class="btn" type="submit">Esegui</button>
+        </form>
+        <div class="chips" id="chips"></div>
+        <div class="log" id="log" aria-live="polite"></div>
+        <div class="row">
+          <button class="btn ghost" id="endBtn">Termina il programma</button>
+          <button class="btn ghost" id="resetBtn">Ricomincia</button>
+          <span class="howto" style="border:0;padding:0">Clicca un esempio per copiarlo nella riga di comando. Con ↑ richiami l'ultima istruzione.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="act" id="a4" data-min="7">
+    <div class="act-head">
+      <span class="act-num">04</span>
+      <div class="act-title"><h2>I quattro passi nel codice</h2><p>Il programma completo delle slide. Assegna a ogni riga il suo passo del ciclo di vita.</p></div>
+      <span class="done-badge">Completata</span>
+      <button class="timer-btn" data-timer="a4">⏱ 7 min</button>
+    </div>
+    <div class="steps"><span><b>—</b> Dichiara</span><span><b>1</b> Alloca</span><span><b>2</b> Controlla</span><span><b>3</b> Usa</span><span><b>4</b> Libera</span></div>
+    <div class="code" id="codeLines"></div>
+    <div class="row"><button class="btn" id="codeCheck">Controlla</button><span class="feedback" id="codeFb"></span></div>
+  </section>
+
+  <!-- 5 -->
+  <section class="act" id="a5" data-min="10">
+    <div class="act-head">
+      <span class="act-num">05</span>
+      <div class="act-title"><h2>Caccia all'errore</h2><p>Ogni frammento contiene un errore diverso. Scegli quale. Puoi riprovare.</p></div>
+      <span class="done-badge">Completata</span>
+      <button class="timer-btn" data-timer="a5">⏱ 10 min</button>
+    </div>
+    <div class="bugs" id="bugs"></div>
+    <p class="feedback" id="bugFb"></p>
+  </section>
+
+  <!-- 6 -->
+  <section class="act" id="a6" data-min="10">
+    <div class="act-head">
+      <span class="act-num">06</span>
+      <div class="act-title"><h2>Il programma dei voti</h2><p>Completa i buchi, poi copia il codice nel compilatore e provalo con 5 voti.</p></div>
+      <span class="done-badge">Completata</span>
+      <button class="timer-btn" data-timer="a6">⏱ 10 min</button>
+    </div>
+    <div class="fill" id="fill"></div>
+    <div class="row">
+      <button class="btn" id="fillCheck">Controlla</button>
+      <button class="btn ghost" id="fillCopy">Copia il codice</button>
+      <span class="feedback" id="fillFb"></span>
+    </div>
+    <ul class="bonus">
+      <li><b>Bonus 1</b>Sostituisci <code>malloc</code> con <code>calloc</code>. Come cambiano gli argomenti?</li>
+      <li><b>Bonus 2</b>Stampa quanti byte hai allocato, come nell'esempio delle slide (usa <code>%zu</code> per il risultato di <code>sizeof</code>).</li>
+      <li><b>Bonus 3</b>Prova con <code>n = 1000000000</code>. Cosa stampa il programma? Quale riga ti ha salvato?</li>
+    </ul>
+  </section>
+
+  <!-- 7 -->
+  <section class="act" id="a7" data-min="5">
+    <div class="act-head">
+      <span class="act-num">07</span>
+      <div class="act-title"><h2>Ripasso e biglietto d'uscita</h2><p>Rispondi a voce o sul quaderno, poi apri la risposta.</p></div>
+      <span class="done-badge">Completata</span>
+      <button class="timer-btn" data-timer="a7">⏱ 5 min</button>
+    </div>
+    <div class="review" id="review"></div>
+    <div class="ticket">
+      <h3>Biglietto d'uscita</h3>
+      <ol>
+        <li>Scrivi l'istruzione che alloca un array di 20 <code>double</code>.</li>
+        <li>Quante celle del simulatore occuperebbe? Quanti byte?</li>
+        <li>Scrivi le due righe che devono seguire subito la <code>malloc</code>.</li>
+      </ol>
+    </div>
+  </section>
+
+  <footer>Il simulatore è una semplificazione: un heap reale è molto più grande e gestisce anche dati di servizio.</footer>
+</div>
+
+<div class="timer" id="timer" hidden>
+  <div><div class="t-label" id="tLabel"></div><div class="t-time" id="tTime">00:00</div></div>
+  <button id="tPause">Pausa</button>
+  <button id="tStop" aria-label="Chiudi timer">✕</button>
+</div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ---------- progresso ---------- */
+const ACTS=[...document.querySelectorAll('section.act')];
+let done=new Set();
+try{done=new Set(JSON.parse(localStorage.getItem('malloc-lab-done')||'[]'))}catch(e){}
+function markDone(id){done.add(id);try{localStorage.setItem('malloc-lab-done',JSON.stringify([...done]))}catch(e){}renderAgenda()}
+function renderAgenda(){
+  $('#agenda').innerHTML=ACTS.map((s,i)=>`<a href="#${s.id}" style="flex:${s.dataset.min} 1 0" class="${done.has(s.id)?'done':''}"><span>${esc(s.querySelector('h2').textContent)}</span><b>${s.dataset.min}′</b></a>`).join('');
+  ACTS.forEach(s=>s.classList.toggle('is-done',done.has(s.id)));
+}
+renderAgenda();
+
+/* ---------- timer ---------- */
+let tLeft=0,tInt=null,tPaused=false;
+function fmt(s){const a=Math.abs(s);return (s<0?'+':'')+String(Math.floor(a/60)).padStart(2,'0')+':'+String(a%60).padStart(2,'0')}
+document.querySelectorAll('[data-timer]').forEach(b=>b.addEventListener('click',()=>{
+  const s=document.getElementById(b.dataset.timer);
+  tLeft=+s.dataset.min*60;tPaused=false;$('#tPause').textContent='Pausa';
+  $('#tLabel').textContent='Attività '+s.querySelector('.act-num').textContent+' · '+s.querySelector('h2').textContent;
+  $('#timer').hidden=false;$('#timer').classList.remove('over');$('#tTime').textContent=fmt(tLeft);
+  clearInterval(tInt);tInt=setInterval(()=>{if(tPaused)return;tLeft--;$('#tTime').textContent=fmt(tLeft);$('#timer').classList.toggle('over',tLeft<=0)},1000);
+}));
+$('#tPause').onclick=()=>{tPaused=!tPaused;$('#tPause').textContent=tPaused?'Riprendi':'Pausa'};
+$('#tStop').onclick=()=>{clearInterval(tInt);$('#timer').hidden=true};
+
+/* ---------- 1. stack o heap ---------- */
+const SH=[
+  ['int numero;','stack','Variabile dichiarata nel codice: la sua dimensione è nota già in compilazione.'],
+  ['malloc(sizeof(int) * 100)','heap','Memoria richiesta durante l\'esecuzione: finisce nell\'heap.'],
+  ['int *array;  /* la variabile puntatore */','stack','Attenzione: il puntatore in sé è una normale variabile locale. È ciò a cui punta che sta nell\'heap.'],
+  ['i 100 interi a cui punta array dopo la malloc','heap','Sono il blocco riservato da malloc.'],
+  ['int voti[30];','stack','Array con dimensione fissata nel codice: parte statica.'],
+  ['calloc(n, sizeof(char))  /* n letto da tastiera */','heap','La dimensione si conosce solo a runtime.'],
+  ['char lettera = \'a\';','stack','Variabile locale ordinaria.'],
+];
+const shAns={};
+$('#shList').innerHTML=SH.map((r,i)=>`<div class="sh-item" id="sh${i}"><code>${esc(r[0])}</code><div class="seg" role="group" aria-label="Stack o heap">${['stack','heap'].map(v=>`<button type="button" data-i="${i}" data-v="${v}" aria-pressed="false">${v}</button>`).join('')}</div><div class="why">${esc(r[2])}</div></div>`).join('');
+$('#shList').addEventListener('click',e=>{const b=e.target.closest('button[data-v]');if(!b)return;shAns[b.dataset.i]=b.dataset.v;b.parentNode.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b))});
+$('#shCheck').onclick=()=>{let ok=0;SH.forEach((r,i)=>{const el=$('#sh'+i);el.classList.add('checked');const g=shAns[i]===r[1];el.classList.toggle('right',g);el.classList.toggle('wrong',!g);if(g)ok++});
+  const fb=$('#shFb');fb.textContent=`${ok} su ${SH.length} corrette.`+(ok===SH.length?' Ottimo!':' Leggi le spiegazioni e correggi.');fb.className='feedback '+(ok===SH.length?'ok':'bad');if(ok===SH.length)markDone('a1')};
+
+/* ---------- 2. byte ---------- */
+const SZ={char:1,short:2,int:4,float:4,double:8,long:8};
+function calc(){const t=$('#cType').value;let n=Math.max(1,Math.min(200,parseInt($('#cN').value)||1));const b=SZ[t]*n;
+  $('#cExpr').innerHTML=`malloc(<span class="k">sizeof(${t})</span> * ${n})  →  ${SZ[t]} × ${n}`;
+  $('#cBig').textContent=b+(b===1?' byte':' byte');
+  let h='';for(let i=0;i<Math.min(b,400);i++)h+=`<i class="${(i+1)%SZ[t]===0&&SZ[t]>1?'sep':''}"></i>`;
+  $('#cBytes').innerHTML=h+(b>400?' <span class="mono" style="font-size:12px;color:var(--muted)">… (mostrati 400)</span>':'');}
+$('#cType').onchange=calc;$('#cN').oninput=calc;calc();
+const BQ=[
+  ['malloc(sizeof(int) * 100)',400,'l\'esempio delle slide'],
+  ['malloc(sizeof(double) * 25)',200,''],
+  ['calloc(10, sizeof(char))',10,'calloc(quanti, dimensione)'],
+  ['malloc(sizeof(float) * numero)',48,'con numero = 12'],
+  ['malloc(sizeof(int) * numero)',1000,'con numero = 250'],
+];
+$('#byteQuiz').innerHTML=BQ.map((q,i)=>`<div class="qrow" id="bq${i}"><div style="min-width:0"><code>${esc(q[0])}</code>${q[2]?`<small>${esc(q[2])}</small>`:''}</div><input id="bqi${i}" inputmode="numeric" aria-label="Byte per ${esc(q[0])}" placeholder="byte"><span class="mark"></span></div>`).join('');
+$('#byteCheck').onclick=()=>{let ok=0,tot=BQ.length+3;
+  BQ.forEach((q,i)=>{const g=parseInt($('#bqi'+i).value)===q[1];const r=$('#bq'+i);r.classList.toggle('right',g);r.classList.toggle('wrong',!g);r.querySelector('.mark').textContent=g?'✓':'✗';if(g)ok++});
+  [['#o1',30],['#o2',4],['#o3',120]].forEach(([s,v])=>{const g=parseInt($(s).value)===v;$(s).classList.toggle('right',g);$(s).classList.toggle('wrong',!g);if(g)ok++});
+  const fb=$('#byteFb');fb.textContent=`${ok} su ${tot} corrette.`+(ok===tot?' Perfetto!':' Ricorda: byte = sizeof(tipo) × numero di elementi.');fb.className='feedback '+(ok===tot?'ok':'bad');if(ok===tot)markDone('a2')};
+
+/* ---------- 3. simulatore ---------- */
+const CELLS=32,BASE=0x5000;
+let cells,blocks,ptrs,ints,nextId,stats;
+const MISSIONS=[
+  ['malloc','Alloca con malloc','Alloca 5 int con malloc. Cosa contengono le celle?'],
+  ['calloc','Prova calloc','Alloca 5 int con calloc. Che differenza vedi?'],
+  ['fill','Riempi con un for','Usa un ciclo for come nelle slide: a[i] = i;'],
+  ['null','Fai restituire NULL','Chiedi più memoria di quella libera (l\'heap ha 128 byte).'],
+  ['leak','Crea un memory leak','Perdi l\'indirizzo di un blocco, oppure termina senza free.'],
+  ['bug','Provoca un errore','Doppio free, uso dopo free o indice fuori dai limiti.'],
+  ['clean','Programma pulito','Alloca, usa, libera tutto e premi «Termina» senza leak.'],
+];
+let mDone=new Set();
+function renderMissions(){$('#missions').innerHTML=MISSIONS.map(m=>`<div class="mission ${mDone.has(m[0])?'done':''}"><span class="box">✓</span><div><b>${esc(m[1])}</b><span class="h">${esc(m[2])}</span></div></div>`).join('');}
+function ev(k){if(mDone.has(k))return;mDone.add(k);renderMissions();log('★ Missione completata: '+MISSIONS.find(m=>m[0]===k)[1],'ok');if(mDone.size===MISSIONS.length){markDone('a3');log('★ Tutte le missioni completate!','ok')}}
+function junk(){const r=Math.random();return r<.25?0:Math.floor(Math.random()*180000)-60000}
+function reset(){cells=Array.from({length:CELLS},()=>({b:null,v:junk(),init:false}));blocks={};ptrs={};ints={};nextId=1;stats={alloc:0,free:0};$('#log').innerHTML='';log('Heap pronto: 32 celle da 4 byte. Le celle contengono già “spazzatura” lasciata da chi le ha usate prima.','info');render()}
+const hex=i=>'0x'+(BASE+i*4).toString(16).toUpperCase();
+function log(t,c){const d=document.createElement('div');d.className=c||'info';d.textContent=t;$('#log').appendChild(d);$('#log').scrollTop=1e9}
+function refs(id){return Object.values(ptrs).filter(p=>p.b===id).length}
+function render(fl,boom){
+  const g=$('#heapGrid');let h='';
+  for(let i=0;i<CELLS;i++){const c=cells[i];const b=c.b?blocks[c.b]:null;let cls='cell';
+    if(b){cls+=' used';if(b.leak)cls+=' leak';else cls+=c.init?' init':' junk'}
+    if(fl&&fl.includes(i))cls+=' flash';if(boom&&boom.includes(i))cls+=' boom';
+    const tag=b&&b.start===i?`<span class="tag">${esc(b.leak?'perso':(b.names()||'#'+b.id))}</span>`:'';
+    h+=`<div class="${cls}" title="${hex(i)}"><span class="addr">${hex(i).slice(-3)}</span>${tag}<span class="val">${c.v}</span></div>`}
+  g.innerHTML=h;
+  const used=cells.filter(c=>c.b).length;$('#heapInfo').textContent=`${(CELLS-used)*4} byte liberi su 128`;
+  const rows=[];
+  for(const[n,v]of Object.entries(ints))rows.push(`<tr><td>int</td><td>${esc(n)}</td><td>${v}</td></tr>`);
+  for(const[n,p]of Object.entries(ptrs)){let val;
+    if(p.b===null)val='<span class="null">NULL</span>';
+    else{const b=blocks[p.b];val=hex(b.start)+(b.freed?' <span class="dang">pendente: blocco già liberato</span>':` → ${Math.floor(b.bytes/4)} int`)}
+    rows.push(`<tr><td>int *</td><td>${esc(n)}</td><td>${val}</td></tr>`)}
+  $('#vars').innerHTML=rows.length?`<table class="vars">${rows.join('')}</table>`:'<p class="vars-empty">Nessuna variabile. Dichiara un puntatore con una malloc.</p>';
+}
+function evalExpr(s,extra){
+  let e=s.replace(/sizeof\s*\(\s*([a-z ]+?)\s*(\*?)\s*\)/g,(m,t,star)=>{if(star)return 8;t=t.trim().replace(/\s+/g,' ');if(t==='long long')return 8;if(!(t in SZ))throw new Error('tipo sconosciuto in sizeof: '+t);return SZ[t]});
+  const scope=Object.assign({},ints,extra||{});
+  e=e.replace(/\b[a-zA-Z_]\w*\b/g,m=>{if(m in scope)return '('+scope[m]+')';if(m in ptrs)throw new Error(m+' è un puntatore: qui serve un numero');throw new Error('variabile non dichiarata: '+m)});
+  if(!/^[\d+\-*/%()\s]+$/.test(e))throw new Error('espressione non riconosciuta');
+  let v;try{v=Function('"use strict";return ('+e+')')()}catch(x){throw new Error('espressione non valida')}
+  if(!Number.isFinite(v))throw new Error('risultato non valido (divisione per zero?)');
+  return Math.trunc(v)}
+function splitTop(s){let d=0,out=[''];for(const ch of s){if(ch==='(')d++;if(ch===')')d--;if(ch===','&&d===0)out.push('');else out[out.length-1]+=ch}return out.map(x=>x.trim())}
+function setPtr(name,b){
+  const old=ptrs[name];
+  if(old&&old.b!==null){const ob=blocks[old.b];if(!ob.freed&&refs(old.b)===1&&old.b!==b){ob.leak=true;log(`⚠ Memory leak: il blocco a ${hex(ob.start)} (${ob.bytes} byte) non ha più nessun puntatore. Non potrai mai liberarlo.`,'err');ev('leak')}}
+  ptrs[name]={b};
+}
+function alloc(name,bytes,zero){
+  const fn=zero?'calloc':'malloc';
+  if(bytes<=0){log(`${fn} con 0 byte o meno: richiesta senza senso.`,'warn');return}
+  const n=Math.ceil(bytes/4);let start=-1;
+  for(let i=0;i+n<=CELLS;i++){let ok=true;for(let j=i;j<i+n;j++)if(cells[j].b){ok=false;i=j;break}if(ok){start=i;break}}
+  if(start<0){setPtr(name,null);render();log(`${fn} non trova ${bytes} byte contigui liberi → restituisce NULL. ${name} vale NULL: per questo si controlla sempre if (${name} == NULL).`,'warn');ev('null');return}
+  const id=nextId++;const b={id,start,n,bytes,freed:false,leak:false,names:()=>Object.entries(ptrs).filter(([k,p])=>p.b===id).map(([k])=>k).join(',')};blocks[id]=b;
+  for(let j=start;j<start+n;j++){cells[j].b=id;if(zero){cells[j].v=0;cells[j].init=true}else cells[j].init=false}
+  setPtr(name,id);stats.alloc++;
+  const fl=[];for(let j=start;j<start+n;j++)fl.push(j);render(fl);
+  log(`${fn} riserva ${bytes} byte a partire da ${hex(start)}${bytes%4?' (arrotondati a '+n*4+' nel simulatore)':''}. ${name} = ${hex(start)}.`,'ok');
+  if(zero){log('calloc ha messo tutte le celle a 0.','info');ev('calloc')}else{log('malloc NON inizializza: le celle in giallo contengono valori indeterminati.','warn');ev('malloc')}
+}
+function getBlock(p,idx,write){
+  if(!(p in ptrs))throw new Error(p+' non è un puntatore dichiarato');
+  const P=ptrs[p];
+  if(P.b===null){ev('bug');throw new Error(`${p} vale NULL: accedere a ${p}[${idx}] fa crashare il programma (segmentation fault).`)}
+  const b=blocks[P.b];
+  if(b.freed){ev('bug');render(null,[b.start+Math.max(0,Math.min(idx,b.n-1))]);throw new Error(`Uso dopo free: il blocco di ${p} è già stato liberato. Comportamento indefinito!`)}
+  const max=Math.floor(b.bytes/4);
+  if(idx<0||idx>=max){ev('bug');const c=b.start+idx;render(null,c>=0&&c<CELLS?[c]:[]);throw new Error(`Fuori dai limiti: ${p} ha indici da 0 a ${max-1}, tu hai usato ${idx}. ${write&&c>=0&&c<CELLS?'Stai scrivendo nella memoria di qualcun altro!':''}`)}
+  return b.start+idx}
+const hist=[];let hpos=0;
+function run(raw){
+  let s=raw.trim();if(!s)return;hist.push(s);hpos=hist.length;log('> '+s,'in');
+  s=s.replace(/;+\s*$/,'').trim();let m;
+  try{
+    if(m=s.match(/^(?:int\s*\*\s*)?([a-zA-Z_]\w*)\s*=\s*(?:\(\s*int\s*\*\s*\)\s*)?(malloc|calloc)\s*\((.*)\)$/)){
+      const[,name,fn,args]=m;if(name in ints)throw new Error(name+' è già un int, non un puntatore');
+      if(fn==='malloc'){const a=splitTop(args);if(a.length!==1)throw new Error('malloc vuole un solo argomento: il numero di byte');alloc(name,evalExpr(a[0]),false)}
+      else{const a=splitTop(args);if(a.length!==2)throw new Error('calloc vuole due argomenti: calloc(quanti, sizeof(tipo))');alloc(name,evalExpr(a[0])*evalExpr(a[1]),true)}
+      return}
+    if(m=s.match(/^free\s*\(\s*([a-zA-Z_]\w*)\s*\)$/)){
+      const p=m[1];if(!(p in ptrs))throw new Error(p+' non è un puntatore dichiarato');
+      const P=ptrs[p];if(P.b===null){log('free(NULL) non fa nulla: è sicuro.','info');return}
+      const b=blocks[P.b];if(b.freed){ev('bug');render(null,[b.start]);throw new Error(`Doppio free: il blocco a ${hex(b.start)} era già stato liberato. Comportamento indefinito, spesso un crash.`)}
+      b.freed=true;stats.free++;for(let j=b.start;j<b.start+b.n;j++){cells[j].b=null;cells[j].init=false}
+      render();log(`Liberati ${b.bytes} byte a ${hex(b.start)}. Nota: ${p} contiene ancora l'indirizzo vecchio (puntatore pendente). Buona abitudine: ${p} = NULL;`,'ok');return}
+    if(m=s.match(/^(?:int\s*\*\s*)?([a-zA-Z_]\w*)\s*=\s*NULL$/)){
+      if(m[1] in ints)throw new Error(m[1]+' è un int');setPtr(m[1],null);render();log(m[1]+' ora vale NULL.','ok');return}
+    if(m=s.match(/^for\s*\(\s*(?:int\s+)?i\s*=\s*(.+?)\s*;\s*i\s*(<=?)\s*(.+?)\s*;\s*(?:i\s*\+\+|\+\+\s*i|i\s*\+=\s*1)\s*\)\s*\{?\s*([a-zA-Z_]\w*)\s*\[\s*i\s*\]\s*=\s*(.+?)\s*;?\s*\}?$/)){
+      const from=evalExpr(m[1]),lim=evalExpr(m[3]),le=m[2]==='<=';const p=m[4];const fl=[];let count=0;
+      for(let i=from;le?i<=lim:i<lim;i++){if(++count>64)throw new Error('ciclo troppo lungo per il simulatore');
+        const c=getBlock(p,i,true);cells[c].v=evalExpr(m[5],{i});cells[c].init=true;fl.push(c);render(fl)}
+      render(fl);log(`Ciclo eseguito: scritti ${fl.length} elementi di ${p}.`,'ok');if(fl.length)ev('fill');return}
+    if(m=s.match(/^([a-zA-Z_]\w*)\s*\[(.+)\]\s*=\s*(.+)$/)){
+      const c=getBlock(m[1],evalExpr(m[2]),true);cells[c].v=evalExpr(m[3]);cells[c].init=true;render([c]);log(`${m[1]}[${evalExpr(m[2])}] = ${cells[c].v}  (indirizzo ${hex(c)})`,'ok');return}
+    if(m=s.match(/^(?:printf\s*\(\s*"[^"]*"\s*,\s*)?([a-zA-Z_]\w*)\s*\[(.+)\]\s*\)?$/)){
+      const c=getBlock(m[1],evalExpr(m[2]),false);render([c]);
+      if(!cells[c].init)log(`${m[1]}[${evalExpr(m[2])}] vale ${cells[c].v}: è un valore indeterminato, nessuno l'ha scritto.`,'warn');else log(`${m[1]}[${evalExpr(m[2])}] vale ${cells[c].v}`,'info');return}
+    if(m=s.match(/^(?:int\s+)([a-zA-Z_]\w*)\s*=\s*(.+)$/)||((m=s.match(/^([a-zA-Z_]\w*)\s*=\s*(.+)$/))&&m&&(m[1] in ints))&&m){
+      if(m[1] in ptrs)throw new Error(m[1]+' è già un puntatore');ints[m[1]]=evalExpr(m[2]);render();log(`${m[1]} = ${ints[m[1]]}`,'ok');return}
+    if(m=s.match(/^(?:int\s*\*\s*)?([a-zA-Z_]\w*)\s*=\s*([a-zA-Z_]\w*)$/)){
+      if(!(m[2] in ptrs))throw new Error(m[2]+' non è un puntatore dichiarato');setPtr(m[1],ptrs[m[2]].b);render();log(`${m[1]} ora punta allo stesso blocco di ${m[2]}. Attenzione: un solo free basta per entrambi.`,'ok');return}
+    if(/^sizeof\s*\(/.test(s)||/^[\w\s+\-*/%()]+$/.test(s)){log(s+' = '+evalExpr(s),'info');return}
+    if(/realloc/.test(s))throw new Error('realloc la vedremo nella prossima lezione!');
+    throw new Error('istruzione non riconosciuta. Prova uno degli esempi qui sopra.');
+  }catch(e){log('✗ '+e.message,'err')}
+}
+const EX=['int *a = (int *) malloc(sizeof(int) * 5);','a[2]','for(i=0; i<5; i++) a[i] = i;','int *b = (int *) calloc(5, sizeof(int));','free(a);','a = NULL;','int n = 40;','int *big = (int *) malloc(sizeof(int) * n);','b[5] = 99;','b = NULL;'];
+$('#chips').innerHTML=EX.map(x=>`<button type="button" class="chip">${esc(x)}</button>`).join('');
+$('#chips').addEventListener('click',e=>{const c=e.target.closest('.chip');if(!c)return;$('#cmd').value=c.textContent;$('#cmd').focus()});
+$('#cmdForm').addEventListener('submit',e=>{e.preventDefault();run($('#cmd').value);$('#cmd').value=''});
+$('#cmd').addEventListener('keydown',e=>{if(e.key==='ArrowUp'&&hist.length){hpos=Math.max(0,hpos-1);$('#cmd').value=hist[hpos];e.preventDefault()}else if(e.key==='ArrowDown'&&hist.length){hpos=Math.min(hist.length,hpos+1);$('#cmd').value=hist[hpos]||'';e.preventDefault()}});
+$('#endBtn').onclick=()=>{
+  const live=Object.values(blocks).filter(b=>!b.freed);
+  log('> fine di main','in');
+  if(live.length){live.forEach(b=>b.leak=true);render();const by=live.reduce((s,b)=>s+b.bytes,0);log(`✗ Il programma termina con ${live.length} ${live.length===1?'blocco mai liberato':'blocchi mai liberati'} (${by} byte): memory leak! Ogni malloc deve avere il suo free.`,'err');ev('leak')}
+  else if(stats.alloc>0){log(`✓ Tutta la memoria allocata è stata liberata (${stats.alloc} allocazioni, ${stats.free} free). Programma pulito!`,'ok');ev('clean')}
+  else log('Non hai allocato nulla. Prova prima una malloc.','info')};
+$('#resetBtn').onclick=reset;
+renderMissions();reset();
+
+/* ---------- 4. codice ---------- */
+const STEPS=['—','Alloca','Controlla','Usa','Libera'];
+const CODE=[
+  ['int numero, *array, i;','—'],
+  ['int allocati;','—'],
+  ['numero = 100;','—'],
+  ['array = (int *) malloc(sizeof(int) * numero);','Alloca'],
+  ['if (array == NULL)','Controlla'],
+  ['{ printf("Memoria esaurita\\n"); exit(1); }','Controlla'],
+  ['allocati = sizeof(int) * numero;','—'],
+  ['for(i=0; i<numero; i++) array[i] = i;','Usa'],
+  ['for(i=0; i<numero; i++) printf("%6d%c", array[i], (i%10 == 9)?\'\\n\':\' \');','Usa'],
+  ['free(array);','Libera'],
+];
+CODE[6][2]='Calcola i byte: non tocca la memoria allocata.';
+$('#codeLines').innerHTML=CODE.map((c,i)=>`<div class="cline" id="cl${i}"><span class="ln">${i+1}</span><pre>${esc(c[0])}</pre><select id="cs${i}" aria-label="Passo della riga ${i+1}"><option value="">scegli…</option>${STEPS.map(s=>`<option>${s}</option>`).join('')}</select></div>`).join('');
+$('#codeCheck').onclick=()=>{let ok=0;CODE.forEach((c,i)=>{const g=$('#cs'+i).value===c[1];const r=$('#cl'+i);r.classList.toggle('right',g);r.classList.toggle('wrong',!g);if(g)ok++});
+  const fb=$('#codeFb');fb.textContent=`${ok} su ${CODE.length} corrette.`+(ok===CODE.length?' Alloca, controlla, usa, libera!':' Le righe che non riguardano il blocco allocato sono “—”.');fb.className='feedback '+(ok===CODE.length?'ok':'bad');if(ok===CODE.length)markDone('a4')};
+
+/* ---------- 5. bug ---------- */
+const OPTS=['Manca sizeof','Manca il controllo NULL','Memory leak','Uso dopo free','Doppio free','Fuori dai limiti'];
+const BUGS=[
+  ['Voglio 100 interi','int *v = (int *) malloc(100);\nfor (i = 0; i < 100; i++)\n    v[i] = 0;',0,'malloc(100) riserva 100 byte, cioè solo 25 int. Serve malloc(sizeof(int) * 100).'],
+  ['Allocazione “fiduciosa”','int *v = (int *) malloc(sizeof(int) * n);\nv[0] = 5;',1,'Se malloc restituisce NULL, v[0] = 5 fa crashare il programma. Prima: if (v == NULL) { ... exit(1); }'],
+  ['Una funzione chiamata 1000 volte','void calcola(int n) {\n    int *tmp = (int *) malloc(sizeof(int) * n);\n    if (tmp == NULL) exit(1);\n    /* ... usa tmp ... */\n}',2,'tmp sparisce alla fine della funzione, ma il blocco nell\'heap resta occupato. Manca free(tmp) prima della }.'],
+  ['Pulizia troppo presto','free(v);\nprintf("%d\\n", v[0]);',3,'Dopo free il blocco non è più nostro: leggere v[0] è comportamento indefinito.'],
+  ['Pulizia due volte','free(v);\n/* ... altre istruzioni ... */\nfree(v);',4,'Liberare due volte lo stesso blocco è un errore grave. Dopo free(v) scrivi v = NULL: free(NULL) non fa nulla.'],
+  ['Un elemento di troppo','int *v = (int *) malloc(sizeof(int) * n);\nif (v == NULL) exit(1);\nfor (i = 0; i <= n; i++)\n    v[i] = 0;',5,'Con i <= n il ciclo scrive anche v[n], ma gli indici validi vanno da 0 a n-1.'],
+];
+const bugSolved=new Set();
+$('#bugs').innerHTML=BUGS.map((b,i)=>`<div class="bug" id="bug${i}"><h3>${i+1}. ${esc(b[0])}</h3><pre>${esc(b[1])}</pre><div class="opts">${OPTS.map((o,j)=>`<button type="button" data-b="${i}" data-o="${j}">${esc(o)}</button>`).join('')}</div><p class="expl">${esc(b[3])}</p></div>`).join('');
+$('#bugs').addEventListener('click',e=>{const t=e.target.closest('button[data-b]');if(!t)return;const i=+t.dataset.b;if(bugSolved.has(i))return;
+  if(+t.dataset.o===BUGS[i][2]){t.classList.add('right');$('#bug'+i).classList.add('solved');bugSolved.add(i);
+    $('#bugFb').textContent=`${bugSolved.size} su ${BUGS.length} errori trovati.`;$('#bugFb').className='feedback '+(bugSolved.size===BUGS.length?'ok':'');if(bugSolved.size===BUGS.length)markDone('a5')}
+  else t.classList.add('wrong')});
+
+/* ---------- 6. completa ---------- */
+const BL={b1:['stdlib.h','malloc.h'],b2:['malloc'],b3:['sizeof(int)','sizeof(*voti)'],b4:['NULL'],b5:['voti[i]'],b6:['free']};
+const W={b1:9,b2:7,b3:12,b4:5,b5:8,b6:5};
+const inp=k=>`<input id="${k}" style="--w:${W[k]+2}ch" spellcheck="false" autocapitalize="off" aria-label="spazio da completare">`;
+const SRC=`#include &lt;stdio.h&gt;
+#include &lt;${inp('b1')}&gt;
+
+int main(void)
+{
+    int n, i, *voti;
+    float somma = 0;
+
+    printf("Quanti voti? ");
+    scanf("%d", &amp;n);
+
+    voti = (int *) ${inp('b2')}(${inp('b3')} * n);
+    if (voti == ${inp('b4')})
+    {
+        printf("Memoria esaurita\\n");
+        return 1;
+    }
+
+    for (i = 0; i &lt; n; i++)
+    {
+        printf("Voto %d: ", i + 1);
+        scanf("%d", &amp;${inp('b5')});
+        somma = somma + voti[i];
+    }
+
+    printf("Media: %.2f\\n", somma / n);
+    ${inp('b6')}(voti);
+    return 0;
+}`;
+$('#fill').innerHTML=SRC;
+const norm=s=>s.replace(/\s+/g,'');
+$('#fillCheck').onclick=()=>{let ok=0;for(const k in BL){const el=$('#'+k);const g=BL[k].includes(norm(el.value));el.classList.toggle('right',g);el.classList.toggle('wrong',!g);if(g)ok++}
+  const n=Object.keys(BL).length;const fb=$('#fillFb');fb.textContent=`${ok} su ${n}.`+(ok===n?' Ora copialo nel compilatore!':'');fb.className='feedback '+(ok===n?'ok':'bad');if(ok===n)markDone('a6')};
+$('#fillCopy').onclick=()=>{const clone=$('#fill').cloneNode(true);clone.querySelectorAll('input').forEach(x=>{const v=$('#'+x.id).value.trim();x.replaceWith(document.createTextNode(v||'/* ??? */'))});const txt=clone.textContent;
+  const fb=$('#fillFb');
+  const fallback=()=>{const r=document.createRange();r.selectNodeContents($('#fill'));const s=getSelection();s.removeAllRanges();s.addRange(r);fb.textContent='Copia non disponibile: codice selezionato, usa Ctrl+C.';fb.className='feedback'};
+  try{navigator.clipboard.writeText(txt).then(()=>{fb.textContent='Codice copiato.';fb.className='feedback ok'},fallback)}catch(e){fallback()}};
+
+/* ---------- 7. ripasso ---------- */
+const RQ=[
+  ['Che differenza c\'è tra stack e heap?','Lo stack è la parte statica: contiene ciò che è dichiarato nel codice. L\'heap è la parte dinamica, che cambia durante l\'esecuzione (a runtime).'],
+  ['Quanti byte alloca malloc(sizeof(int) * 100) se un int occupa 4 byte?','400 byte.'],
+  ['Cosa restituisce malloc() quando la memoria è esaurita?','Un puntatore nullo, NULL. Per questo si controlla sempre if (array == NULL).'],
+  ['Perché a ogni malloc() deve corrispondere una free()?','Per restituire la memoria: altrimenti resta occupata fino alla fine del programma (memory leak).'],
+  ['Che differenza hai visto nel simulatore tra malloc e calloc?','malloc lascia valori indeterminati; calloc azzera tutta la memoria allocata e ha due argomenti: quanti elementi e la dimensione di ciascuno.'],
+];
+$('#review').innerHTML=RQ.map(q=>`<details class="rq"><summary>${esc(q[0])}</summary><p>${esc(q[1])}</p></details>`).join('');
+let opened=new Set();
+$('#review').addEventListener('toggle',e=>{const i=[...document.querySelectorAll('details.rq')].indexOf(e.target);if(e.target.open)opened.add(i);if(opened.size===RQ.length)markDone('a7')},true);
+})();
+</script>
+
+</body>
+</html>
