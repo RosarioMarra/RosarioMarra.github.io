@@ -1,922 +1,212 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-learning - Rosario Marra</title>
-    <link rel="icon" href="immagini/Logo Rosario Marra nero.png" type="image/png">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-
-    <style>
-        /* --- 1. Impostazioni Globali (Dark Mode) --- */
-        :root {
-            --bg-color: #000000;
-            --text-color: #F5F5F7;
-            --text-secondary: #888888;
-            --bg-secondary: #1C1C1E;
-            --accent-color: #0A84FF;
-            --border-color: #333333;
-            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: var(--font-primary);
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            overflow-x: hidden;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        /* --- 2. Stili Generali (Titoli, Link, Bottoni) --- */
-        h1, h2, h3 {
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 20px;
-            transition: color 0.3s ease;
-        }
-        
-        h4 {
-            font-size: 1.1rem;
-            color: var(--text-color);
-            font-weight: 700;
-            margin-bottom: 15px;
-        }
-
-        h1 { font-size: 3.5rem; color: #FFFFFF; }
-        h2 { font-size: 2.5rem; text-align: center; color: #FFFFFF;}
-        h3 { font-size: 1.3rem; color: var(--text-color); }
-
-        p {
-            font-size: 1.1rem;
-            font-weight: 300;
-            margin-bottom: 15px;
-            color: var(--text-secondary);
-        }
-        
-        .intro-text {
-            font-size: 1.1rem;
-            font-weight: 300;
-            color: var(--text-secondary);
-            text-align: center; 
-            max-width: 700px; 
-            margin: 0 auto 50px auto;
-        }
-
-        a {
-            color: var(--accent-color);
-            text-decoration: none;
-            transition: opacity 0.3s ease;
-        }
-
-        a:hover {
-            opacity: 0.7;
-        }
-
-        section {
-            padding: 100px 5%;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-        
-        /* Spazio per il navbar fisso */
-        .main-content-area {
-            padding-top: 150px; 
-        }
-
-        /* --- 3. Header e Navigazione (CON HAMBURGER) --- */
-        .main-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 8px 5%; 
-            z-index: 100;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border-color);
-            transition: background-color 0.3s ease, border-color 0.3s ease;
-        }
-
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-color);
-            z-index: 110;
-        }
-
-        .nav-menu {
-            display: flex;
-            align-items: center; 
-            list-style: none;
-        }
-
-        .nav-menu li { margin-left: 20px; } 
-        .nav-menu a {
-            font-size: 1rem;
-            font-weight: 500;
-            color: var(--text-color);
-        }
-        
-        .nav-menu .nav-button-outline a {
-            background: transparent;
-            border: 1px solid var(--text-color);
-            color: var(--text-color);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            display: inline-flex; 
-            align-items: center;
-            gap: 5px; 
-        }
-        .nav-menu .nav-button-outline a:hover {
-            background-color: var(--text-color);
-            color: var(--bg-color);
-            opacity: 1;
-        }
-
-        .nav-menu .nav-button-primary a {
-            background-color: var(--accent-color);
-            color: #FFFFFF;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            display: inline-flex; 
-            align-items: center;
-            gap: 5px; 
-            border: 1px solid var(--accent-color); 
-        }
-        .nav-menu .nav-button-primary a:hover {
-            background-color: #FFFFFF;
-            color: #000000;
-            opacity: 1; 
-            border-color: #FFFFFF;
-        }
-
-        .nav-menu .nav-button-primary a svg,
-        .nav-menu .nav-button-outline a svg {
-            width: 18px;
-            height: 18px;
-            stroke-width: 2;
-        }
-
-
-        .hamburger-menu {
-            display: none;
-            width: 30px;
-            height: 22px;
-            cursor: pointer;
-            z-index: 110;
-            position: relative;
-        }
-        
-        .hamburger-menu .line {
-            width: 100%;
-            height: 3px;
-            background-color: var(--text-color);
-            border-radius: 3px;
-            position: absolute;
-            transition: all 0.3s ease-in-out;
-        }
-        
-        .hamburger-menu .line1 { top: 0; }
-        .hamburger-menu .line2 { top: 9px; }
-        .hamburger-menu .line3 { top: 18px; }
-
-        .nav-open .line1 { transform: translateY(9px) rotate(45deg); }
-        .nav-open .line2 { opacity: 0; }
-        .nav-open .line3 { transform: translateY(-9px) rotate(-45deg); }
-
-        
-        /* --- 5. Sezione Servizi (E-learning) --- */
-        .services-section h2 {
-            margin-bottom: 20px;
-        }
-
-        .services-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-        }
-
-        .service-card {
-            background-color: var(--bg-secondary);
-            padding: 25px; 
-            border-radius: 20px;
-            border: 1px solid var(--border-color);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .service-card-image {
-            width: 100%;
-            height: 150px; 
-            object-fit: cover; 
-            border-radius: 12px; 
-            margin-bottom: 20px; 
-        }
-        
-        .service-card h3 {
-            color: #FFFFFF;
-            margin-bottom: 15px;
-            transition: color 0.3s ease;
-        }
-
-        .service-card p {
-            font-size: 0.95rem;
-            font-weight: 400;
-            margin-bottom: 15px; 
-            flex-grow: 1; 
-            transition: color 0.3s ease;
-        }
-        
-        /* Stili per i riquadri/tag dei corsi */
-        .card-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 15px; 
-        }
-        .tag {
-            font-size: 0.75rem;
-            font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 15px;
-            text-transform: uppercase;
-            transition: color 0.3s ease, border-color 0.3s ease;
-        }
-        .tag-school {
-            background-color: var(--accent-color);
-            color: var(--text-color); /* Testo su blu, ok in dark */
-        }
-        .tag-year {
-            background-color: transparent;
-            color: var(--text-secondary);
-            border: 1px solid var(--border-color);
-        }
-        
-        /* Stile per il pulsante di iscrizione */
-        .course-card-button {
-            display: inline-block;
-            margin-top: 15px; /* Spazio dal testo */
-            padding: 10px 20px;
-            background-color: var(--accent-color);
-            color: #FFFFFF;
-            font-weight: 700;
-            border-radius: 20px;
-            text-align: center;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            flex-grow: 0; /* Non si espande */
-        }
-        
-        .course-card-button:hover {
-            background-color: #FFFFFF;
-            color: #000000;
-            opacity: 1;
-        }
-
-
-        .service-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            border-color: var(--accent-color);
-        }
-
-
-        /* --- 9. Footer --- */
-        .main-footer {
-            text-align: center;
-            padding: 40px 5%;
-            border-top: 1px solid var(--border-color);
-            margin-top: 50px;
-            transition: border-color 0.3s ease;
-        }
-
-        .footer-content {
-            display: flex;
-            justify-content: space-between; /* Spazio tra gli elementi */
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-        
-        .footer-logo {
-            flex-shrink: 0;
-            opacity: 0.7;
-            transition: filter 0.3s ease;
-        }
-        .logo img { transition: filter 0.3s ease; }
-        
-        .footer-contact {
-            text-align: left;
-            display: flex;
-            flex-direction: column;
-            gap: 10px; /* Spazio tra le righe */
-        }
-        
-        .footer-contact-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .footer-contact-item p {
-            margin: 0;
-            font-size: 1rem;
-            color: var(--text-color);
-            font-weight: 400;
-        }
-        
-        .footer-icon {
-            width: 20px;
-            height: 20px;
-            color: var(--accent-color);
-            flex-shrink: 0;
-        }
-
-        .footer-contact a {
-            color: var(--accent-color);
-            font-weight: 500;
-        }
-        
-        .footer-social {
-            text-align: left;
-        }
-        .footer-social-links {
-            display: flex;
-            gap: 20px;
-        }
-        .footer-social-links a {
-            color: var(--text-secondary);
-            transition: color 0.3s ease;
-        }
-        .footer-social-links a:hover {
-            color: var(--accent-color);
-            opacity: 1;
-        }
-        .footer-social-links svg {
-            width: 30px;
-            height: 30px;
-        }
-
-        .cv-button {
-            padding: 12px 28px;
-            font-size: 1rem;
-            font-weight: 700;
-            border-radius: 30px;
-            text-align: center;
-            transition: all 0.3s ease;
-            background-color: var(--accent-color);
-            color: #fff;
-            border: 1px solid var(--accent-color);
-            
-            animation: pulse 2s infinite;
-        }
-        
-        .cv-button:hover {
-            transform: translateY(-3px);
-            animation-play-state: paused; 
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(10, 132, 255, 0.7); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(10, 132, 255, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(10, 132, 255, 0); }
-        }
-
-        .footer-copyright {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-bottom: 0;
-            padding-top: 20px;
-            border-top: 1px solid var(--border-color);
-        }
-
-        /* --- 11. ANIMAZIONI DINAMICHE (Scroll-Reveal) --- */
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.8s ease-out, transform 0.6s ease-out;
-            will-change: opacity, transform;
-        }
-
-        .reveal.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .service-card:nth-child(2) { transition-delay: 0.1s; }
-        .service-card:nth-child(3) { transition-delay: 0.2s; }
-        
-        
-        /* --- 12. Responsive (Gestione Menu Mobile) --- */
-        @media (max-width: 768px) {
-            h1 { font-size: 2.5rem; }
-            h2 { font-size: 2rem; }
-            
-            section {
-                padding: 60px 5%;
-            }
-            
-            .hamburger-menu {
-                display: block;
-            }
-
-            .nav-menu {
-                position: fixed;
-                top: 0;
-                left: 100%;
-                width: 100%;
-                height: 100vh;
-                background-color: var(--bg-color);
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                transition: transform 0.4s ease-in-out;
-            }
-            
-            .nav-open .nav-menu {
-                transform: translateX(-100%);
-            }
-
-            .nav-menu li {
-                margin: 20px 0;
-            }
-
-            .nav-menu a {
-                font-size: 1.5rem;
-                font-weight: 700;
-            }
-            
-            .nav-menu .nav-button-primary a,
-            .nav-menu .nav-button-outline a {
-                font-size: 1rem; 
-                font-weight: 700;
-                padding: 8px 18px; 
-                color: var(--text-color); 
-            }
-            .nav-menu .nav-button-primary a:hover,
-            .nav-menu .nav-button-outline a:hover {
-                background: transparent;
-                color: var(--accent-color);
-                opacity: 0.8;
-                border-color: var(--accent-color);
-            }
-            
-            .nav-menu .nav-button-primary a {
-                background-color: var(--accent-color);
-                border-color: var(--accent-color);
-                color: #FFF;
-            }
-            .nav-menu .nav-button-outline a {
-                background: transparent;
-                border: 1px solid var(--text-color);
-            }
-
-            .nav-menu .nav-button-primary a svg,
-            .nav-menu .nav-button-outline a svg {
-                display: inline-block; 
-                width: 16px; 
-                height: 16px;
-            }
-
-            .footer-content {
-                flex-direction: column;
-                text-align: center;
-                gap: 40px; 
-            }
-            .footer-logo { order: -1; }
-            .footer-contact { text-align: center; align-items: center; }
-            .footer-contact-item { justify-content: center; }
-            .footer-social { text-align: center; }
-            .footer-social-links { justify-content: center; }
-        }
-
-        /* =========================================
-           --- STILI: SWITCH LIGHT MODE & TEMA --- 
-           ========================================= */
-        
-        /* Stile Switch Verticale */
-        #themeToggleBtn {
-            position: fixed;
-            top: 50%;
-            right: 15px; 
-            transform: translateY(-50%);
-            width: 28px;  
-            height: 70px;
-            background: transparent;
-            border: none;
-            padding: 0;
-            cursor: pointer;
-            z-index: 1000;
-        }
-
-        .toggle-track {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(28, 28, 30, 0.95); 
-            border: 1px solid var(--border-color);
-            border-radius: 50px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transition: background-color 0.3s ease, border-color 0.3s ease;
-            overflow: hidden;
-        }
-
-        .icon-position {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #888; 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 35px; 
-            z-index: 1;
-            transition: color 0.3s ease;
-        }
-
-        .top-icon { top: 0; }
-        .bottom-icon { bottom: 0; }
-
-        .icon-position svg { width: 14px; height: 14px; }
-
-        .toggle-thumb {
-            position: absolute;
-            left: 3px; 
-            width: 22px; 
-            height: 22px;
-            background-color: var(--accent-color); 
-            border-radius: 50%;
-            z-index: 2;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            transition: transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1), background-color 0.3s ease; 
-            top: 6px; 
-            transform: translateY(36px); 
-        }
-
-        /* Gestione Icone Dark Mode */
-        .top-icon { color: var(--accent-color); } 
-        .bottom-icon { color: #FFF; z-index: 3; } 
-
-        /* --- STATO LIGHT MODE (Attivato) --- */
-        body.light-mode .toggle-track {
-            background-color: #FFFFFF; 
-            border-color: #D1D1D6;
-        }
-
-        body.light-mode .toggle-thumb {
-            transform: translateY(0px); 
-            background-color: #FF9500; 
-        }
-
-        body.light-mode .top-icon { color: #FFF; z-index: 3; } 
-        body.light-mode .bottom-icon { color: var(--accent-color); }
-
-
-        /* --- DEFINIZIONE VARIABILI LIGHT MODE --- */
-        body.light-mode {
-            --bg-color: #F5F5F7; 
-            --text-color: #1D1D1F; 
-            --text-secondary: #6e6e73;
-            --bg-secondary: #FFFFFF; 
-            --border-color: #d2d2d7;
-        }
-
-        /* Override colori per leggibilità in Light Mode */
-        body.light-mode h1, 
-        body.light-mode h2,
-        body.light-mode h3, 
-        body.light-mode h4 {
-            color: #1D1D1F;
-        }
-        
-        /* Stili specifici per Service Card in Light Mode */
-        body.light-mode .service-card {
-            background-color: #FFFFFF;
-            border-color: #E5E5EA;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-        }
-        
-        body.light-mode .service-card h3,
-        body.light-mode .service-card p {
-            color: #1D1D1F;
-        }
-        
-        /* Stile Tag in Light Mode */
-        body.light-mode .tag-year {
-            color: #1D1D1F;
-            border-color: #D1D1D6;
-        }
-        
-        body.light-mode .tag-school {
-            color: #FFFFFF; /* Assicuriamo leggibilità su blu */
-        }
-
-        /* Navbar in modalità chiara */
-        body.light-mode .main-header {
-            background: rgba(255, 255, 255, 0.9);
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-        }
-        body.light-mode .nav-menu { background-color: #F5F5F7; }
-        
-        /* Inversione Loghi */
-        body.light-mode .logo img,
-        body.light-mode .footer-logo img {
-            filter: invert(1);
-        }
-
-    </style>
-    </head>
-<body class=""> 
-    
-    <header class="main-header">
-        <nav class="navbar">
-            <div class="logo">
-                <a href="index.html">
-                    <img src="Logo Rosario Marra-09.png" alt="Logo Personale" style="height: 30px; width: auto; display: block;">
-                </a>
-            </div>
-            
-            <ul class="nav-menu">
-                <li><a href="index.html#hero">Chi Sono</a></li>
-                <li><a href="index.html#servizi">Servizi</a></li>
-                <li><a href="index.html#progetti">Progetti</a></li>
-                <li><a href="index.html#competenze">Competenze</a></li>
-                <li><a href="index.html#contatti">Contatti</a></li>
-                <li class="nav-button-primary"><a href="e-learning.html">E-learning</a></li>
-                <li class="nav-button-outline"> 
-                    <a href="#">
-                        IDECode
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                        </svg>
-                    </a>
-                </li>
-            </ul>
-            
-            <div class="hamburger-menu">
-                <div class="line line1"></div>
-                <div class="line line2"></div>
-                <div class="line line3"></div>
-            </div>
-        </nav>
-    </header>
-
-    <main>
-
-        <section id="e-learning" class="services-section main-content-area">
-            <h2 class="reveal">Corsi E-learning (Google Classroom)</h2>
-            <p class="intro-text reveal">
-                Esplora i corsi disponibili. Clicca su "Richiedi Iscrizione" e compila il modulo per inviare la tua richiesta. Verrai approvato e aggiunto al corso manualmente.
-            </p>
-            
-            <div class="services-container">
-                
-                <article class="service-card reveal">
-                    <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=2670&auto=format&fit=crop" alt="Sistemi e Reti" class="service-card-image">
-                    <div class="card-tags">
-                        <span class="tag tag-school">IIS GALILEO GALILEI</span>
-                        <span class="tag tag-year">2024/2025</span>
-                    </div>
-                    <h3>Sistemi e Reti</h3>
-                    <p>Un corso approfondito sulle architetture di rete, i protocolli TCP/IP, la virtualizzazione e la sicurezza informatica.</p>
-                    <a href="IL_TUO_LINK_AL_GOOGLE_FORM" target="_blank" class="course-card-button">
-                        Richiedi Iscrizione
-                    </a>
-                </article>
-
-                <article class="service-card reveal">
-                    <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2670&auto=format&fit=crop" alt="TPSIT" class="service-card-image">
-                    <div class="card-tags">
-                        <span class="tag tag-school">IIS GALILEO GALILEI</span>
-                        <span class="tag tag-year">2024/2025</span>
-                    </div>
-                    <h3>TPSIT</h3>
-                    <p>Tecnologie e Progettazione di Sistemi Informatici. Sviluppo di applicazioni e gestione avanzata dei processi software.</p>
-                    <a href="IL_TUO_LINK_AL_GOOGLE_FORM" target="_blank" class="course-card-button">
-                        Richiedi Iscrizione
-                    </a>
-                </article>
-
-                <article class="service-card reveal">
-                    <img src="https://images.unsplash.com/photo-1605379399642-870262d3d051?q=80&w=2580&auto=format&fit=crop" alt="Informatica" class="service-card-image">
-                    <div class="card-tags">
-                        <span class="tag tag-school">ITS</span>
-                        <span class="tag tag-year">2024/2025</span>
-                    </div>
-                    <h3>Informatica (Base)</h3>
-                    <p>Fondamenti della programmazione, algoritmi, strutture dati e logica computazionale per iniziare a costruire solide basi.</p>
-                    <a href="IL_TUO_LINK_AL_GOOGLE_FORM" target="_blank" class="course-card-button">
-                        Richiedi Iscrizione
-                    </a>
-                </article>
-
-                <article class="service-card reveal">
-                    <img src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?q=80&w=2670&auto=format&fit=crop" alt="Immagine di programmazione" class="service-card-image">
-                    <div class="card-tags">
-                        <span class="tag tag-school">IIS GALILEO GALILEI</span>
-                        <span class="tag tag-year">2024/2025</span>
-                    </div>
-                    <h3>Tecnologie Informatiche</h3>
-                    <p>Approfondimento sui sistemi operativi, gestione hardware, database relazionali (SQL) e metodologie di sviluppo software.</p>
-                    <a href="IL_TUO_LINK_AL_GOOGLE_FORM" target="_blank" class="course-card-button">
-                        Richiedi Iscrizione
-                    </a>
-                </article>
-
-                <article class="service-card reveal">
-                    <img src="https://images.unsplash.com/photo-1518349619113-03114f06ac3a?q=80&w=2574&auto=format&fit=crop" alt="AI-ML" class="service-card-image">
-                    <div class="card-tags">
-                        <span class="tag tag-school">ITS</span>
-                        <span class="tag tag-year">2024/2025</span>
-                    </div>
-                    <h3>AI-ML (Intelligenza Artificiale)</h3>
-                    <p>Introduzione al Machine Learning, reti neurali e Natural Language Processing (NLP) con Python, Keras e Scikit-learn.</p>
-                    <a href="IL_TUO_LINK_AL_GOOGLE_FORM" target="_blank" class="course-card-button">
-                        Richiedi Iscrizione
-                    </a>
-                </article>
-
-                <article class="service-card reveal">
-                    <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726c?q=80&w=2670&auto=format&fit=crop" alt="Immagine tech astratta" class="service-card-image">
-                    <div class="card-tags">
-                        <span class="tag tag-school">ITS</span>
-                        <span class="tag tag-year">2024/2025</span>
-                    </div>
-                    <h3>Robotica</h3>
-                    <p>Laboratori pratici di programmazione robotica, automazione industriale, sensoristica e sistemi di controllo (PLC, Arduino).</p>
-                    <a href="IL_TUO_LINK_AL_GOOGLE_FORM" target="_blank" class="course-card-button">
-                        Richiedi Iscrizione
-                    </a>
-                </article>
-                
-            </div>
-        </section>
-        
-    </main>
-
-    <footer class="main-footer">
-        <div class="footer-content">
-            <div class="footer-logo">
-                <img src="Logo Rosario Marra-09.png" alt="Logo Personale" style="height: 40px; width: auto;">
-            </div>
-            
-            <div class="footer-contact">
-                <div class="footer-contact-item">
-                    <svg class="footer-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
-                    </svg>
-                    <p><strong>Email:</strong> <a href="mailto:rosario.marra@itscremona.it">rosario.marra@itscremona.it</a></p>
-                </div>
-                <div class="footer-contact-item">
-                     <svg class="footer-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
-                    </svg>
-                    <p><strong>Cellulare:</strong> +39 3286217534</p>
-                </div>
-                <div class="footer-contact-item">
-                    <svg class="footer-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                    </svg>
-                    <p><strong>Indirizzo:</strong> Crema, Lombardia, Italy</p>
-                </div>
-            </div>
-
-            <div class="footer-social">
-                <h4>Seguimi</h4>
-                <div class="footer-social-links">
-                    <a href="https://linkedin.com/in/rosario-marra-2182bb107" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                        <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                        </svg>
-                    </a>
-                    <a href="https://github.com/tuo-profilo" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                        <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                        </svg>
-                    </a>
-                </div>
-            </div>
-            
-            <div class="footer-cv">
-                <a href="CV_Rosario_Marra.pdf" class="cv-button" download>
-                    Scarica il mio CV
-                </a>
-            </div>
-        </div>
-        <p class="footer-copyright">&copy; 2025 Rosario Marra. Tutti i diritti riservati.</p>
-    </footer>
-
-    <button id="themeToggleBtn" aria-label="Cambia Tema">
-        <div class="toggle-track">
-            <span class="icon-position top-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
-                </svg>
-            </span>
-            <span class="icon-position bottom-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
-                </svg>
-            </span>
-            <div class="toggle-thumb"></div>
-        </div>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Materiale didattico · Rosario Marra</title>
+<link rel="icon" href="immagini/Logo Rosario Marra nero.png" type="image/png">
+<meta name="description" content="Materiale didattico per gli studenti di Rosario Marra: dispense, esercitazioni e slide per materia.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0A0B0E; --bg-2:#111318; --card:#14171D; --card-2:#1A1E26;
+  --text:#F2F4F7; --muted:#9AA3B2; --faint:#5F6878;
+  --line:rgba(255,255,255,.08); --line-2:rgba(255,255,255,.14);
+  --blue:#3B8BFF; --blue-soft:rgba(59,139,255,.12);
+  --orange:#FF7A1A; --orange-soft:rgba(255,122,26,.12);
+  --green:#3DDC97;
+  --radius:20px;
+  --display:'Space Grotesk',Inter,system-ui,sans-serif;
+  --body:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+  --shadow:0 20px 60px -20px rgba(0,0,0,.6);
+  --logo-filter:none;
+}
+:root[data-theme="light"]{
+  --bg:#F7F7F4; --bg-2:#EFEFEA; --card:#FFFFFF; --card-2:#F5F5F1;
+  --text:#14161A; --muted:#545C69; --faint:#8A919C;
+  --line:rgba(0,0,0,.08); --line-2:rgba(0,0,0,.14);
+  --blue:#1F6FEB; --blue-soft:rgba(31,111,235,.09);
+  --orange:#E8620A; --orange-soft:rgba(232,98,10,.09);
+  --green:#12A56A;
+  --shadow:0 20px 50px -25px rgba(20,22,26,.25);
+  --logo-filter:invert(1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{font-family:var(--body);background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .3s,color .3s}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+h1,h2,h3{font-family:var(--display);letter-spacing:-.02em;line-height:1.1}
+.eyebrow{font-family:var(--mono);font-size:.78rem;color:var(--orange);letter-spacing:.08em;text-transform:uppercase;display:inline-flex;align-items:center;gap:10px;margin-bottom:18px}
+.eyebrow::before{content:"";width:22px;height:1px;background:currentColor}
+.accent{color:var(--blue)}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:12px 20px;border-radius:999px;font-weight:600;font-size:.92rem;transition:transform .2s,background .2s,border-color .2s;border:1px solid transparent;cursor:pointer;font-family:inherit}
+.btn svg{width:17px;height:17px}
+.btn-primary{background:var(--blue);color:#fff}
+.btn-primary:hover{transform:translateY(-2px)}
+.btn-ghost{border-color:var(--line-2);color:var(--text);background:transparent}
+.btn-ghost:hover{border-color:var(--text)}
+
+/* Nav */
+.nav{position:fixed;top:14px;left:0;right:0;z-index:100;padding:0 16px}
+.nav-inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 12px 10px 20px;border-radius:999px;background:color-mix(in srgb,var(--bg) 72%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line)}
+.nav-logo img{height:26px;filter:var(--logo-filter)}
+.nav-links{display:flex;gap:4px;list-style:none}
+.nav-links a{padding:8px 14px;border-radius:999px;font-size:.9rem;color:var(--muted)}
+.nav-links a:hover,.nav-links a.active{color:var(--text);background:var(--line)}
+.icon-btn{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line);background:transparent;color:var(--text);cursor:pointer}
+.icon-btn svg{width:18px;height:18px}
+.theme-btn .sun{display:none}
+:root[data-theme="light"] .theme-btn .sun{display:block}
+:root[data-theme="light"] .theme-btn .moon{display:none}
+
+/* Header */
+.page-head{padding:150px 0 50px;position:relative;overflow:hidden}
+.page-head::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(600px 300px at 85% 0%,var(--blue-soft),transparent 70%),radial-gradient(400px 260px at 0% 100%,var(--orange-soft),transparent 70%)}
+.page-head h1{font-size:clamp(2.4rem,5.5vw,4rem);margin-bottom:18px;max-width:780px}
+.page-head p{color:var(--muted);font-size:1.12rem;max-width:620px}
+
+section{padding:50px 0 90px}
+.sec-title{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:30px}
+.sec-title h2{font-size:clamp(1.7rem,3vw,2.3rem)}
+
+/* Materiali */
+.toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:22px}
+.search{flex:1;min-width:220px;position:relative}
+.search input{width:100%;padding:13px 16px 13px 44px;border-radius:14px;border:1px solid var(--line);background:var(--card);color:var(--text);font:inherit;font-size:.95rem;outline:none;transition:border-color .2s}
+.search input:focus{border-color:var(--blue)}
+.search svg{position:absolute;left:15px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--faint)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+.filter{padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--muted);font:inherit;font-size:.86rem;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:.2s}
+.filter:hover{border-color:var(--line-2);color:var(--text)}
+.filter.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.filter small{font-family:var(--mono);font-size:.72rem;opacity:.75}
+.files{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.file{display:flex;gap:16px;align-items:center;padding:18px;border-radius:16px;border:1px solid var(--line);background:var(--card);transition:border-color .2s,transform .2s}
+.file:hover{border-color:var(--blue);transform:translateY(-3px)}
+.ext{width:52px;height:60px;border-radius:10px;flex-shrink:0;display:grid;place-items:end center;padding-bottom:9px;font-family:var(--mono);font-size:.68rem;font-weight:500;color:#fff;position:relative;background:var(--faint)}
+.ext::before{content:"";position:absolute;top:0;right:0;width:14px;height:14px;background:linear-gradient(225deg,var(--bg) 50%,rgba(255,255,255,.35) 50%);border-radius:0 10px 0 4px}
+.ext.pdf{background:#E5484D}.ext.doc,.ext.docx{background:#2F6FE4}.ext.ppt,.ext.pptx{background:#E8620A}.ext.xls,.ext.xlsx,.ext.csv{background:#1E9E62}.ext.zip,.ext.rar{background:#8E5BE8}.ext.py,.ext.js,.ext.html,.ext.ipynb{background:#2A3140}
+.file-info{flex:1;min-width:0}
+.file-info b{display:block;font-weight:600;font-size:.98rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.file-meta{display:flex;gap:10px;flex-wrap:wrap;font-size:.8rem;color:var(--faint);margin-top:4px}
+.file-meta .mat{color:var(--orange)}
+.dl{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line);color:var(--blue);flex-shrink:0;transition:.2s}
+.file:hover .dl{background:var(--blue);color:#fff;border-color:var(--blue)}
+.dl svg{width:18px;height:18px}
+.empty{padding:60px 20px;text-align:center;border:1px dashed var(--line-2);border-radius:20px;color:var(--muted)}
+.skeleton{height:96px;border-radius:16px;background:linear-gradient(90deg,var(--card) 25%,var(--card-2) 50%,var(--card) 75%);background-size:200% 100%;animation:sh 1.2s infinite}
+@keyframes sh{to{background-position:-200% 0}}
+
+footer{border-top:1px solid var(--line);padding:36px 0;color:var(--faint);font-size:.88rem}
+.foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+@media (max-width:720px){.nav-links{display:none}.files{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><img src="Logo Rosario Marra-09.png" alt="Rosario Marra"></a>
+    <ul class="nav-links">
+      <li><a href="index.html#servizi">Servizi</a></li>
+      <li><a href="index.html#progetti">Progetti</a></li>
+      <li><a href="index.html#contatti">Contatti</a></li>
+      <li><a href="#" class="active">Materiale didattico</a></li>
+    </ul>
+    <button class="icon-btn theme-btn" id="themeBtn" aria-label="Cambia tema">
+      <svg class="moon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 15A9.72 9.72 0 0 1 18 15.75 9.75 9.75 0 0 1 8.25 6c0-1.33.27-2.6.75-3.75A9.75 9.75 0 1 0 21.75 15Z"/></svg>
+      <svg class="sun" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.36.39-1.59 1.59M21 12h-2.25m-.39 6.36-1.59-1.59M12 18.75V21m-4.77-4.23-1.59 1.59M5.25 12H3m4.23-4.77L5.64 5.64M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"/></svg>
     </button>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
+  </div>
+</header>
 
-            // --- Animazioni allo Scorrimento (Scroll-Reveal) ---
-            const revealElements = document.querySelectorAll('.reveal');
-            if ('IntersectionObserver' in window) {
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('show');
-                            observer.unobserve(entry.target);
-                        }
-                    });
-                }, { threshold: 0.1 });
-                revealElements.forEach(el => {
-                    observer.observe(el);
-                });
-            } else {
-                revealElements.forEach(el => {
-                    el.classList.add('show');
-                });
-            }
+<main>
+  <div class="page-head">
+    <div class="wrap">
+      <div class="eyebrow">Studenti</div>
+      <h1>Materiale didattico <span class="accent">studenti</span>.</h1>
+      <p>Dispense, esercitazioni e slide divise per materia, sempre aggiornate e pronte da scaricare.</p>
+      <a href="admin.html" class="btn btn-ghost" style="margin-top:28px">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+        Gestisci materiale (docente)
+      </a>
+    </div>
+  </div>
 
-            // --- Logica Menu Hamburger ---
-            const hamburger = document.querySelector('.hamburger-menu');
-            const body = document.body;
-            const navLinks = document.querySelectorAll('.nav-menu a');
+  <section id="materiali">
+    <div class="wrap">
+      <div class="sec-title"><h2>Materiali</h2><span id="count" style="color:var(--faint);font-size:.9rem"></span></div>
+      <div class="toolbar">
+        <label class="search">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="m21 21-5.2-5.2M17.25 10.5a6.75 6.75 0 1 1-13.5 0 6.75 6.75 0 0 1 13.5 0Z"/></svg>
+          <input id="q" type="search" placeholder="Cerca un file…" aria-label="Cerca un file">
+        </label>
+      </div>
+      <div class="filters" id="filters"></div>
+      <div class="files" id="files">
+        <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+      </div>
+    </div>
+  </section>
+</main>
 
-            if (hamburger) {
-                hamburger.addEventListener('click', () => {
-                    body.classList.toggle('nav-open');
-                });
-            }
+<footer><div class="wrap foot"><span>© 2025 Rosario Marra</span><a href="index.html">← Torna alla home</a></div></footer>
 
-            navLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    body.classList.remove('nav-open');
-                });
-            });
+<script>
+(() => {
+  // Il manifest viene aggiornato dal pannello admin.html ad ogni caricamento
+  const MANIFEST = 'file/index.json';
 
-            // --- LOGICA TOGGLE LIGHT/DARK MODE ---
-            const themeBtn = document.getElementById('themeToggleBtn');
-            const bodyEl = document.body;
+  const root = document.documentElement;
+  let saved = null;
+  try { saved = localStorage.getItem('theme'); } catch (e) {}
+  root.dataset.theme = saved || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  document.getElementById('themeBtn').onclick = () => {
+    root.dataset.theme = root.dataset.theme === 'light' ? 'dark' : 'light';
+    try { localStorage.setItem('theme', root.dataset.theme); } catch (e) {}
+  };
 
-            // Controlla se l'utente aveva già salvato una preferenza
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'light') {
-                bodyEl.classList.add('light-mode');
-            }
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const fmtSize = b => b > 1048576 ? (b / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(b / 1024)) + ' KB';
+  const fmtDate = d => new Date(d).toLocaleDateString('it-IT', { day: 'numeric', month: 'short', year: 'numeric' });
 
-            if (themeBtn) {
-                themeBtn.addEventListener('click', () => {
-                    bodyEl.classList.toggle('light-mode');
-                    if (bodyEl.classList.contains('light-mode')) {
-                        localStorage.setItem('theme', 'light');
-                    } else {
-                        localStorage.setItem('theme', 'dark');
-                    }
-                });
-            }
+  let data = { materie: [], files: [] }, active = 'Tutte';
+  const filtersEl = document.getElementById('filters'), filesEl = document.getElementById('files'), q = document.getElementById('q');
 
-        });
-    </script>
-    </body>
+  function render() {
+    const term = q.value.trim().toLowerCase();
+    const counts = data.files.reduce((m, f) => (m[f.materia] = (m[f.materia] || 0) + 1, m), {});
+    filtersEl.innerHTML = ['Tutte', ...data.materie].map(m =>
+      `<button class="filter ${m === active ? 'on' : ''}" data-m="${esc(m)}">${esc(m)} <small>${m === 'Tutte' ? data.files.length : (counts[m] || 0)}</small></button>`).join('');
+    const list = data.files
+      .filter(f => (active === 'Tutte' || f.materia === active) && (!term || (f.nome + ' ' + f.materia).toLowerCase().includes(term)))
+      .sort((a, b) => b.data.localeCompare(a.data));
+    document.getElementById('count').textContent = list.length + (list.length === 1 ? ' file' : ' file');
+    filesEl.innerHTML = list.length ? list.map(f => {
+      const ext = (f.path.split('.').pop() || '').toLowerCase();
+      return `<a class="file" href="${esc(f.path)}" download>
+        <span class="ext ${esc(ext)}">${esc(ext.toUpperCase().slice(0, 4))}</span>
+        <span class="file-info"><b>${esc(f.nome)}</b>
+          <span class="file-meta"><span class="mat">${esc(f.materia)}</span><span>${fmtSize(f.size)}</span><span>${fmtDate(f.data)}</span></span></span>
+        <span class="dl"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg></span>
+      </a>`;
+    }).join('') : `<div class="empty" style="grid-column:1/-1">Nessun file trovato${active !== 'Tutte' ? ' per ' + esc(active) : ''}.</div>`;
+  }
+
+  filtersEl.addEventListener('click', e => { const b = e.target.closest('.filter'); if (b) { active = b.dataset.m; render(); } });
+  q.addEventListener('input', render);
+
+  // cache-busting: GitHub Pages può servire una versione in cache del manifest
+  fetch(MANIFEST + '?t=' + Date.now())
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(j => { data = { materie: j.materie || [], files: j.files || [] }; render(); })
+    .catch(() => { filesEl.innerHTML = '<div class="empty" style="grid-column:1/-1">Nessun materiale ancora disponibile.</div>'; });
+})();
+</script>
+</body>
 </html>

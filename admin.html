@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin materiali · Rosario Marra</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0A0B0E; --card:#14171D; --card-2:#1A1E26; --text:#F2F4F7; --muted:#9AA3B2; --faint:#5F6878;
+  --line:rgba(255,255,255,.08); --line-2:rgba(255,255,255,.16);
+  --blue:#3B8BFF; --blue-soft:rgba(59,139,255,.12); --orange:#FF7A1A; --green:#3DDC97; --red:#FF5D5D;
+  --display:'Space Grotesk',Inter,sans-serif; --mono:'JetBrains Mono',monospace;
+}
+@media (prefers-color-scheme:light){:root{
+  --bg:#F7F7F4; --card:#FFFFFF; --card-2:#F2F2EE; --text:#14161A; --muted:#545C69; --faint:#8A919C;
+  --line:rgba(0,0,0,.08); --line-2:rgba(0,0,0,.16); --blue:#1F6FEB; --blue-soft:rgba(31,111,235,.08); --orange:#E8620A; --green:#12A56A; --red:#D93636;
+}}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:980px;margin:0 auto;padding:40px 20px 80px}
+header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:32px;flex-wrap:wrap}
+h1{font-family:var(--display);font-size:1.9rem;letter-spacing:-.02em}
+h2{font-family:var(--display);font-size:1.15rem;margin-bottom:18px;display:flex;align-items:center;gap:10px}
+h2 .n{font-family:var(--mono);font-size:.75rem;color:var(--orange);font-weight:500}
+.conn{display:inline-flex;align-items:center;gap:8px;font-size:.85rem;color:var(--muted);padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card)}
+.conn i{width:8px;height:8px;border-radius:50%;background:var(--faint)}
+.conn.ok i{background:var(--green)} .conn.err i{background:var(--red)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px;margin-bottom:20px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid .full{grid-column:1/-1}
+label{display:block;font-size:.82rem;font-weight:500;color:var(--muted);margin-bottom:7px}
+input,select{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line-2);background:var(--bg);color:var(--text);font:inherit;font-size:.95rem;outline:none}
+input:focus,select:focus{border-color:var(--blue)}
+.hint{font-size:.8rem;color:var(--faint);margin-top:6px}
+.hint a{color:var(--blue)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border-radius:999px;font:inherit;font-weight:600;font-size:.92rem;cursor:pointer;border:1px solid transparent;transition:.2s}
+.btn-primary{background:var(--blue);color:#fff}
+.btn-primary:disabled{opacity:.45;cursor:not-allowed}
+.btn-ghost{background:transparent;color:var(--text);border-color:var(--line-2)}
+.btn-ghost:hover{border-color:var(--text)}
+.btn-sm{padding:7px 12px;font-size:.8rem}
+details summary{cursor:pointer;list-style:none}
+details summary::-webkit-details-marker{display:none}
+.drop{border:2px dashed var(--line-2);border-radius:16px;padding:36px 20px;text-align:center;cursor:pointer;transition:.2s;position:relative}
+.drop:hover,.drop.over{border-color:var(--blue);background:var(--blue-soft)}
+.drop input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.drop svg{width:34px;height:34px;color:var(--blue);margin:0 auto 10px;display:block}
+.drop b{display:block}
+.drop span{font-size:.85rem;color:var(--faint)}
+.picked{display:none;align-items:center;gap:12px;padding:14px 16px;border-radius:12px;background:var(--card-2);margin-top:14px;font-size:.9rem}
+.picked.show{display:flex}
+.picked code{font-family:var(--mono);font-size:.8rem;color:var(--faint);margin-left:auto}
+.new-mat{display:none;margin-top:10px}
+.new-mat.show{display:flex}
+.path{font-family:var(--mono);font-size:.8rem;color:var(--muted);background:var(--bg);border:1px solid var(--line);padding:10px 12px;border-radius:10px;word-break:break-all}
+.progress{height:6px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:16px;display:none}
+.progress.show{display:block}
+.progress div{height:100%;width:0;background:var(--blue);transition:width .3s}
+.msg{margin-top:14px;font-size:.9rem;padding:12px 14px;border-radius:12px;display:none}
+.msg.show{display:block}
+.msg.ok{background:color-mix(in srgb,var(--green) 12%,transparent);color:var(--green)}
+.msg.err{background:color-mix(in srgb,var(--red) 12%,transparent);color:var(--red)}
+.msg.info{background:var(--blue-soft);color:var(--blue)}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+th{text-align:left;font-weight:500;color:var(--faint);font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;padding:0 10px 10px}
+td{padding:12px 10px;border-top:1px solid var(--line);vertical-align:middle}
+td.mat{color:var(--orange)}
+td .p{display:block;font-family:var(--mono);font-size:.72rem;color:var(--faint)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:6px 8px 6px 12px;border-radius:999px;border:1px solid var(--line-2);font-size:.85rem}
+.chip button{border:none;background:var(--line);color:var(--muted);width:20px;height:20px;border-radius:50%;cursor:pointer;font-size:.8rem}
+.chip button:hover{background:var(--red);color:#fff}
+.locked{opacity:.4;pointer-events:none}
+@media (max-width:640px){.grid{grid-template-columns:1fr}.hide-sm{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div><a href="e-learning.html" style="color:var(--muted);font-size:.88rem;text-decoration:none">← Torna al materiale didattico</a><h1 style="margin-top:6px">Gestisci materiale didattico</h1><p style="color:var(--muted);font-size:.92rem">Carica file nella cartella <code style="font-family:var(--mono)">file/</code> della repository GitHub.</p></div>
+    <span class="conn" id="conn"><i></i><span>Non connesso</span></span>
+  </header>
+
+  <!-- 1. Connessione -->
+  <details class="card" id="setup">
+    <summary><h2 style="margin:0"><span class="n">01</span> Connessione a GitHub <span style="margin-left:auto;font-size:.8rem;color:var(--faint);font-family:Inter">modifica ▾</span></h2></summary>
+    <div class="grid" style="margin-top:20px">
+      <div><label for="owner">Utente / organizzazione</label><input id="owner" placeholder="rosariomarra"></div>
+      <div><label for="repo">Repository</label><input id="repo" placeholder="rosariomarra.github.io"></div>
+      <div><label for="branch">Branch</label><input id="branch" placeholder="main"></div>
+      <div><label for="token">Token GitHub</label><input id="token" type="password" placeholder="github_pat_…" autocomplete="off"></div>
+      <p class="hint full">Crea un <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">fine-grained token</a> con accesso <b>solo a questa repository</b> e permesso <b>Contents: Read and write</b>. Il token resta salvato solo in questo browser e viene inviato solo a api.github.com.</p>
+      <div class="full row">
+        <button class="btn btn-primary" id="saveConn">Salva e verifica</button>
+        <button class="btn btn-ghost" id="logout">Dimentica token</button>
+      </div>
+    </div>
+    <div class="msg" id="connMsg"></div>
+  </details>
+
+  <div id="app" class="locked">
+    <!-- 2. Carica -->
+    <section class="card">
+      <h2><span class="n">02</span> Carica un file</h2>
+      <div class="drop" id="drop">
+        <input type="file" id="file" aria-label="Scegli file">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0 3 3m-3-3-3 3M6.75 19.5a4.5 4.5 0 0 1-1.41-8.78 5.25 5.25 0 0 1 10.23-2.33 3 3 0 0 1 3.76 3.86A3.75 3.75 0 0 1 18 19.5H6.75Z"/></svg>
+        <b>Trascina qui un file o clicca per sceglierlo</b>
+        <span>PDF, Word, PowerPoint, ZIP, codice… fino a 50 MB</span>
+      </div>
+      <div class="picked" id="picked"></div>
+
+      <div class="grid" style="margin-top:20px">
+        <div><label for="nome">Nome visualizzato</label><input id="nome" placeholder="Es. Dispensa 3 – Subnetting"></div>
+        <div>
+          <label for="materia">Materia</label>
+          <select id="materia"></select>
+          <div class="new-mat row" id="newMatRow"><input id="newMat" placeholder="Nome nuova materia" style="flex:1"><button class="btn btn-ghost btn-sm" id="addMat">Aggiungi</button></div>
+        </div>
+        <div class="full"><label>Percorso nella repository</label><div class="path" id="path">—</div></div>
+      </div>
+      <div class="row" style="margin-top:20px"><button class="btn btn-primary" id="upload" disabled>Carica su GitHub</button></div>
+      <div class="progress" id="prog"><div></div></div>
+      <div class="msg" id="upMsg"></div>
+    </section>
+
+    <!-- 3. Materie -->
+    <section class="card">
+      <h2><span class="n">03</span> Materie</h2>
+      <div class="chips" id="matChips"></div>
+      <p class="hint">Puoi eliminare solo le materie senza file.</p>
+    </section>
+
+    <!-- 4. File caricati -->
+    <section class="card">
+      <h2><span class="n">04</span> File pubblicati <span id="tot" style="font-family:var(--mono);font-size:.8rem;color:var(--faint);font-weight:400"></span></h2>
+      <table><thead><tr><th>Nome</th><th>Materia</th><th class="hide-sm">Data</th><th></th></tr></thead><tbody id="list"></tbody></table>
+    </section>
+  </div>
+</div>
+
+<script>
+(() => {
+  const API = 'https://api.github.com';
+  const DIR = 'file';
+  const MANIFEST = DIR + '/index.json';
+  const MAX = 50 * 1024 * 1024;
+  const $ = id => document.getElementById(id);
+
+  let cfg = {};
+  try { cfg = JSON.parse(localStorage.getItem('gh-admin') || '{}'); } catch (e) {}
+  let manifest = { materie: [], files: [] }, manifestSha = null, picked = null;
+
+  ['owner', 'repo', 'branch', 'token'].forEach(k => $(k).value = cfg[k] || '');
+  if (!cfg.token) $('setup').open = true;
+
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const slug = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'file';
+  const msg = (el, type, text) => { el.className = 'msg show ' + type; el.innerHTML = text; };
+  const setConn = (state, text) => { $('conn').className = 'conn ' + state; $('conn').lastElementChild.textContent = text; };
+
+  // base64 sicuro per testo UTF-8 (il manifest contiene accenti)
+  const b64encode = str => {
+    const bytes = new TextEncoder().encode(str);
+    let bin = '';
+    for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+    return btoa(bin);
+  };
+  const b64decode = b64 => new TextDecoder().decode(Uint8Array.from(atob(b64.replace(/\n/g, '')), c => c.charCodeAt(0)));
+  const fileToB64 = file => new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = () => res(r.result.split(',')[1]);
+    r.onerror = rej;
+    r.readAsDataURL(file);
+  });
+
+  async function gh(path, opts = {}) {
+    const r = await fetch(`${API}/repos/${cfg.owner}/${cfg.repo}${path}`, {
+      ...opts,
+      headers: { Authorization: `Bearer ${cfg.token}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28', ...(opts.headers || {}) },
+    });
+    if (r.status === 404) return null;
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(j.message || 'Errore ' + r.status);
+    return j;
+  }
+  const contentsUrl = p => `/contents/${p.split('/').map(encodeURIComponent).join('/')}`;
+
+  async function loadManifest() {
+    const j = await gh(contentsUrl(MANIFEST) + `?ref=${encodeURIComponent(cfg.branch)}`);
+    if (j) { manifest = JSON.parse(b64decode(j.content)); manifestSha = j.sha; }
+    else { manifest = { materie: [], files: [] }; manifestSha = null; }
+    manifest.materie ||= []; manifest.files ||= [];
+  }
+
+  async function saveManifest(message) {
+    const j = await gh(contentsUrl(MANIFEST), {
+      method: 'PUT',
+      body: JSON.stringify({ message, branch: cfg.branch, content: b64encode(JSON.stringify(manifest, null, 2) + '\n'), ...(manifestSha && { sha: manifestSha }) }),
+    });
+    manifestSha = j.content.sha;
+  }
+
+  async function connect() {
+    if (!cfg.token || !cfg.owner || !cfg.repo) { setConn('', 'Non connesso'); return; }
+    setConn('', 'Connessione…');
+    try {
+      const repo = await gh('');
+      if (!repo) throw new Error('Repository non trovata o token senza accesso.');
+      if (!repo.permissions?.push) throw new Error('Il token non ha il permesso di scrittura.');
+      cfg.branch ||= repo.default_branch;
+      $('branch').value = cfg.branch;
+      await loadManifest();
+      setConn('ok', `${cfg.owner}/${cfg.repo}`);
+      $('app').classList.remove('locked');
+      $('setup').open = false;
+      $('connMsg').className = 'msg';
+      renderAll();
+    } catch (e) {
+      setConn('err', 'Errore');
+      $('app').classList.add('locked');
+      $('setup').open = true;
+      msg($('connMsg'), 'err', esc(e.message));
+    }
+  }
+
+  $('saveConn').onclick = () => {
+    cfg = { owner: $('owner').value.trim(), repo: $('repo').value.trim(), branch: $('branch').value.trim(), token: $('token').value.trim() };
+    try { localStorage.setItem('gh-admin', JSON.stringify(cfg)); } catch (e) {}
+    connect();
+  };
+  $('logout').onclick = () => {
+    try { localStorage.removeItem('gh-admin'); } catch (e) {}
+    cfg = {}; $('token').value = '';
+    $('app').classList.add('locked'); setConn('', 'Non connesso');
+  };
+
+  // --- Upload form ---
+  function targetPath() {
+    const mat = $('materia').value;
+    if (!picked || !mat || mat === '__new') return null;
+    const ext = picked.name.includes('.') ? '.' + picked.name.split('.').pop().toLowerCase() : '';
+    const base = `${DIR}/${slug(mat)}/${slug($('nome').value || picked.name.replace(/\.[^.]+$/, ''))}`;
+    let p = base + ext, i = 2;
+    while (manifest.files.some(f => f.path === p)) p = `${base}-${i++}${ext}`;
+    return p;
+  }
+  function refreshForm() {
+    const p = targetPath();
+    $('path').textContent = p || '—';
+    $('upload').disabled = !p || !$('nome').value.trim();
+  }
+  function pick(file) {
+    if (!file) return;
+    if (file.size > MAX) { msg($('upMsg'), 'err', 'File troppo grande: il limite è 50 MB.'); return; }
+    picked = file;
+    $('picked').className = 'picked show';
+    $('picked').innerHTML = `📄 <b>${esc(file.name)}</b><code>${(file.size / 1048576).toFixed(2)} MB</code>`;
+    if (!$('nome').value) $('nome').value = file.name.replace(/\.[^.]+$/, '').replace(/[_-]+/g, ' ');
+    $('upMsg').className = 'msg';
+    refreshForm();
+  }
+  $('file').onchange = e => pick(e.target.files[0]);
+  const drop = $('drop');
+  ['dragenter', 'dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
+  ['dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, () => drop.classList.remove('over')));
+  drop.addEventListener('drop', e => { e.preventDefault(); pick(e.dataTransfer.files[0]); });
+  $('nome').oninput = refreshForm;
+  $('materia').onchange = () => { $('newMatRow').classList.toggle('show', $('materia').value === '__new'); refreshForm(); };
+
+  $('addMat').onclick = async () => {
+    const m = $('newMat').value.trim();
+    if (!m) return;
+    if (!manifest.materie.includes(m)) {
+      manifest.materie.push(m);
+      manifest.materie.sort((a, b) => a.localeCompare(b, 'it'));
+      try { await saveManifest(`Aggiunta materia: ${m}`); } catch (e) { msg($('upMsg'), 'err', esc(e.message)); return; }
+    }
+    $('newMat').value = '';
+    renderAll();
+    $('materia').value = m;
+    $('newMatRow').classList.remove('show');
+    refreshForm();
+  };
+
+  $('upload').onclick = async () => {
+    const path = targetPath(), nome = $('nome').value.trim(), materia = $('materia').value;
+    if (!path) return;
+    const bar = $('prog'), fill = bar.firstElementChild;
+    $('upload').disabled = true; bar.className = 'progress show'; fill.style.width = '15%';
+    msg($('upMsg'), 'info', 'Caricamento in corso…');
+    try {
+      const content = await fileToB64(picked);
+      fill.style.width = '45%';
+      await gh(contentsUrl(path), { method: 'PUT', body: JSON.stringify({ message: `Carica ${nome} (${materia})`, branch: cfg.branch, content }) });
+      fill.style.width = '80%';
+      await loadManifest(); // rilegge per non sovrascrivere modifiche fatte altrove
+      manifest.files.push({ nome, materia, path, size: picked.size, data: new Date().toISOString() });
+      await saveManifest(`Aggiorna indice: ${nome}`);
+      fill.style.width = '100%';
+      msg($('upMsg'), 'ok', `✔ <b>${esc(nome)}</b> caricato in <code>${esc(path)}</code>. Sarà visibile sul sito entro 1–2 minuti (tempo di pubblicazione di GitHub Pages).`);
+      picked = null; $('file').value = ''; $('nome').value = ''; $('picked').className = 'picked';
+      renderAll();
+    } catch (e) {
+      msg($('upMsg'), 'err', 'Errore: ' + esc(e.message));
+    } finally {
+      setTimeout(() => { bar.className = 'progress'; fill.style.width = '0'; }, 800);
+      refreshForm();
+    }
+  };
+
+  // --- Elenco e materie ---
+  async function removeFile(path) {
+    const f = manifest.files.find(x => x.path === path);
+    if (!f || !confirm(`Eliminare "${f.nome}" dal sito e dalla repository?`)) return;
+    try {
+      const meta = await gh(contentsUrl(path) + `?ref=${encodeURIComponent(cfg.branch)}`);
+      if (meta) await gh(contentsUrl(path), { method: 'DELETE', body: JSON.stringify({ message: `Rimuovi ${f.nome}`, branch: cfg.branch, sha: meta.sha }) });
+      await loadManifest();
+      manifest.files = manifest.files.filter(x => x.path !== path);
+      await saveManifest(`Aggiorna indice: rimosso ${f.nome}`);
+      renderAll();
+    } catch (e) { alert('Errore: ' + e.message); }
+  }
+  async function removeMateria(m) {
+    if (!confirm(`Eliminare la materia "${m}"?`)) return;
+    manifest.materie = manifest.materie.filter(x => x !== m);
+    try { await saveManifest(`Rimossa materia: ${m}`); } catch (e) { alert('Errore: ' + e.message); }
+    renderAll();
+  }
+
+  function renderAll() {
+    const cur = $('materia').value;
+    $('materia').innerHTML = '<option value="">Scegli una materia…</option>' +
+      manifest.materie.map(m => `<option>${esc(m)}</option>`).join('') + '<option value="__new">+ Nuova materia…</option>';
+    if (manifest.materie.includes(cur)) $('materia').value = cur;
+
+    const used = new Set(manifest.files.map(f => f.materia));
+    $('matChips').innerHTML = manifest.materie.length ? manifest.materie.map(m =>
+      `<span class="chip">${esc(m)}${used.has(m) ? '' : ` <button data-m="${esc(m)}" aria-label="Elimina ${esc(m)}">×</button>`}</span>`).join('')
+      : '<span class="hint">Nessuna materia: creane una dal menu “Materia”.</span>';
+
+    const files = [...manifest.files].sort((a, b) => b.data.localeCompare(a.data));
+    $('tot').textContent = files.length ? `(${files.length})` : '';
+    $('list').innerHTML = files.length ? files.map(f => `<tr>
+      <td><b>${esc(f.nome)}</b><span class="p">${esc(f.path)}</span></td>
+      <td class="mat">${esc(f.materia)}</td>
+      <td class="hide-sm">${new Date(f.data).toLocaleDateString('it-IT')}</td>
+      <td style="text-align:right"><button class="btn btn-ghost btn-sm" data-del="${esc(f.path)}">Elimina</button></td></tr>`).join('')
+      : '<tr><td colspan="4" style="color:var(--faint)">Nessun file caricato.</td></tr>';
+    refreshForm();
+  }
+  $('matChips').onclick = e => { const b = e.target.closest('button[data-m]'); if (b) removeMateria(b.dataset.m); };
+  $('list').onclick = e => { const b = e.target.closest('button[data-del]'); if (b) removeFile(b.dataset.del); };
+
+  renderAll();
+  connect();
+})();
+</script>
+</body>
+</html>

@@ -1,1938 +1,995 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rosario Marra</title>
-    
-    <link rel="icon" href="immagini/Logo Rosario Marra nero.png" type="image/png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-
-    <style>
-        /* --- 1. Impostazioni Globali (Dark Mode Default) --- */
-        :root {
-            --bg-color: #000000;
-            --text-color: #F5F5F7;
-            --text-secondary: #888888;
-            --bg-secondary: #1C1C1E;
-            
-            /* --- Colori accentati --- */
-            --accent-color: #0A84FF; /* Blu primario */
-            --accent-color-orange: #FF7A00; /* Arancio Tech per dettagli */
-
-            --border-color: #333333;
-            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            
-            /* Variabili per il carosello */
-            --card-width: 320px; 
-            --gap-width: 25px;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: var(--font-primary);
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            overflow-x: hidden;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        /* --- 2. Stili Generali --- */
-        h1, h2, h3 {
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 20px;
-            transition: color 0.3s ease;
-        }
-        
-        h4 {
-            font-size: 1.1rem;
-            color: var(--text-color);
-            font-weight: 700;
-            margin-bottom: 15px;
-        }
-
-        h1 { font-size: 3.5rem; color: #FFFFFF; }
-        h2 { font-size: 2.5rem; text-align: center; color: #FFFFFF;}
-        h3 { font-size: 1.3rem; color: var(--text-color); }
-
-        p {
-            font-size: 1.1rem;
-            font-weight: 300;
-            margin-bottom: 15px;
-            color: var(--text-secondary);
-        }
-        
-        .intro-text {
-            font-size: 1.1rem;
-            font-weight: 300;
-            color: var(--text-secondary);
-            text-align: center; 
-            max-width: 700px; 
-            margin: 0 auto 50px auto;
-        }
-
-        a {
-            color: var(--accent-color);
-            text-decoration: none;
-            transition: opacity 0.3s ease;
-        }
-
-        a:hover { opacity: 0.7; }
-
-        section {
-            padding: 60px 5%;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-        
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 5%;
-        }
-
-        /* --- 3. Header e Navigazione --- */
-        .main-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 8px 5%; 
-            z-index: 100;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border-color);
-            transition: background-color 0.3s ease, border-color 0.3s ease;
-        }
-
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-color);
-            z-index: 110;
-        }
-
-        .nav-menu {
-            display: flex;
-            align-items: center; 
-            list-style: none;
-        }
-
-        .nav-menu li { margin-left: 20px; } 
-        .nav-menu a {
-            font-size: 1rem;
-            font-weight: 500;
-            color: var(--text-color);
-        }
-        
-        .nav-menu .nav-button-outline a {
-            background: transparent;
-            border: 1px solid var(--text-color);
-            color: var(--text-color);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            display: inline-flex; 
-            align-items: center;
-            gap: 5px; 
-        }
-        .nav-menu .nav-button-outline a:hover {
-            background-color: var(--text-color);
-            color: var(--bg-color);
-            opacity: 1;
-        }
-
-        .nav-menu .nav-button-primary a {
-            background-color: var(--accent-color);
-            color: #FFFFFF;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            display: inline-flex; 
-            align-items: center;
-            gap: 5px; 
-            border: 1px solid var(--accent-color); 
-        }
-        .nav-menu .nav-button-primary a:hover {
-            background-color: #FFFFFF;
-            color: #000000;
-            opacity: 1; 
-            border-color: #FFFFFF;
-        }
-
-        .nav-menu .nav-button-primary a svg,
-        .nav-menu .nav-button-outline a svg {
-            width: 18px;
-            height: 18px;
-            stroke-width: 2;
-        }
-
-        .hamburger-menu {
-            display: none;
-            width: 30px;
-            height: 22px;
-            cursor: pointer;
-            z-index: 110;
-            position: relative;
-        }
-        
-        .hamburger-menu .line {
-            width: 100%;
-            height: 3px;
-            background-color: var(--text-color);
-            border-radius: 3px;
-            position: absolute;
-            transition: all 0.3s ease-in-out;
-        }
-        
-        .hamburger-menu .line1 { top: 0; }
-        .hamburger-menu .line2 { top: 9px; }
-        .hamburger-menu .line3 { top: 18px; }
-
-        .nav-buttons-wrapper { margin-left: 0; }
-        .nav-buttons-inner-list {
-            display: flex;
-            align-items: center;
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .nav-buttons-inner-list > li { margin-left: 20px; }
-
-        .nav-open .line1 { transform: translateY(9px) rotate(45deg); }
-        .nav-open .line2 { opacity: 0; }
-        .nav-open .line3 { transform: translateY(-9px) rotate(-45deg); }
-
-        /* --- 4. Sezione Hero --- */
-        .hero-section {
-            min-height: 90vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding-top: 100px;
-            background-image: url('Home.jpeg'); 
-            background-size: cover; 
-            background-position: center; 
-            position: relative; 
-            max-width: 100%; 
-            padding-left: 0; 
-            padding-right: 0;
-            padding-bottom: 0;
-        }
-        
-        .hero-section::before {
-            content: ''; 
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.75); 
-            z-index: 1; 
-            transition: background-color 0.3s ease;
-        }
-
-        @keyframes hero-reveal {
-            from { opacity: 0; transform: scale(1.05); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        .hero-content {
-            max-width: 800px;
-            position: relative; 
-            z-index: 2; 
-            animation: hero-reveal 1.2s cubic-bezier(0.215, 0.610, 0.355, 1) 0.2s both;
-            padding-bottom: 100px;
-        }
-        
-        .hero-section::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 150px;
-            background: linear-gradient(to bottom, rgba(0,0,0,0), var(--bg-color) 90%);
-            z-index: 1;
-            pointer-events: none;
-            transition: background 0.3s ease;
-        }
-
-        .hero-content h1 {
-            font-weight: 900;
-            letter-spacing: -1px;
-        }
-
-        .dynamic-text-container {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #888;
-            height: 1.2em;
-        }
-        
-        #dynamic-word {
-            display: inline-block;
-            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
-            opacity: 1;
-            transform: translateY(0);
-        }
-        #dynamic-word.fade-out {
-            opacity: 0;
-            transform: translateY(15px);
-        }
-
-        .text-blue { color: var(--accent-color); }
-        .text-orange { color: var(--accent-color-orange); }
-        .text-orange strong {
-            color: var(--accent-color-orange);
-            font-weight: 700;
-        }
-
-        .typed-text-container {
-            font-size: 1.2rem;
-            font-weight: 300;
-            color: var(--text-secondary);
-            margin: 15px auto 0 auto; 
-            min-height: 3em; 
-            max-width: 600px; 
-            display: block; 
-            white-space: normal; 
-            position: relative;
-            text-align: center; 
-        }
-
-        .typed-cursor {
-            display: inline-block;
-            width: 3px;
-            height: 1.2em;
-            background-color: var(--text-secondary);
-            margin-left: 5px;
-            vertical-align: middle;
-            animation: blink-caret 0.75s step-end infinite;
-        }
-
-        @keyframes blink-caret {
-            from, to { background-color: transparent; }
-            50% { background-color: var(--text-secondary); }
-        }
-        
-        /* --- 5. Sezione Servizi --- */
-        .services-section h2 { margin-bottom: 20px; }
-
-        .services-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-        }
-
-        .service-card {
-            background-color: var(--bg-secondary);
-            padding: 30px; 
-            border-radius: 20px;
-            border: 1px solid var(--border-color);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
-        }
-
-        .service-card-image {
-            width: 100%;
-            height: 150px; 
-            object-fit: cover; 
-            border-radius: 12px; 
-            margin-bottom: 25px; 
-        }
-        
-        .service-card-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-
-        .service-icon-wrapper {
-             width: 50px;
-             height: 50px;
-             border-radius: 50%;
-             background-color: rgba(10, 132, 255, 0.1); 
-             display: flex;
-             justify-content: center;
-             align-items: center;
-             border: 1px solid var(--border-color);
-             transition: all 0.3s ease;
-             flex-shrink: 0;
-        }
-        
-        .service-icon-wrapper svg {
-            width: 24px;
-            height: 24px;
-            color: var(--accent-color);
-            stroke-width: 1.5;
-        }
-        
-        .service-card-header h3 {
-            color: #FFFFFF;
-            margin-bottom: 0;
-            transition: color 0.3s ease;
-        }
-
-        .service-card p {
-            font-size: 0.95rem;
-            font-weight: 400;
-            margin-bottom: 15px; 
-        }
-        .service-card p:last-of-type { margin-bottom: 0; }
-
-        .service-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 30px rgba(10, 132, 255, 0.2);
-            border-color: var(--accent-color);
-        }
-        
-        .service-card:hover .service-icon-wrapper {
-             border-color: var(--accent-color);
-             box-shadow: 0 0 15px rgba(10, 132, 255, 0.3);
-             transform: scale(1.05);
-         }
-
-        /* --- 6. Sezione Progetti --- */
-        .projects-section {
-            text-align: center;
-            padding-left: 0; 
-            padding-right: 0;
-            max-width: 100%; 
-        }
-        .projects-section h2 { margin-bottom: 20px; }
-        .projects-section .intro-text {
-            max-width: 700px;
-            margin: 0 auto 50px auto;
-            padding: 0 5%; 
-        }
-
-        .slider-wrapper {
-            position: relative;
-            max-width: 1100px; 
-            margin: 0 auto; 
-        }
-        
-        .projects-slider-container {
-            width: 100%;
-            overflow: hidden; 
-            padding: 0 20px; 
-        }
-
-        .projects-slider-container::before,
-        .projects-slider-container::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 10%; 
-            z-index: 5;
-            pointer-events: none; 
-            transition: background 0.3s ease;
-        }
-
-        .projects-slider-container::before {
-            left: 0;
-            background: linear-gradient(to right, var(--bg-color) 0%, rgba(0,0,0,0) 100%);
-        }
-
-        .projects-slider-container::after {
-            right: 0;
-            background: linear-gradient(to left, var(--bg-color) 0%, rgba(0,0,0,0) 100%);
-        }
-
-        .project-grid {
-            display: flex;
-            gap: var(--gap-width);
-            padding-bottom: 20px; 
-            scroll-behavior: smooth; 
-            -webkit-overflow-scrolling: touch; 
-            overflow-x: auto; 
-            scrollbar-width: none; 
-        }
-        .project-grid::-webkit-scrollbar { display: none; }
-        
-        .project-card {
-            background-color: var(--bg-secondary);
-            padding: 30px;
-            border-radius: 20px;
-            border: 1px solid var(--border-color);
-            text-align: left;
-            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            width: var(--card-width);
-            min-width: var(--card-width); 
-            flex-shrink: 0; 
-        }
-
-        .project-card h3 {
-            font-size: 1.4rem;
-            color: #FFFFFF;
-            margin-bottom: 10px;
-            transition: color 0.3s ease;
-        }
-
-        .project-card p {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            margin-bottom: 15px;
-            flex-grow: 1; 
-            transition: color 0.3s ease;
-        }
-        
-        .project-card .tech-stack {
-            font-size: 0.85rem;
-            color: #CCCCCC; 
-            margin-top: 10px;
-            margin-bottom: 20px;
-            background-color: rgba(255, 122, 0, 0.1); /* Sfondo Arancio */
-            padding: 8px 12px;
-            border-radius: 8px;
-            display: inline-block; 
-            font-weight: 500; 
-            transition: color 0.3s ease;
-        }
-
-        .project-card .github-link {
-            display: inline-flex; 
-            align-items: center;
-            font-weight: 600;
-            color: var(--accent-color);
-        }
-        .project-card .github-link svg {
-            width: 18px;
-            height: 18px;
-            margin-right: 8px;
-            stroke: currentColor; 
-            stroke-width: 2;
-        }
-        
-        .project-card:hover {
-            border-color: var(--accent-color);
-            box-shadow: 0 10px 30px rgba(10, 132, 255, 0.2);
-        }
-
-        /* --- STILI FRECCE SLIDER (DARK MODE - ORIGINALE) --- */
-        .slider-arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            
-            /* DARK MODE (Default): Nere/Scure con icone chiare (Originale) */
-            background-color: rgba(0, 0, 0, 0.6);
-            color: var(--text-color);
-            border: 1px solid var(--border-color);
-            
-            border-radius: 50%;
-            width: 45px;
-            height: 45px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            z-index: 10;
-            transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.2s ease, color 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .slider-arrow:hover {
-            background-color: var(--accent-color);
-            border-color: var(--accent-color);
-            color: #FFFFFF;
-        }
-        .slider-arrow.left { left: 0px; }
-        .slider-arrow.right { right: 0px; }
-        .slider-arrow svg { width: 24px; height: 24px; stroke-width: 2; }
-
-        /* --- 7. Sezione Competenze (Accordion) --- */
-        .tech-section {
-            position: relative;
-            overflow: hidden;
-            background-image: url('https://images.unsplash.com/photo-1635350736503-c39c8b3316d3?q=80&w=2670&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed; 
-            max-width: 100%;
-            padding-top: 80px; 
-            padding-bottom: 80px; 
-            padding-left: 0;
-            padding-right: 0;
-            transition: background-color 0.3s ease;
-        }
-
-        .tech-section h2 {
-            margin-bottom: 20px; 
-            position: relative; 
-            z-index: 2;
-        }
-
-        .tech-grid {
-            display: grid;
-            grid-template-columns: 1fr; 
-            gap: 20px;
-            position: relative; 
-            z-index: 2;
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 5%;
-        }
-
-        .tech-card {
-            background-color: rgba(28, 28, 30, 0.85); 
-            backdrop-filter: blur(5px); 
-            border-radius: 15px;
-            padding: 12px 20px; 
-            border: 1px solid var(--border-color);
-            transition: padding 0.4s ease-out, border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease; 
-            cursor: pointer; 
-        }
-        
-        .tech-card:hover {
-            border-color: var(--accent-color);
-            background-color: rgba(10, 132, 255, 0.15); 
-        }
-        
-        .tech-card.active {
-            border-color: var(--accent-color);
-            padding-bottom: 20px; 
-            background-color: rgba(10, 132, 255, 0.1); 
-        }
-
-        .tech-card-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .tech-card-header-left {
-            display: flex;
-            align-items: center;
-            gap: 15px; 
-        }
-        
-        .tech-card-icon {
-            width: 18px;
-            height: 18px;
-            color: var(--text-secondary); 
-            transition: color 0.3s ease;
-            flex-shrink: 0;
-            stroke-width: 1.5;
-        }
-        .tech-card:hover .tech-card-icon,
-        .tech-card.active .tech-card-icon {
-            color: var(--accent-color); 
-        }
-        
-        .tech-card h3 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #FFFFFF;
-            margin-bottom: 0; 
-            line-height: 1.5;
-            transition: color 0.3s ease;
-        }
-
-        .accordion-icon {
-            font-size: 1.5rem;
-            color: var(--accent-color);
-            transition: transform 0.3s ease;
-            font-weight: 700;
-        }
-        .tech-card.active .accordion-icon { transform: rotate(45deg); }
-        
-        .tech-card-content {
-            display: grid;
-            grid-template-rows: 0fr;
-            overflow: hidden;
-            transition: grid-template-rows 0.5s cubic-bezier(0.215, 0.610, 0.355, 1), 
-                        margin-top 0.5s cubic-bezier(0.215, 0.610, 0.355, 1);
-        }
-        
-        .tech-card-content-inner {
-            overflow: hidden;
-            padding-top: 0px;
-            transition: padding-top 0.3s ease-out 0.2s;
-        }
-        
-        .tech-card.active .tech-card-content {
-            grid-template-rows: 1fr;
-            margin-top: 20px; 
-        }
-        
-        .tech-card.active .tech-card-content-inner { padding-top: 5px; }
-
-        .tech-card-image {
-            width: 100%;
-            height: 80px; 
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 15px; 
-        }
-        
-        .tech-card-details {
-            background-color: rgba(10, 132, 255, 0.1);
-            border-radius: 8px;
-            padding: 15px;
-        }
-
-        .tech-card-details p {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            font-weight: 400;
-            margin-bottom: 15px; 
-            transition: color 0.3s ease;
-        }
-        .tech-card-details p:last-of-type { margin-bottom: 0; }
-
-
-        /* --- 8. Sezione Contatti (CTA) --- */
-        .cta-section {
-            text-align: center;
-            background-color: var(--bg-secondary);
-            border-radius: 20px;
-            padding: 80px 5%;
-            transition: background-color 0.3s ease;
-        }
-
-        .cta-section p {
-            font-size: 1.2rem;
-            font-weight: 300;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            margin-bottom: 40px;
-            color: var(--text-secondary);
-        }
-        
-        .cta-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 15px 30px;
-            border-radius: 30px;
-            font-size: 1rem;
-            font-weight: 700;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-primary {
-            background-color: var(--accent-color);
-            color: #fff;
-        }
-        .btn-primary:hover {
-            background-color: #FFFFFF;
-            color: #000;
-            transform: translateY(-3px);
-        }
-        
-        .btn-secondary {
-            background: transparent;
-            color: var(--accent-color);
-            border: 2px solid var(--border-color);
-        }
-        .btn-secondary:hover {
-            background-color: var(--accent-color);
-            border-color: var(--accent-color);
-            color: #FFFFFF;
-            transform: translateY(-3px);
-        }
-
-        /* --- 9. Footer --- */
-        .main-footer {
-            text-align: center;
-            padding: 40px 5%;
-            border-top: 1px solid var(--border-color);
-            margin-top: 0px;
-            transition: border-color 0.3s ease;
-        }
-
-        .footer-content {
-            display: flex;
-            justify-content: space-between; 
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-        
-        .footer-logo { flex-shrink: 0; opacity: 0.7; transition: filter 0.3s ease; }
-        .logo img { transition: filter 0.3s ease; }
-        
-        .footer-contact {
-            text-align: left;
-            display: flex;
-            flex-direction: column;
-            gap: 10px; 
-        }
-        
-        .footer-contact-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .footer-contact-item p {
-            margin: 0;
-            font-size: 1rem;
-            color: var(--text-color);
-            font-weight: 400;
-        }
-        
-        .footer-icon {
-            width: 20px;
-            height: 20px;
-            color: var(--accent-color);
-            flex-shrink: 0;
-        }
-
-        .footer-contact a {
-            color: var(--accent-color);
-            font-weight: 500;
-        }
-        
-        .footer-social { text-align: left; }
-        .footer-social-links { display: flex; gap: 20px; }
-        .footer-social-links a {
-            color: var(--text-secondary);
-            transition: color 0.3s ease;
-        }
-        .footer-social-links a:hover {
-            color: var(--accent-color);
-            opacity: 1;
-        }
-        .footer-social-links svg { width: 30px; height: 30px; }
-
-        .cv-button {
-            padding: 12px 28px;
-            font-size: 1rem;
-            font-weight: 700;
-            border-radius: 30px;
-            text-align: center;
-            transition: all 0.3s ease;
-            background-color: var(--accent-color);
-            color: #fff;
-            border: 1px solid var(--accent-color);
-            animation: pulse 2s infinite;
-        }
-        
-        .cv-button:hover {
-            transform: translateY(-3px);
-            animation-play-state: paused; 
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(10, 132, 255, 0.7); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(10, 132, 255, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(10, 132, 255, 0); }
-        }
-
-        .footer-copyright {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-bottom: 0;
-            padding-top: 20px;
-            border-top: 1px solid var(--border-color);
-        }
-
-        /* --- Loading Animations --- */
-        .loading-animation-wrapper, .footer-animation-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            padding: 40px 0;
-            font-family: 'Courier New', Courier, monospace; 
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            min-height: 2.5em; 
-        }
-
-        .loading-prompt { color: var(--accent-color); font-weight: 700; }
-        
-        #loading-text, #loading-text-footer {
-            color: var(--text-color);
-            white-space: nowrap; 
-            text-align: left;
-        }
-        #loading-text { min-width: 300px; }
-        #loading-text-footer { min-width: 150px; max-width: 150px; flex-grow: 0; }
-
-        .blinking-cursor-new {
-            width: 10px;
-            height: 1.2rem;
-            background: var(--accent-color-orange); 
-            animation: blink-caret-orange 1s step-end infinite;
-            flex-shrink: 0;
-        }
-
-        @keyframes blink-caret-orange {
-            from, to { background-color: transparent; }
-            50% { background-color: var(--accent-color-orange); }
-        }
-
-        /* --- 11. ANIMAZIONI DINAMICHE (Scroll-Reveal) --- */
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.8s ease-out, transform 0.6s ease-out;
-            will-change: opacity, transform;
-        }
-        .reveal.show { opacity: 1; transform: translateY(0); }
-        
-        .tech-card:nth-child(1) { transition-delay: 0.05s; }
-        .tech-card:nth-child(2) { transition-delay: 0.1s; }
-        .tech-card:nth-child(3) { transition-delay: 0.15s; }
-        .tech-card:nth-child(4) { transition-delay: 0.2s; }
-        .tech-card:nth-child(5) { transition-delay: 0.25s; }
-        .tech-card:nth-child(6) { transition-delay: 0.3s; }
-
-        /* --- 12. Responsive --- */
-        @media (max-width: 768px) {
-            h1 { font-size: 2.5rem; }
-            h2 { font-size: 2rem; }
-            .dynamic-text-container { font-size: 1.6rem; }
-            section { padding: 40px 5%; }
-            .hero-content { padding-bottom: 60px; }
-            .hero-section { padding-left: 5%; padding-right: 5%; }
-            .projects-section { padding-left: 0; padding-right: 0; }
-            .tech-section { padding-left: 5%; padding-right: 5%; padding-top: 40px; padding-bottom: 40px; }
-            .container { padding: 0; }
-            .cta-buttons { flex-direction: column; }
-            
-            .hamburger-menu { display: block; }
-            .nav-menu {
-                position: fixed;
-                top: 0;
-                left: 100%;
-                width: 100%;
-                height: 100vh;
-                background-color: var(--bg-color);
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                transition: transform 0.4s ease-in-out;
-            }
-            .nav-open .nav-menu { transform: translateX(-100%); }
-            .nav-menu li { margin: 20px 0; }
-            .nav-menu a { font-size: 1.5rem; font-weight: 700; }
-            
-            .nav-menu li.nav-buttons-wrapper { margin: 20px 0; }
-            .nav-buttons-inner-list {
-                display: flex;
-                flex-direction: row; 
-                justify-content: center;
-                align-items: center;
-                gap: 20px; 
-            }
-            .nav-buttons-inner-list > li { margin: 0; }
-
-            .nav-menu .nav-button-primary a,
-            .nav-menu .nav-button-outline a {
-                font-size: 1rem; 
-                font-weight: 700;
-                padding: 8px 18px; 
-                color: var(--text-color); 
-            }
-            .slider-arrow { width: 35px; height: 35px; top: 45%; }
-            .slider-arrow.left { left: 5px; }
-            .slider-arrow.right { right: 5px; }
-            .projects-slider-container::before, .projects-slider-container::after { width: 5%; }
-            .projects-slider-container { padding: 0 10px; }
-            .typed-text-container { min-height: 4.5em; height: auto; }
-            .footer-content { flex-direction: column; text-align: center; gap: 40px; }
-            .footer-logo { order: -1; }
-            .footer-contact { text-align: center; align-items: center; }
-            .footer-contact-item { justify-content: center; }
-            .footer-social { text-align: center; }
-            .footer-social-links { justify-content: center; }
-        }
-        
-        /* --- 13. Pulsante Scroll-to-Top --- */
-        #scrollToTopBtn {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            z-index: 50; 
-            background-color: var(--accent-color-orange);
-            color: #FFFFFF;
-            width: 45px;  
-            height: 45px; 
-            border-radius: 50%; 
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(15px);
-            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
-        }
-        
-        #scrollToTopBtn svg { width: 22px; height: 22px; stroke-width: 2.5; }
-        #scrollToTopBtn.show { opacity: 1; visibility: visible; transform: translateY(0); }
-        #scrollToTopBtn:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); }
-
-
-        /* =========================================
-           --- NUOVI STILI: SWITCH LIGHT MODE --- 
-           ========================================= */
-        
-        /* Stile Switch Verticale */
-        #themeToggleBtn {
-            position: fixed;
-            top: 50%;
-            right: 15px; /* Distanza dal bordo destro */
-            transform: translateY(-50%);
-            
-            /* Dimensioni Strette e Alte */
-            width: 28px;  
-            height: 70px;
-            
-            background: transparent;
-            border: none;
-            padding: 0;
-            cursor: pointer;
-            z-index: 1000;
-        }
-
-        /* Il "binario" dello switch */
-        .toggle-track {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(28, 28, 30, 0.95); /* Scuro di base */
-            border: 1px solid var(--border-color);
-            border-radius: 50px; /* Pillola verticale */
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transition: background-color 0.3s ease, border-color 0.3s ease;
-            overflow: hidden;
-        }
-
-        /* Le icone fisse sullo sfondo */
-        .icon-position {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #888; /* Colore inattivo */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 35px; /* Esattamente metà altezza (70/2) */
-            z-index: 1;
-            transition: color 0.3s ease;
-        }
-
-        /* Posizionamento esatto icone */
-        .top-icon { top: 0; }
-        .bottom-icon { bottom: 0; }
-
-        .icon-position svg {
-            width: 14px;
-            height: 14px;
-        }
-
-        /* Il Cursore (Pallino) che si muove */
-        .toggle-thumb {
-            position: absolute;
-            left: 3px; /* Centrato orizzontalmente: (28 - 22)/2 = 3 */
-            width: 22px; 
-            height: 22px;
-            background-color: var(--accent-color); 
-            border-radius: 50%;
-            z-index: 2;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            
-            /* ANIMAZIONE FLUIDA */
-            transition: transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1), background-color 0.3s ease; 
-            
-            /* CENTRATURA PERFETTA (Matematica)
-               Track Height: 70px. Thumb: 22px.
-               Centratura icona superiore: 35px / 2 = 17.5px.
-               Centratura Thumb (22px): 11px raggio.
-               Top position start: 17.5 - 11 = 6.5px ~ 6px.
-            */
-            top: 6px; 
-            transform: translateY(36px); /* 36px di spostamento per arrivare al centro sotto */
-        }
-
-        /* --- STATO LIGHT MODE (Attivato) --- */
-        body.light-mode .toggle-track {
-            background-color: #FFFFFF; /* Sfondo bianco */
-            border-color: #D1D1D6;
-        }
-
-        /* Spostamento del pallino in alto (Sole) */
-        body.light-mode .toggle-thumb {
-            transform: translateY(0px); /* Torna al top: 6px */
-            background-color: #FF9500; /* Arancio (Sole) quando attivo */
-        }
-
-        /* Gestione colori Icone Switch */
-        .top-icon { color: var(--accent-color); } 
-        .bottom-icon { color: #FFF; z-index: 3; } 
-        
-        body.light-mode .top-icon { color: #FFF; z-index: 3; } 
-        body.light-mode .bottom-icon { color: var(--accent-color); }
-
-
-        /* --- DEFINIZIONE VARIABILI LIGHT MODE --- */
-        body.light-mode {
-            --bg-color: #F5F5F7; /* Grigio molto chiaro per sfondo pagina */
-            --text-color: #1D1D1F; /* Nero testo */
-            --text-secondary: #6e6e73;
-            --bg-secondary: #FFFFFF; /* Bianco card */
-            --border-color: #d2d2d7;
-        }
-
-        /* Override colori per leggibilità in Light Mode */
-        body.light-mode h1, 
-        body.light-mode h2,
-        body.light-mode h3, 
-        body.light-mode h4,
-        body.light-mode .service-card-header h3,
-        body.light-mode .project-card h3,
-        body.light-mode .tech-card h3 {
-            color: #1D1D1F;
-        }
-        
-        /* FIX CARDS IN LIGHT MODE */
-        body.light-mode .project-card, 
-        body.light-mode .tech-card {
-            background-color: #FFFFFF !important; 
-            backdrop-filter: none; 
-            border-color: #E5E5EA; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-        
-        body.light-mode .project-card p,
-        body.light-mode .tech-card-details p,
-        body.light-mode .tech-stack {
-            color: #3a3a3c;
-        }
-        
-        /* --- MODIFICA RICHIESTA: EFFETTO HOVER MENO BIANCO IN LIGHT MODE --- */
-        body.light-mode .service-card:hover,
-        body.light-mode .project-card:hover,
-        body.light-mode .tech-card:hover {
-            /* Sostituiamo il bianco pieno con una trasparenza minima per far vedere lo sfondo */
-            background-color: rgba(255, 255, 255, 0.4) !important;
-            backdrop-filter: blur(4px); /* Aggiunge un tocco di eleganza senza coprire del tutto */
-        }
-        
-        /* Anche per l'accordion attivo */
-        body.light-mode .tech-card.active {
-            background-color: rgba(255, 255, 255, 0.6) !important;
-        }
-
-        body.light-mode .slider-arrow {
-            background-color: #FFFFFF; /* Bianche */
-            color: var(--accent-color); /* Icona colorata */
-            /* NECESSARIO: Bordo e ombra per vederle su sfondo bianco */
-            border: 1px solid #D1D1D6; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15); 
-        }
-        
-        body.light-mode .slider-arrow:hover {
-            background-color: #F2F2F7;
-            transform: translateY(-50%) scale(1.1);
-        }
-        
-        /* Navbar in modalità chiara */
-        body.light-mode .main-header {
-            background: rgba(255, 255, 255, 0.9);
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-        }
-        body.light-mode .nav-menu { background-color: #F5F5F7; }
-        
-        /* Ombre delicate in Light Mode per Service Card */
-        body.light-mode .service-card {
-             box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-             border-color: transparent;
-        }
-        
-        /* Sfondo sezione tech meno invasivo */
-        body.light-mode .tech-section { 
-            background-image: none; 
-            background-color: #EBEBF0; 
-        }
-        
-        /* Hero overlay più chiaro */
-        body.light-mode .hero-section::before {
-            background-color: rgba(255, 255, 255, 0.7); 
-        }
-        body.light-mode .hero-section::after {
-            background: linear-gradient(to bottom, rgba(255,255,255,0), var(--bg-color) 90%);
-        }
-
-        /* Inversione Loghi */
-        body.light-mode .logo img,
-        body.light-mode .footer-logo img {
-            filter: invert(1);
-        }
-
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rosario Marra · Formazione ICT, Recruiting e Mentoring</title>
+<meta name="description" content="Rosario Marra: docente e formatore ICT, recruiter tecnico e mentor. Corsi su Docker, Python, AI, IoT e reti. Autore di 'Docker: Guida Completa'.">
+<meta property="og:title" content="Rosario Marra · Formazione ICT">
+<meta property="og:description" content="Formazione, recruiting tecnico e mentoring nel mondo ICT.">
+<link rel="icon" href="immagini/Logo Rosario Marra nero.png" type="image/png">
+<meta name="theme-color" content="#0A0B0E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0A0B0E; --bg-2:#111318; --card:#14171D; --card-2:#1A1E26;
+  --text:#F2F4F7; --muted:#9AA3B2; --faint:#5F6878;
+  --line:rgba(255,255,255,.08); --line-2:rgba(255,255,255,.14);
+  --blue:#3B8BFF; --blue-soft:rgba(59,139,255,.12);
+  --orange:#FF7A1A; --orange-soft:rgba(255,122,26,.12);
+  --green:#3DDC97;
+  --radius:20px;
+  --display:'Space Grotesk',Inter,system-ui,sans-serif;
+  --body:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+  --shadow:0 20px 60px -20px rgba(0,0,0,.6);
+  --logo-filter:none;
+}
+:root[data-theme="light"]{
+  --bg:#F7F7F4; --bg-2:#EFEFEA; --card:#FFFFFF; --card-2:#F5F5F1;
+  --text:#14161A; --muted:#545C69; --faint:#8A919C;
+  --line:rgba(0,0,0,.08); --line-2:rgba(0,0,0,.14);
+  --blue:#1F6FEB; --blue-soft:rgba(31,111,235,.09);
+  --orange:#E8620A; --orange-soft:rgba(232,98,10,.09);
+  --green:#12A56A;
+  --shadow:0 20px 50px -25px rgba(20,22,26,.25);
+  --logo-filter:invert(1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{font-family:var(--body);background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .3s,color .3s}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+section{padding:110px 0}
+h1,h2,h3{font-family:var(--display);letter-spacing:-.02em;line-height:1.1}
+.eyebrow{font-family:var(--mono);font-size:.78rem;color:var(--orange);letter-spacing:.08em;text-transform:uppercase;display:inline-flex;align-items:center;gap:10px;margin-bottom:18px}
+.eyebrow::before{content:"";width:22px;height:1px;background:currentColor}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:40px;margin-bottom:56px;flex-wrap:wrap}
+.sec-head h2{font-size:clamp(2rem,4vw,3rem);max-width:640px}
+.sec-head p{color:var(--muted);max-width:420px}
+.accent{color:var(--blue)} .accent-o{color:var(--orange)}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 24px;border-radius:999px;font-weight:600;font-size:.95rem;transition:transform .2s,background .2s,border-color .2s,color .2s;border:1px solid transparent;cursor:pointer}
+.btn svg{width:18px;height:18px}
+.btn-primary{background:var(--blue);color:#fff}
+.btn-primary:hover{transform:translateY(-2px);background:#5a9dff}
+.btn-ghost{border-color:var(--line-2);color:var(--text)}
+.btn-ghost:hover{border-color:var(--text);transform:translateY(-2px)}
+
+/* Nav */
+.nav{position:fixed;top:14px;left:0;right:0;z-index:100;padding:0 16px}
+.nav-inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 12px 10px 20px;border-radius:999px;background:color-mix(in srgb,var(--bg) 72%,transparent);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);border:1px solid var(--line);transition:box-shadow .3s}
+.nav.scrolled .nav-inner{box-shadow:var(--shadow)}
+.nav-logo img{height:26px;width:auto;filter:var(--logo-filter)}
+.nav-links{display:flex;gap:4px;list-style:none}
+.nav-links a{padding:8px 14px;border-radius:999px;font-size:.9rem;color:var(--muted);transition:color .2s,background .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--text);background:var(--line)}
+.nav-actions{display:flex;align-items:center;gap:8px}
+.icon-btn{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line);background:transparent;color:var(--text);cursor:pointer;transition:border-color .2s}
+.icon-btn:hover{border-color:var(--line-2)}
+.icon-btn svg{width:18px;height:18px}
+.theme-btn .sun{display:none}
+:root[data-theme="light"] .theme-btn .sun{display:block}
+:root[data-theme="light"] .theme-btn .moon{display:none}
+.nav .btn{padding:10px 18px;font-size:.88rem}
+.burger{display:none}
+
+/* Hero */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:140px 0 80px;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:-2;
+  background:
+   radial-gradient(600px 400px at 80% 20%,var(--blue-soft),transparent 70%),
+   radial-gradient(500px 350px at 10% 90%,var(--orange-soft),transparent 70%);
+}
+.hero-bg::after{content:"";position:absolute;inset:0;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:64px 64px;
+  mask-image:radial-gradient(ellipse 70% 60% at 50% 40%,#000 30%,transparent 80%);
+  -webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 40%,#000 30%,transparent 80%)}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:60px;align-items:center}
+.status{display:inline-flex;align-items:center;gap:10px;padding:6px 14px 6px 8px;border-radius:999px;border:1px solid var(--line);background:var(--card);font-size:.82rem;color:var(--muted);margin-bottom:28px}
+.status .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px color-mix(in srgb,var(--green) 20%,transparent);animation:pulse 2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 8px transparent}}
+.hero h1{font-size:clamp(2.6rem,6vw,4.6rem);font-weight:700;margin-bottom:24px}
+.rotator{display:inline-block;position:relative;color:var(--blue);transition:opacity .35s,transform .35s}
+.rotator.out{opacity:0;transform:translateY(12px)}
+.rotator.o{color:var(--orange)}
+.hero-sub{font-size:1.15rem;color:var(--muted);max-width:540px;margin-bottom:36px}
+.hero-sub strong{color:var(--text);font-weight:600}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap}
+.roles{display:flex;gap:24px;margin-top:48px;flex-wrap:wrap}
+.role{display:flex;align-items:center;gap:10px;font-size:.9rem;color:var(--muted)}
+.role svg{width:18px;height:18px;color:var(--orange)}
+
+/* Terminal */
+.terminal{background:#0D1016;border:1px solid rgba(255,255,255,.1);border-radius:16px;box-shadow:var(--shadow);overflow:hidden;font-family:var(--mono);font-size:.86rem;color:#C9D1DC;transform:perspective(1200px) rotateY(-6deg) rotateX(3deg);transition:transform .5s}
+.terminal:hover{transform:none}
+.term-bar{display:flex;align-items:center;gap:7px;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.07);background:#11151C}
+.term-bar i{width:11px;height:11px;border-radius:50%;background:#3a3f4a}
+.term-bar i:nth-child(1){background:#FF5F57}.term-bar i:nth-child(2){background:#FEBC2E}.term-bar i:nth-child(3){background:#28C840}
+.term-bar span{margin-left:auto;font-size:.75rem;color:#6B7385}
+.term-body{padding:20px 22px;min-height:300px;white-space:pre-wrap}
+.term-body .p{color:#3B8BFF}.term-body .k{color:#FF7A1A}.term-body .g{color:#3DDC97}.term-body .c{color:#6B7385}
+.caret{display:inline-block;width:8px;height:1.1em;background:#FF7A1A;vertical-align:text-bottom;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.term-body{height:340px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#2a303b transparent;cursor:text}
+.term-body .w{color:#F2F4F7}.term-body .e{color:#FF5F57}
+.term-body a{color:#3B8BFF;text-decoration:underline;text-underline-offset:3px}
+.term-input-line{display:flex;gap:8px;align-items:center}
+.term-input{flex:1;min-width:0;background:transparent;border:0;outline:0;color:#F2F4F7;font:inherit;caret-color:#FF7A1A}
+.term-chips{display:flex;flex-wrap:wrap;gap:6px;padding:10px 16px;border-top:1px solid rgba(255,255,255,.07);background:#11151C}
+.term-chips button{font:inherit;font-size:.72rem;color:#9AA3B2;background:transparent;border:1px solid rgba(255,255,255,.12);border-radius:6px;padding:3px 9px;cursor:pointer;transition:color .2s,border-color .2s}
+.term-chips button:hover{color:#fff;border-color:#3B8BFF}
+
+/* Hero canvas */
+#heroCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:-1}
+
+/* Scroll progress + cursor glow */
+.progress{position:fixed;top:0;left:0;height:3px;width:100%;z-index:200;transform-origin:0 50%;transform:scaleX(var(--p,0));background:linear-gradient(90deg,var(--blue),var(--orange))}
+.cursor-glow{position:fixed;top:0;left:0;width:520px;height:520px;margin:-260px 0 0 -260px;border-radius:50%;pointer-events:none;z-index:0;opacity:0;transition:opacity .4s;
+  background:radial-gradient(closest-side,color-mix(in srgb,var(--blue) 14%,transparent),transparent);will-change:transform}
+body.has-cursor .cursor-glow{opacity:1}
+main,footer{position:relative;z-index:1}
+
+/* Spotlight sul bordo delle card */
+.tile,.proj,.ccard{--sx:50%;--sy:50%}
+.tile::after,.proj::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .3s;
+  background:radial-gradient(300px circle at var(--sx) var(--sy),color-mix(in srgb,var(--blue) 10%,transparent),transparent 60%)}
+.tile:hover::after,.proj:hover::after{opacity:1}
+.proj{position:relative}
+
+/* Titoli che si rivelano parola per parola */
+.split .word{display:inline-block;opacity:0;transform:translateY(.5em) rotate(2deg);transition:opacity .6s,transform .6s cubic-bezier(.2,.7,.2,1);transition-delay:calc(var(--i) * 45ms)}
+.split.in .word{opacity:1;transform:none}
+
+/* Marquee */
+.marquee{border-block:1px solid var(--line);padding:22px 0;overflow:hidden;background:var(--bg-2)}
+.marquee-track{display:flex;gap:56px;width:max-content;animation:scroll 40s linear infinite}
+.marquee:hover .marquee-track{animation-play-state:paused}
+.marquee span{font-family:var(--display);font-size:1.3rem;font-weight:600;color:var(--faint);white-space:nowrap;display:flex;align-items:center;gap:56px}
+.marquee span::after{content:"✦";color:var(--orange);font-size:.8rem}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+/* About */
+.about-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:80px;align-items:center}
+.portrait{position:relative;width:min(400px,80vw);aspect-ratio:1;margin:0 auto}
+.portrait::before{content:"";position:absolute;inset:-14px;border-radius:50%;background:conic-gradient(from var(--a,0deg),var(--blue),transparent 30%,var(--orange) 55%,transparent 80%,var(--blue));animation:spin 8s linear infinite;-webkit-mask:radial-gradient(circle,transparent calc(50% - 2px),#000 calc(50% - 1px));mask:radial-gradient(circle,transparent calc(50% - 2px),#000 calc(50% - 1px))}
+@property --a{syntax:'<angle>';inherits:false;initial-value:0deg}
+@keyframes spin{to{--a:360deg}}
+.portrait::after{content:"";position:absolute;inset:-40px;border-radius:50%;background:radial-gradient(circle,var(--blue-soft),transparent 65%);z-index:-1}
+.portrait-img{position:absolute;inset:0;border-radius:50%;overflow:hidden;background:#000;box-shadow:var(--shadow),inset 0 0 0 1px var(--line-2)}
+.portrait-img img{width:100%;height:100%;object-fit:cover;transform:scale(1.08);transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.portrait:hover .portrait-img img{transform:scale(1.13)}
+#chi-sono{overflow-x:clip}
+.about-text h2{font-size:clamp(2rem,4vw,3rem);margin-bottom:22px}
+.about-text p{color:var(--muted);font-size:1.08rem;margin-bottom:16px;max-width:580px}
+.about-text p strong{color:var(--text);font-weight:600}
+.about-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:30px}
+.fact{padding:16px;border-radius:14px;background:var(--card);border:1px solid var(--line)}
+.fact small{display:block;font-family:var(--mono);font-size:.7rem;color:var(--faint);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.fact b{font-weight:600;font-size:.95rem}
+.signature{font-family:var(--display);font-size:1.1rem;margin-top:26px;color:var(--text);display:flex;align-items:center;gap:12px}
+.signature::before{content:"";width:34px;height:2px;background:var(--orange)}
+
+/* Services */
+.services{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.svc{position:relative;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:32px;overflow:hidden;transition:border-color .3s,transform .3s}
+.svc:hover{border-color:var(--line-2);transform:translateY(-4px)}
+.svc::before{content:"";position:absolute;inset:0;background:radial-gradient(400px 200px at var(--mx,50%) var(--my,0%),var(--blue-soft),transparent 60%);opacity:0;transition:opacity .3s;pointer-events:none}
+.svc:hover::before{opacity:1}
+.svc-num{font-family:var(--mono);font-size:.8rem;color:var(--faint);margin-bottom:40px;display:flex;justify-content:space-between;align-items:center}
+.svc-icon{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:var(--blue-soft);color:var(--blue)}
+.svc-icon svg{width:24px;height:24px}
+.svc h3{font-size:1.5rem;margin-bottom:12px}
+.svc p{color:var(--muted);margin-bottom:22px}
+.svc ul{list-style:none;display:grid;gap:10px;border-top:1px solid var(--line);padding-top:20px}
+.svc li{display:flex;gap:10px;font-size:.92rem;color:var(--text)}
+.svc li::before{content:"→";color:var(--orange);font-family:var(--mono)}
+
+/* Book */
+.book-section{background:var(--bg-2);border-block:1px solid var(--line)}
+.book-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:80px;align-items:center}
+.book-section{position:relative;overflow:hidden}
+.book-section::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(600px 420px at 25% 50%,color-mix(in srgb,var(--blue) 18%,transparent),transparent 70%)}
+.bubbles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.bubble{position:absolute;bottom:-40px;border-radius:50%;border:1px solid color-mix(in srgb,var(--blue) 55%,transparent);background:radial-gradient(circle at 30% 30%,color-mix(in srgb,var(--blue) 30%,transparent),transparent 70%);animation:rise linear infinite}
+@keyframes rise{0%{transform:translate(0,0);opacity:0}10%{opacity:.8}100%{transform:translate(var(--drift),-900px);opacity:0}}
+.book-grid{position:relative}
+.book-stage{display:grid;place-items:center;perspective:1600px;padding:40px 0 70px;position:relative;cursor:grab;touch-action:pan-y}
+.book-stage::after{content:"";position:absolute;bottom:20px;left:50%;width:240px;height:30px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.45),transparent);filter:blur(4px);animation:shadow 6s ease-in-out infinite}
+.book-float{animation:float 6s ease-in-out infinite;transform-style:preserve-3d}
+@keyframes float{50%{transform:translateY(-14px)}}
+@keyframes shadow{50%{transform:translateX(-50%) scale(.85);opacity:.7}}
+.book{--w:280px;--h:425px;--t:34px;--rx:6deg;--ry:-28deg;--flip:0deg;
+  width:var(--w);height:var(--h);position:relative;transform-style:preserve-3d;
+  transform:rotateX(var(--rx)) rotateY(calc(var(--ry) + var(--flip)));transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.book.dragging{transition:none}
+.book-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:2px 6px 6px 2px;overflow:hidden;background:#2B313B}
+.book-face img{width:100%;height:100%;object-fit:cover;pointer-events:none;user-select:none}
+.book-front{transform:translateZ(calc(var(--t) / 2))}
+.book-front::before{content:"";position:absolute;left:0;top:0;bottom:0;width:14px;z-index:1;background:linear-gradient(90deg,rgba(0,0,0,.35),rgba(255,255,255,.08) 40%,transparent)}
+.book-back{transform:rotateY(180deg) translateZ(calc(var(--t) / 2))}
+.book-glare{position:absolute;inset:0;z-index:2;pointer-events:none;mix-blend-mode:screen;
+  background:radial-gradient(420px circle at var(--gx,30%) var(--gy,20%),rgba(255,255,255,.28),transparent 45%)}
+.book-spine,.book-pages{position:absolute;top:0;height:100%;width:var(--t);left:calc(50% - var(--t) / 2)}
+.book-spine{transform:rotateY(-90deg) translateZ(calc(var(--w) / 2));background:linear-gradient(90deg,#1E232B,#2E3540 50%,#1E232B);display:flex;align-items:center;justify-content:center;border-radius:3px}
+.book-spine span{writing-mode:vertical-rl;transform:rotate(180deg);color:#fff;font-family:var(--display);font-weight:700;letter-spacing:.2em;font-size:.72rem;white-space:nowrap}
+.book-spine span b{color:#7FB2FF;margin-right:14px}
+.book-pages{transform:rotateY(90deg) translateZ(calc(var(--w) / 2 - 3px));height:calc(100% - 8px);top:4px;background:repeating-linear-gradient(90deg,#f4f1ea 0 2px,#ddd8cc 2px 3px)}
+.book-top{position:absolute;left:0;width:calc(100% - 3px);height:var(--t);top:calc(50% - var(--t) / 2);transform:rotateX(90deg) translateZ(calc(var(--h) / 2 - 4px));background:repeating-linear-gradient(0deg,#f4f1ea 0 2px,#ddd8cc 2px 3px)}
+.book-hint{position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:.72rem;color:var(--faint);white-space:nowrap;display:flex;gap:8px;align-items:center}
+.book-hint kbd{font-family:inherit;padding:2px 7px;border-radius:6px;border:1px solid var(--line-2);background:var(--card)}
+.book-info h2{font-size:clamp(2rem,4vw,3rem);margin-bottom:18px}
+.book-info>p{color:var(--muted);font-size:1.08rem;margin-bottom:30px;max-width:560px}
+.book-feats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:34px}
+.feat{display:flex;gap:12px;padding:16px;border-radius:14px;background:var(--card);border:1px solid var(--line);font-size:.92rem}
+.feat b{display:block;font-weight:600}
+.feat span{color:var(--muted);font-size:.85rem}
+.feat svg{width:20px;height:20px;flex-shrink:0;color:var(--blue);margin-top:2px}
+
+/* Skills bento */
+.bento{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:minmax(220px,auto);gap:20px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:28px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;transition:border-color .3s}
+.tile:hover{border-color:var(--line-2)}
+.tile.s2{grid-column:span 2}.tile.s3{grid-column:span 3}.tile.s4{grid-column:span 4}
+.tile-top{display:flex;justify-content:space-between;align-items:start;gap:16px}
+.tile-icon{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--orange-soft);color:var(--orange)}
+.tile-icon svg{width:22px;height:22px}
+.tile h3{font-size:1.35rem;margin:18px 0 8px}
+.tile p{color:var(--muted);font-size:.93rem}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.chip{font-family:var(--mono);font-size:.74rem;padding:5px 10px;border-radius:8px;background:var(--card-2);border:1px solid var(--line);color:var(--muted)}
+.tile.feature{background:linear-gradient(160deg,var(--card) 40%,color-mix(in srgb,var(--blue) 14%,var(--card)))}
+.tile.feature .code{font-family:var(--mono);font-size:.8rem;color:var(--muted);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:16px;margin-top:20px;line-height:1.7}
+.code .k{color:var(--orange)}.code .s{color:var(--green)}.code .b{color:var(--blue)}
+
+/* Projects */
+.projects{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.proj{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;transition:transform .3s,border-color .3s}
+.proj:hover{transform:translateY(-4px);border-color:var(--line-2)}
+.proj-visual{height:180px;position:relative;overflow:hidden;background:var(--bg-2);border-bottom:1px solid var(--line)}
+.proj-visual svg{position:absolute;inset:0;width:100%;height:100%}
+.proj-body{padding:26px 28px 28px;display:flex;flex-direction:column;flex:1}
+.proj-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.badge{font-family:var(--mono);font-size:.7rem;padding:4px 10px;border-radius:999px;border:1px solid var(--line-2);color:var(--muted);display:inline-flex;align-items:center;gap:6px}
+.badge.live{color:var(--green);border-color:color-mix(in srgb,var(--green) 40%,transparent)}
+.badge.live::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.proj h3{font-size:1.4rem;margin-bottom:8px}
+.proj p{color:var(--muted);font-size:.95rem;flex:1}
+.proj-link{display:inline-flex;align-items:center;gap:8px;margin-top:22px;font-weight:600;font-size:.92rem;color:var(--blue)}
+.proj-link svg{width:16px;height:16px;transition:transform .2s}
+.proj:hover .proj-link svg{transform:translate(3px,-3px)}
+
+/* E-learning teaser */
+.elearn{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;padding:48px;border-radius:28px;border:1px solid var(--line);background:
+ radial-gradient(500px 250px at 100% 0%,var(--orange-soft),transparent 70%),var(--card)}
+.elearn h3{font-size:clamp(1.6rem,3vw,2.2rem);margin-bottom:10px}
+.elearn p{color:var(--muted);max-width:560px}
+.course-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.course-pills span{font-size:.82rem;padding:6px 12px;border-radius:999px;background:var(--bg-2);border:1px solid var(--line)}
+
+/* Contact */
+.contact{text-align:center}
+.contact h2{font-size:clamp(2.4rem,6vw,4.4rem);max-width:820px;margin:0 auto 20px}
+.contact>.wrap>p{color:var(--muted);font-size:1.15rem;max-width:560px;margin:0 auto 44px}
+.contact-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:900px;margin:0 auto 40px;text-align:left}
+.ccard{display:flex;align-items:center;gap:16px;padding:20px;border-radius:16px;background:var(--card);border:1px solid var(--line);transition:border-color .2s,transform .2s}
+.ccard:hover{border-color:var(--blue);transform:translateY(-3px)}
+.ccard svg{width:22px;height:22px;color:var(--blue);flex-shrink:0}
+.ccard small{display:block;color:var(--faint);font-size:.75rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em}
+.ccard b{font-weight:600;font-size:.92rem;word-break:break-all}
+
+/* Footer */
+footer{border-top:1px solid var(--line);padding:40px 0}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;color:var(--faint);font-size:.88rem}
+.foot img{height:28px;filter:var(--logo-filter);opacity:.8}
+.foot-links{display:flex;gap:20px}
+.foot-links a:hover{color:var(--text)}
+
+/* Reveal */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+
+/* Responsive */
+@media (max-width:980px){
+  .hero-grid,.book-grid,.about-grid{grid-template-columns:1fr;gap:50px}
+  .about-facts{grid-template-columns:1fr 1fr}
+  .terminal{transform:none}
+  .services,.contact-cards{grid-template-columns:1fr}
+  .bento{grid-template-columns:1fr 1fr}
+  .tile.s2,.tile.s3,.tile.s4{grid-column:span 2}
+  .elearn{grid-template-columns:1fr;padding:32px}
+}
+@media (max-width:820px){
+  .nav-links{position:fixed;inset:80px 16px auto 16px;flex-direction:column;padding:12px;border-radius:20px;background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);opacity:0;pointer-events:none;transform:translateY(-8px);transition:.25s}
+  .nav-links a{display:block;padding:12px 16px;font-size:1rem}
+  body.menu-open .nav-links{opacity:1;pointer-events:auto;transform:none}
+  .burger{display:grid}
+  .nav .btn-label{display:none}
+  section{padding:80px 0}
+  .projects,.book-feats{grid-template-columns:1fr}
+}
+@media (max-width:520px){
+  .bento{grid-template-columns:1fr}
+  .tile.s2,.tile.s3,.tile.s4{grid-column:span 1}
+  .book{--w:220px;--h:334px;--t:28px}
+}
+</style>
 </head>
-<body class=""> 
-    
-    <header class="main-header">
-        <nav class="navbar">
-            <div class="logo">
-                <img src="Logo Rosario Marra-09.png" alt="Logo Personale" style="height: 30px; width: auto;">
-            </div>
-            
-            <ul class="nav-menu">
-                <li><a href="#hero">Chi Sono</a></li>
-                <li><a href="#servizi">Servizi</a></li> 
-                <li><a href="#progetti">Progetti</a></li>
-                <li><a href="#competenze">Competenze</a></li>
-                <li><a href="#contatti">Contatti</a></li>
-                
-                <li class="nav-buttons-wrapper">
-                    <ul class="nav-buttons-inner-list">
-                        <li class="nav-button-outline"><a href="e-learning.html">E-learning</a></li>
-                        <li class="nav-button-primary"> 
-                        <a href="https://www.amazon.it/s?k=Docker+Guida+Completa+per+Sviluppatori+e+DevOps+Rosario+Marra" target="_blank" rel="noopener noreferrer" aria-label="Acquista il libro Docker su Amazon">
-                        Acquista ora
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-                         </svg>
-                        </a>
-                    </ul>
-                </li>
-            </ul>
-            
-            <div class="hamburger-menu">
-                <div class="line line1"></div>
-                <div class="line line2"></div>
-                <div class="line line3"></div>
-            </div>
-        </nav>
-    </header>
+<body>
 
-    <main>
+<div class="progress" id="progress" aria-hidden="true"></div>
+<div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
 
-        <section id="hero" class="hero-section">
-            <div class="hero-content">
-                <h1>Plasmo l'innovazione nell'ICT.</h1>
-                
-                <h2 class="dynamic-text-container">
-                    Progettando <span id="dynamic-word" class="text-blue">la Formazione</span>.
-                </h2>
-                
-                <p class="typed-text-container">
-                    <span id="typed-output"></span><span class="typed-cursor"></span>
-                </p>
-            </div>
-        </section>
+<!-- NAV -->
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#top" class="nav-logo" aria-label="Home">
+      <img src="Logo Rosario Marra-09.png" alt="Rosario Marra">
+    </a>
+    <ul class="nav-links">
+      <li><a href="#chi-sono">Chi sono</a></li>
+      <li><a href="#servizi">Servizi</a></li>
+      <li><a href="#libro">Libro</a></li>
+      <li><a href="#competenze">Competenze</a></li>
+      <li><a href="#progetti">Progetti</a></li>
+      <li><a href="e-learning.html">Materiale didattico</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="icon-btn theme-btn" id="themeBtn" aria-label="Cambia tema">
+        <svg class="moon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 15A9.72 9.72 0 0 1 18 15.75 9.75 9.75 0 0 1 8.25 6c0-1.33.27-2.6.75-3.75A9.75 9.75 0 1 0 21.75 15Z"/></svg>
+        <svg class="sun" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.36.39-1.59 1.59M21 12h-2.25m-.39 6.36-1.59-1.59M12 18.75V21m-4.77-4.23-1.59 1.59M5.25 12H3m4.23-4.77L5.64 5.64M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"/></svg>
+      </button>
+      <button class="icon-btn burger" id="burger" aria-label="Apri menu">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <a href="#contatti" class="btn btn-primary">
+        <span class="btn-label">Contattami</span>
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"/></svg>
+      </a>
+    </div>
+  </div>
+</header>
 
-        <section id="servizi" class="services-section">
-            <h2 class="reveal">Cosa Faccio</h2>
-            
-            <p class="intro-text reveal">
-                Il mio lavoro si concentra su tre aree chiave: formare la prossima generazione di talenti, identificare i professionisti giusti per le aziende e guidare studenti e docenti nel loro percorso di crescita.
-            </p>
+<main id="top">
 
-            <div class="services-container">
-                
-                <article class="service-card reveal">
-                    <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2670&auto=format&fit=crop" alt="Formazione ICT" class="service-card-image">
-                    <div class="service-card-header">
-                        <div class="service-icon-wrapper">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.627 48.627 0 0 1 12 20.904a48.627 48.627 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.57 50.57 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
-                            </svg>
-                        </div>
-                        <h3>Formazione ICT & Curriculum</h3>
-                    </div>
-                    <p>Progettazione di percorsi e laboratori pratici su AI, Web, IoT e Software Architecture.</p>
-                    <p>Il mio approccio unisce <strong class="text-orange">solide basi teoriche</strong> a <strong class="text-orange">competenze pratiche</strong> immediatamente spendibili.</p>
-                </article>
-                
-                <article class="service-card reveal">
-                    <img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?q=80&w=2670&auto=format&fit=crop" alt="Recruiting Tecnico" class="service-card-image">
-                    <div class="service-card-header">
-                        <div class="service-icon-wrapper">
-                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                               <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                             </svg>
-                        </div>
-                        <h3>Recruiting Tecnico</h3>
-                    </div>
-                    <p>Talent scouting per aziende IT. Dall'analisi del job profile alla short list mirata.</p>
-                    <p>Trovo i <strong class="text-orange">profili giusti</strong> per la tua azienda, valorizzando sia le <strong>hard skills</strong> che il <strong class="text-orange">potenziale di crescita</strong>.</p>
-                </article>
-                
-                <article class="service-card reveal">
-                    <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=2670&auto=format&fit=crop" alt="Mentoring" class="service-card-image">
-                    <div class="service-card-header">
-                        <div class="service-icon-wrapper">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                               <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.478a12.06 12.06 0 0 1-3.75 0m3.75 0a12.06 12.06 0 0 0-3.75 0M12 18c-1.24 0-2.433-.002-3.633-.006a11.97 11.97 0 0 1-5.002-1.001 11.98 11.98 0 0 1-2.27-2.27 11.97 11.97 0 0 1-1.001-5.002A11.97 11.97 0 0 1 2.25 12c0-1.24.002-2.433.006-3.633a11.97 11.97 0 0 1 1.001-5.002 11.98 11.98 0 0 1 2.27-2.27 11.97 11.97 0 0 1 5.002-1.001A11.97 11.97 0 0 1 12 2.25c1.24 0 2.433.002 3.633.006a11.97 11.97 0 0 1 5.002 1.001 11.98 11.98 0 0 1 2.27 2.27 11.97 11.97 0 0 1 1.001 5.002A11.97 11.97 0 0 1 21.75 12c0 1.24-.002-2.433-.006 3.633a11.97 11.97 0 0 1-1.001 5.002 11.98 11.98 0 0 1-2.27 2.27 11.97 11.97 0 0 1-5.002 1.001A11.97 11.97 0 0 1 12 18Z" />
-                            </svg>
-                        </div>
-                        <h3>Mentoring</h3>
-                    </div>
-                    <p>Supporto a docenti e studenti: percorsi, tesi, progetti e inserimento nel lavoro.</p>
-                    <p>Guido gli studenti nella <strong class="text-orange">definizione degli obiettivi</strong> e nel <strong class="text-orange">raggiungimento del successo</strong> professionale.</p>
-                </article>
-            </div>
-        </section>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <canvas id="heroCanvas" aria-hidden="true"></canvas>
+  <div class="wrap hero-grid">
+    <div>
+      <div class="status"><span class="dot"></span> Disponibile per nuove collaborazioni</div>
+      <h1>Plasmo l'innovazione nell'ICT, progettando <span class="rotator" id="rotator">la Formazione</span>.</h1>
+      <p class="hero-sub">Sono <strong>Rosario Marra</strong>, docente, recruiter tecnico e mentor. Aiuto aziende, studenti e docenti a orientarsi nella complessità tecnologica, dalle basi fino al primo deploy in produzione.</p>
+      <div class="hero-ctas">
+        <a href="#contatti" class="btn btn-primary">Lavoriamo insieme
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
+        </a>
+        <a href="Cv_Rosario.Marra.pdf" download class="btn btn-ghost">Scarica il CV
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
+        </a>
+      </div>
+      <div class="roles">
+        <div class="role"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.15a60 60 0 0 0-.49 6.35A48.6 48.6 0 0 1 12 20.9a48.6 48.6 0 0 1 8.23-4.41 60 60 0 0 0-.49-6.35M2.25 9.33A59.9 59.9 0 0 1 12 3.5a59.9 59.9 0 0 1 9.75 5.84A50.7 50.7 0 0 1 12 13.49 50.7 50.7 0 0 1 2.25 9.33Z"/></svg> Formatore ICT</div>
+        <div class="role"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.2-5.2M17.25 10.5a6.75 6.75 0 1 1-13.5 0 6.75 6.75 0 0 1 13.5 0Z"/></svg> Recruiter tecnico</div>
+        <div class="role"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.04A8.97 8.97 0 0 0 6 3.75c-1.05 0-2.06.18-3 .51v14.25A9 9 0 0 1 6 18c2.3 0 4.4.87 6 2.29m0-14.25a8.97 8.97 0 0 1 6-2.29c1.05 0 2.06.18 3 .51v14.25A9 9 0 0 0 18 18a8.97 8.97 0 0 0-6 2.29m0-14.25v14.25"/></svg> Autore</div>
+      </div>
+    </div>
 
-        <section id="progetti" class="projects-section">
-            <h2 class="reveal">I Miei Progetti GitHub</h2>
-            <p class="intro-text reveal">Esplora alcune delle mie realizzazioni e contributi più recenti nel mondo dello sviluppo software e della didattica.</p>
-            
-            <div class="slider-wrapper">
-                <div class="projects-slider-container">
-                    <div class="project-grid">
-                        
-                        <article class="project-card">
-                            <div>
-                                <h3>FlowLab</h3>
-                                <p>Ambiente interattivo per la programmazione a flussi e la simulazione di sistemi dinamici.</p>
-                                <p class="tech-stack">Tecnologie: Web, JavaScript, HTML5 Canvas</p>
-                            </div>
-                            <a href="https://rosariomarra.github.io/FlowLab/" target="_blank" rel="noopener noreferrer" class="github-link">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                    <path fill-rule="evenodd" d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.09.68-.22.68-.48v-1.4c-2.8-.6-3.4-1.34-3.4-1.34-.46-1.16-1.1-1.47-1.1-1.47-.9-.6.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.9.83.09-.65.34-1.07.63-1.32-2.2-.25-4.5-1.1-4.5-4.9A3.75 3.75 0 0 1 6.5 6.7c-.1-.25-.45-1.1.09-2.28 0 0 .88-.27 2.93 1.02A10.1 10.1 0 0 1 12 5.57c.96.02 1.92.17 2.85.45 2.04-1.29 2.92-1.02 2.92-1.02.54 1.18.19 2.03.09 2.28a3.75 3.75 0 0 1 1.02 2.72c0 3.8-2.3 4.64-4.5 4.9.35.3.67.9.67 1.8v2.1c0 .26.18.57.68.48C21.13 20.17 24 16.42 24 12A10 10 0 0 0 12 2Z" clip-rule="evenodd"/>
-                                </svg>
-                                Visita FlowLab
-                            </a>
-                        </article>
+    <div class="terminal reveal" id="terminal">
+      <div class="term-bar"><i></i><i></i><i></i><span>~/rosario-marra — prova a scrivere un comando</span></div>
+      <div class="term-body" id="term" aria-live="polite">
+        <div id="termOut"></div>
+        <div class="term-input-line" id="termLine" hidden><span class="p">➜</span><input class="term-input" id="termInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Comando del terminale"></div>
+      </div>
+      <div class="term-chips" id="termChips" aria-label="Comandi rapidi">
+        <button data-cmd="help">help</button><button data-cmd="servizi">servizi</button><button data-cmd="libro">libro</button><button data-cmd="corsi">corsi</button><button data-cmd="skills">skills</button><button data-cmd="contatti">contatti</button>
+      </div>
+    </div>
+  </div>
+</section>
 
-                        <article class="project-card">
-                            <div>
-                                <h3>Framework didattico Python</h3>
-                                <p>Un micro-framework per insegnare i concetti di base dello sviluppo web e delle API REST.</p>
-                                <p class="tech-stack">Tecnologie: Python, Flask, SQLite</p>
-                            </div>
-                            <a href="https://github.com/tuo-profilo/py-didactic-framework" target="_blank" rel="noopener noreferrer" class="github-link">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                    <path fill-rule="evenodd" d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.09.68-.22.68-.48v-1.4c-2.8-.6-3.4-1.34-3.4-1.34-.46-1.16-1.1-1.47-1.1-1.47-.9-.6.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.9.83.09-.65.34-1.07.63-1.32-2.2-.25-4.5-1.1-4.5-4.9A3.75 3.75 0 0 1 6.5 6.7c-.1-.25-.45-1.1.09-2.28 0 0 .88-.27 2.93 1.02A10.1 10.1 0 0 1 12 5.57c.96.02 1.92.17 2.85.45 2.04-1.29 2.92-1.02 2.92-1.02.54 1.18.19 2.03.09 2.28a3.75 3.75 0 0 1 1.02 2.72c0 3.8-2.3 4.64-4.5 4.9.35.3.67.9.67 1.8v2.1c0 .26.18.57.68.48C21.13 20.17 24 16.42 24 12A10 10 0 0 0 12 2Z" clip-rule="evenodd"/>
-                                </svg>
-                                Vedi su GitHub
-                            </a>
-                        </article>
+<!-- MARQUEE -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Docker</span><span>Python</span><span>AI &amp; Machine Learning</span><span>IoT</span><span>Reti TCP/IP</span><span>Software Architecture</span><span>CI/CD</span><span>Cisco Networking</span>
+    <span>Docker</span><span>Python</span><span>AI &amp; Machine Learning</span><span>IoT</span><span>Reti TCP/IP</span><span>Software Architecture</span><span>CI/CD</span><span>Cisco Networking</span>
+  </div>
+</div>
 
-                        <article class="project-card">
-                            <div>
-                                <h3>Analisi dati con Pandas e Matplotlib</h3>
-                                <p>Esempi di script per l'analisi e la visualizzazione di dataset complessi a scopo didattico.</p>
-                                <p class="tech-stack">Tecnologie: Python, Pandas, Matplotlib</p>
-                            </div>
-                            <a href="https://github.com/tuo-profilo/data-analysis-examples" target="_blank" rel="noopener noreferrer" class="github-link">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                    <path fill-rule="evenodd" d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.09.68-.22.68-.48v-1.4c-2.8-.6-3.4-1.34-3.4-1.34-.46-1.16-1.1-1.47-1.1-1.47-.9-.6.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.9.83.09-.65.34-1.07.63-1.32-2.2-.25-4.5-1.1-4.5-4.9A3.75 3.75 0 0 1 6.5 6.7c-.1-.25-.45-1.1.09-2.28 0 0 .88-.27 2.93 1.02A10.1 10.1 0 0 1 12 5.57c.96.02 1.92.17 2.85.45 2.04-1.29 2.92-1.02 2.92-1.02.54 1.18.19 2.03.09 2.28a3.75 3.75 0 0 1 1.02 2.72c0 3.8-2.3 4.64-4.5 4.9.35.3.67.9.67 1.8v2.1c0 .26.18.57.68.48C21.13 20.17 24 16.42 24 12A10 10 0 0 0 12 2Z" clip-rule="evenodd"/>
-                                </svg>
-                                Vedi su GitHub
-                            </a>
-                        </article>
-                        
-                        <article class="project-card">
-                            <div>
-                                <h3>Architettura Microservizi (Demo)</h3>
-                                <p>Una semplice architettura di microservizi per la gestione di ordini, containerizzata con Docker.</p>
-                                <p class="tech-stack">Tecnologie: Docker, Docker Compose, Node.js</p>
-                            </div>
-                            <a href="https://github.com/tuo-profilo/microservices-demo" target="_blank" rel="noopener noreferrer" class="github-link">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                    <path fill-rule="evenodd" d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.09.68-.22.68-.48v-1.4c-2.8-.6-3.4-1.34-3.4-1.34-.46-1.16-1.1-1.47-1.1-1.47-.9-.6.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.9.83.09-.65.34-1.07.63-1.32-2.2-.25-4.5-1.1-4.5-4.9A3.75 3.75 0 0 1 6.5 6.7c-.1-.25-.45-1.1.09-2.28 0 0 .88-.27 2.93 1.02A10.1 10.1 0 0 1 12 5.57c.96.02 1.92.17 2.85.45 2.04-1.29 2.92-1.02 2.92-1.02.54 1.18.19 2.03.09 2.28a3.75 3.75 0 0 1 1.02 2.72c0 3.8-2.3 4.64-4.5 4.9.35.3.67.9.67 1.8v2.1c0 .26.18.57.68.48C21.13 20.17 24 16.42 24 12A10 10 0 0 0 12 2Z" clip-rule="evenodd"/>
-                                </svg>
-                                Vedi su GitHub
-                            </a>
-                        </article>
-                        
-                    </div>
-                </div>
-                <button class="slider-arrow left" aria-label="Scorri a sinistra">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-                    </svg>
-                </button>
-                <button class="slider-arrow right" aria-label="Scorri a destra">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5 15.75 12l-7.5 7.5" />
-                    </svg>
-                </button>
-            </div>
-        </section>
-        
-        <div class="loading-animation-wrapper reveal">
-            <span class="loading-prompt">></span>
-            <span id="loading-text"></span>
-            <span class="blinking-cursor-new"></span>
+<!-- CHI SONO -->
+<section id="chi-sono">
+  <div class="wrap about-grid">
+    <div class="reveal">
+      <div class="portrait">
+        <div class="portrait-img"><img src="immagini/foto-rosario.webp" alt="Ritratto di Rosario Marra" width="1254" height="1254" loading="lazy"></div>
+      </div>
+    </div>
+    <div class="about-text reveal">
+      <div class="eyebrow">Chi sono</div>
+      <h2>Due parole <span class="accent">su di me</span>.</h2>
+      <p>Sono <strong>Rosario Marra</strong>: insegno informatica, seleziono talenti per le aziende IT e accompagno studenti e docenti nei loro progetti.</p>
+      <p>Credo in una formazione che parte dalla pratica: laboratori veri, strumenti usati in azienda e un obiettivo chiaro, cioè far arrivare ogni persona dal <strong>primo comando</strong> al <strong>primo progetto in produzione</strong>.</p>
+      <div class="about-facts">
+        <div class="fact"><small>Base</small><b>Crema (CR)</b></div>
+        <div class="fact"><small>Insegno a</small><b>ITS e superiori</b></div>
+        <div class="fact"><small>Autore di</small><b>Docker: Guida Completa</b></div>
+      </div>
+      <div class="signature">Rosario Marra</div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVIZI -->
+<section id="servizi">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <div class="eyebrow">Cosa faccio</div>
+        <h2>Tre aree, un obiettivo: <span class="accent">far crescere le persone</span> nel digitale.</h2>
+      </div>
+      <p>Formo la prossima generazione di talenti, trovo i professionisti giusti per le aziende e accompagno studenti e docenti nel loro percorso.</p>
+    </div>
+
+    <div class="services">
+      <article class="svc reveal">
+        <div class="svc-num"><span>01</span>
+          <div class="svc-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.15a60 60 0 0 0-.49 6.35A48.6 48.6 0 0 1 12 20.9a48.6 48.6 0 0 1 8.23-4.41 60 60 0 0 0-.49-6.35M2.25 9.33A59.9 59.9 0 0 1 12 3.5a59.9 59.9 0 0 1 9.75 5.84A50.7 50.7 0 0 1 12 13.49 50.7 50.7 0 0 1 2.25 9.33ZM6.75 15v-3.68"/></svg></div>
         </div>
-        
-        <section id="competenze" class="tech-section">
-            <div class="container">
-                <h2 class="reveal">Aree di Competenza</h2>
-                
-                <p class="intro-text reveal">
-                    La mia expertise copre le tecnologie più richieste dal mercato. Dalle <strong>architetture cloud</strong> ai modelli di <span class="text-orange"><strong>intelligenza artificiale</strong></span>, ecco le aree dove posso fare la differenza.
-                </p>
-                
-                <div class="tech-grid">
-                    
-                    <div class="tech-card reveal">
-                        <div class="tech-card-header">
-                            <div class="tech-card-header-left">
-                                <svg class="tech-card-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 0 1 0 3.75H5.625a1.875 1.875 0 0 1 0-3.75Z" />
-                                </svg>
-                                <h3>Docker</h3>
-                            </div>
-                            <span class="accordion-icon">+</span>
-                        </div>
-                        <div class="tech-card-content">
-                            <div class="tech-card-content-inner">
-                                <img src="https://images.unsplash.com/photo-1550439062-609e1531270e?q=80&w=2670&auto=format&fit=crop" alt="Programmazione e sviluppo" class="tech-card-image">
-                                <div class="tech-card-details">
-                                    <p>Es. Laboratori su architetture a microservizi e deploy CI/CD.</p>
-                                    <p>Creazione di <strong>pipeline CI/CD</strong> per l'automazione del rilascio e la gestione di <strong>ambienti complessi</strong>.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tech-card reveal">
-                         <div class="tech-card-header">
-                            <div class="tech-card-header-left">
-                                <svg class="tech-card-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5 0-4.5 16.5" />
-                                </svg>
-                                <h3>Python</h3>
-                            </div>
-                            <span class="accordion-icon">+</span>
-                        </div>
-                        <div class="tech-card-content">
-                             <div class="tech-card-content-inner">
-                                <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?q=80&w=2670&auto=format&fit=crop" alt="Python" class="tech-card-image">
-                                <div class="tech-card-details">
-                                    <p>Es. Sviluppo backend, data analysis e script per intelligenza artificiale.</p>
-                                    <p>Specializzato in <strong>Data Analysis</strong> e sviluppo di API RESTful, portando i <strong>dati</strong> al centro della strategia.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tech-card reveal">
-                         <div class="tech-card-header">
-                            <div class="tech-card-header-left">
-                                <svg class="tech-card-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="M8.288 15.038a5.25 5.25 0 0 1 7.424 0M11.25 10.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm-3.375 0h.008v.015h-.008V10.125Zm.375 2.25a.75.75 0 0 0 0 1.5h2.25a.75.75 0 0 0 0-1.5H8.25Zm2.25-4.5a.75.75 0 0 0 0-1.5H8.25a.75.75 0 0 0 0 1.5h2.25Z" />
-                                </svg>
-                                <h3>AI & Machine Learning</h3>
-                            </div>
-                            <span class="accordion-icon">+</span>
-                        </div>
-                        <div class="tech-card-content">
-                             <div class="tech-card-content-inner">
-                                <img src="https://images.unsplash.com/photo-1518349619113-03114f06ac3a?q=80&w=2574&auto=format&fit=crop" alt="AI & Machine Learning" class="tech-card-image">
-                                <div class="tech-card-details">
-                                    <p>Es. Mentoring su tesi e curriculum design su reti neurali e NLP.</p>
-                                    <p>Guida nella prototipazione di modelli di <strong>reti neurali</strong> e applicazione di <strong>NLP</strong> per l'analisi semantica.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tech-card reveal">
-                         <div class="tech-card-header">
-                            <div class="tech-card-header-left">
-                                <svg class="tech-card-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" />
-                                </svg>
-                                <h3>Socket Programming</h3>
-                            </div>
-                            <span class="accordion-icon">+</span>
-                        </div>
-                        <div class="tech-card-content">
-                             <div class="tech-card-content-inner">
-                                <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=2670&auto=format&fit=crop" alt="Networking" class="tech-card-image">
-                                <div class="tech-card-details">
-                                    <p>Es. Didattica avanzata sulle reti e creazione di web server custom.</p>
-                                    <p>Formazione avanzata sulla <strong>comunicazione low-level</strong> e sulla creazione di <strong>server TCP/IP</strong> performanti.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tech-card reveal">
-                         <div class="tech-card-header">
-                            <div class="tech-card-header-left">
-                                <svg class="tech-card-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Zm9.75-9.75H18a2.25 2.25 0 0 0 2.25-2.25V6A2.25 2.25 0 0 0 18 3.75h-2.25A2.25 2.25 0 0 0 13.5 6v2.25a2.25 2.25 0 0 0 2.25 2.25Z" />
-                                </svg>
-                                <h3>Software Architecture</h3>
-                            </div>
-                            <span class="accordion-icon">+</span>
-                        </div>
-                        <div class="tech-card-content">
-                             <div class="tech-card-content-inner">
-                                <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2670&auto=format&fit=crop" alt="Pianificazione architettura software" class="tech-card-image">
-                                <div class="tech-card-details">
-                                    <p>Es. Recruiting e mentoring su pattern design, (TDD) e sistemi scalabili.</p>
-                                    <p>Mentoring su <strong>design pattern</strong> (TDD, DDD) e progettazione di <strong>sistemi scalabili</strong> e manutenibili.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tech-card reveal">
-                         <div class="tech-card-header">
-                            <div class="tech-card-header-left">
-                                <svg class="tech-card-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                  <path fill-rule="evenodd" d="M10.5 11.25a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" clip-rule="evenodd" />
-                                  <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm0 1.5a8.25 8.25 0 1 0 0 16.5 8.25 8.25 0 0 0 0-16.5Z" clip-rule="evenodd" />
-                                </svg>
-                                <h3>IoT</h3>
-                            </div>
-                            <span class="accordion-icon">+</span>
-                        </div>
-                        <div class="tech-card-content">
-                             <div class="tech-card-content-inner">
-                                <img src="https://images.unsplash.com/photo-1550009158-9ebf69173e03?q=80&w=2702&auto=format&fit=crop" alt="IoT" class="tech-card-image">
-                                <div class="tech-card-details">
-                                    <p>Es. Progettazione laboratori e tesi su dispositivi connessi (ESP32, Raspberry).</p>
-                                    <p>Sviluppo di <strong>firmware</strong> per dispositivi connessi (ESP32, Raspberry Pi) e integrazione con <strong>piattaforme cloud</strong>.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> </section>
-
-        <section id="contatti" class="cta-section reveal">
-            <h2>Pronto a collaborare?</h2>
-            <p>Che si tratti di formare un team, trovare un talento o guidare un progetto.</p>
-            <div class="cta-buttons">
-                <a href="https://linkedin.com/in/rosario-marra-2182bb107" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
-                    Connettiamoci su LinkedIn
-                </a>
-                <a href="mailto:rosario.marra@itscremona.it" class="btn btn-secondary">
-                    Scrivimi
-                </a>
-            </div>
-        </section>
-
-        <div class="footer-animation-wrapper reveal">
-            <span class="loading-prompt">></span>
-            <span id="loading-text-footer"></span>
-            <span class="blinking-cursor-new"></span>
+        <h3>Formazione ICT &amp; Curriculum</h3>
+        <p>Percorsi e laboratori pratici che uniscono solide basi teoriche a competenze subito spendibili.</p>
+        <ul><li>Corsi per ITS e scuole superiori</li><li>Laboratori su AI, Web, IoT</li><li>Progettazione di curricula</li></ul>
+      </article>
+      <article class="svc reveal">
+        <div class="svc-num"><span>02</span>
+          <div class="svc-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.13a9.38 9.38 0 0 0 2.63.37 9.34 9.34 0 0 0 4.12-.95 4.13 4.13 0 0 0-7.53-2.49M15 19.13v-.01c0-1.11-.29-2.16-.79-3.07M15 19.13v.1A12.32 12.32 0 0 1 8.62 21c-2.33 0-4.51-.65-6.37-1.77v-.1a6.38 6.38 0 0 1 11.96-3.07M12 6.38a3.38 3.38 0 1 1-6.75 0 3.38 3.38 0 0 1 6.75 0Zm8.25 2.25a2.63 2.63 0 1 1-5.25 0 2.63 2.63 0 0 1 5.25 0Z"/></svg></div>
         </div>
-        </main>
-
-    <footer class="main-footer">
-        <div class="footer-content">
-            <div class="footer-logo">
-                <img src="Logo Rosario Marra-09.png" alt="Logo Personale" style="height: 40px; width: auto;">
-            </div>
-            
-            <div class="footer-contact">
-                <div class="footer-contact-item">
-                    <svg class="footer-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
-                    </svg>
-                    <p><strong>Email:</strong> <a href="mailto:rosario.marra@itscremona.it">rosario.marra@itscremona.it</a></p>
-                </div>
-                <div class="footer-contact-item">
-                     <svg class="footer-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
-                    </svg>
-                    <p><strong>Cellulare:</strong> +39 3286217534</p>
-                </div>
-                <div class="footer-contact-item">
-                    <svg class="footer-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                    </svg>
-                    <p><strong>Indirizzo:</strong> Crema, Lombardia, Italy</p>
-                </div>
-            </div>
-
-            <div class="footer-social">
-                <h4>Seguimi</h4>
-                <div class="footer-social-links">
-                    <a href="https://linkedin.com/in/rosario-marra-2182bb107" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                        <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                        </svg>
-                    </a>
-                    <a href="https://github.com/tuo-profilo" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                        <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                        </svg>
-                    </a>
-                </div>
-            </div>
-            
-            <div class="footer-cv">
-                <a href="Cv_Rosario.Marra.pdf" class="cv-button" download>
-                    Scarica il mio CV
-                </a>
-            </div>
+        <h3>Recruiting Tecnico</h3>
+        <p>Talent scouting per aziende IT: dall'analisi del job profile alla short list mirata.</p>
+        <ul><li>Valutazione hard &amp; soft skills</li><li>Colloqui tecnici strutturati</li><li>Focus sul potenziale di crescita</li></ul>
+      </article>
+      <article class="svc reveal">
+        <div class="svc-num"><span>03</span>
+          <div class="svc-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6 6 0 0 0 1.5-.19m-1.5.19a6 6 0 0 1-1.5-.19m3.75 7.48a12 12 0 0 1-4.5 0m3.75 2.38a14.4 14.4 0 0 1-3 0M14.25 18v-.19c0-.98.66-1.82 1.51-2.32a7.5 7.5 0 1 0-7.52 0c.85.5 1.51 1.34 1.51 2.32V18"/></svg></div>
         </div>
-        <p class="footer-copyright">&copy; 2025 Rosario Marra. Tutti i diritti riservati. <a href="https://www.iubenda.com/privacy-policy/63130272" class="iubenda-black iubenda-noiframe iubenda-embed" title="Privacy Policy ">Privacy Policy</a><script type="text/javascript">(function (w,d) {var loader = function () {var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0]; s.src="https://cdn.iubenda.com/iubenda.js"; tag.parentNode.insertBefore(s,tag);}; if(w.addEventListener){w.addEventListener("load", loader, false);}else if(w.attachEvent){w.attachEvent("onload", loader);}else{w.onload = loader;}})(window, document);</script></p>
-    
-    </footer>
+        <h3>Mentoring</h3>
+        <p>Supporto a docenti e studenti su percorsi, tesi, progetti e inserimento nel mondo del lavoro.</p>
+        <ul><li>Definizione degli obiettivi</li><li>Affiancamento su tesi e progetti</li><li>Orientamento professionale</li></ul>
+      </article>
+    </div>
+  </div>
+</section>
 
-    <button id="scrollToTopBtn" aria-label="Torna su">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
-        </svg>
-    </button>
-    
-    <button id="themeToggleBtn" aria-label="Cambia Tema">
-        <div class="toggle-track">
-            <span class="icon-position top-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
-                </svg>
-            </span>
-            <span class="icon-position bottom-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
-                </svg>
-            </span>
-            <div class="toggle-thumb"></div>
+<!-- LIBRO -->
+<section id="libro" class="book-section">
+  <div class="bubbles" id="bubbles" aria-hidden="true"></div>
+  <div class="wrap book-grid">
+    <div class="book-stage reveal" id="bookStage" role="button" tabindex="0" aria-label="Libro Docker: clicca per girarlo e leggere il retro">
+      <div class="book-float">
+        <div class="book" id="book">
+          <div class="book-face book-front"><img src="immagini/cover-front.jpg" alt="Copertina di Docker: Guida Completa per Sviluppatori e DevOps, di Rosario Marra" draggable="false"><div class="book-glare"></div></div>
+          <div class="book-face book-back"><img src="immagini/cover-back.jpg" alt="Retro di copertina: a chi si rivolge il manuale e biografia dell'autore" draggable="false"><div class="book-glare"></div></div>
+          <div class="book-spine"><span><b>DOCKER</b>Rosario Marra</span></div>
+          <div class="book-pages"></div>
+          <div class="book-top"></div>
         </div>
-    </button>
+      </div>
+      <div class="book-hint"><kbd>clic</kbd> per girarlo · <kbd>trascina</kbd> per ruotarlo</div>
+    </div>
+    <div class="book-info reveal">
+      <div class="eyebrow">Il mio libro</div>
+      <h2>Docker: dalla teoria al deploy, <span class="accent-o">senza scorciatoie</span>.</h2>
+      <p>Una guida pratica per sviluppatori e team DevOps: container, immagini, networking, Compose e pipeline CI/CD, spiegati con lo stesso approccio che uso in aula.</p>
+      <div class="book-feats">
+        <div class="feat"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="m21 7.5-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9"/></svg><div><b>Container &amp; immagini</b><span>Dai fondamenti ai Dockerfile ottimizzati</span></div></div>
+        <div class="feat"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"/></svg><div><b>CI/CD</b><span>Automazione del rilascio</span></div></div>
+        <div class="feat"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6.88V5.25A2.25 2.25 0 0 1 8.25 3h7.5A2.25 2.25 0 0 1 18 5.25v13.5A2.25 2.25 0 0 1 15.75 21h-7.5A2.25 2.25 0 0 1 6 18.75v-1.63M6 6.88h12M6 17.13h12M6 12h12"/></svg><div><b>Docker Compose</b><span>Ambienti multi-servizio</span></div></div>
+        <div class="feat"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg><div><b>Esempi pratici</b><span>Pensati per la didattica</span></div></div>
+      </div>
+      <a href="https://www.amazon.it/s?k=Docker+Guida+Completa+per+Sviluppatori+e+DevOps+Rosario+Marra" target="_blank" rel="noopener" class="btn btn-primary">Acquista su Amazon
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
+<!-- COMPETENZE -->
+<section id="competenze">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <div class="eyebrow">Aree di competenza</div>
+        <h2>Dalle architetture cloud all'<span class="accent-o">intelligenza artificiale</span>.</h2>
+      </div>
+      <p>Le tecnologie più richieste dal mercato, insegnate e applicate su progetti reali.</p>
+    </div>
 
-            // --- 1. Animazione Testo Dinamico (Hero) ---
-            const words = [
-                '<span class="text-blue">la Formazione</span>', 
-                '<span class="text-orange">il Talento</span>', 
-                '<span class="text-blue">la Crescita</span>'
-            ];
-            let index = 0;
-            const dynamicWordEl = document.getElementById('dynamic-word');
+    <div class="bento">
+      <div class="tile s4 feature reveal">
+        <div>
+          <div class="tile-top"><div class="tile-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="m21 7.5-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9"/></svg></div><span class="badge">Specializzazione</span></div>
+          <h3>Docker &amp; DevOps</h3>
+          <p>Laboratori su microservizi, pipeline CI/CD per l'automazione del rilascio e gestione di ambienti complessi.</p>
+        </div>
+        <div class="code"><span class="k">services:</span><br>&nbsp;&nbsp;<span class="b">api</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;build: <span class="s">./api</span><br>&nbsp;&nbsp;&nbsp;&nbsp;ports: [<span class="s">"8080:80"</span>]<br>&nbsp;&nbsp;&nbsp;&nbsp;depends_on: [<span class="s">db</span>]</div>
+      </div>
+      <div class="tile s2 reveal">
+        <div class="tile-top"><div class="tile-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"/></svg></div></div>
+        <div><h3>Python</h3><p>Backend, API RESTful e data analysis con i dati al centro.</p>
+        <div class="chips"><span class="chip">Flask</span><span class="chip">Pandas</span><span class="chip">FastAPI</span></div></div>
+      </div>
+      <div class="tile s2 reveal">
+        <div class="tile-top"><div class="tile-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9.81 15.9 9 18.75l-.81-2.85a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.85-.81a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.81 2.85a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.85.81a4.5 4.5 0 0 0-3.09 3.09ZM18.26 8.72 18 9.75l-.26-1.03a3.38 3.38 0 0 0-2.46-2.46L14.25 6l1.03-.26a3.38 3.38 0 0 0 2.46-2.46L18 2.25l.26 1.03a3.38 3.38 0 0 0 2.46 2.46L21.75 6l-1.03.26a3.38 3.38 0 0 0-2.46 2.46Z"/></svg></div></div>
+        <div><h3>AI &amp; Machine Learning</h3><p>Reti neurali e NLP: dalla tesi al prototipo.</p>
+        <div class="chips"><span class="chip">Keras</span><span class="chip">scikit-learn</span><span class="chip">NLP</span></div></div>
+      </div>
+      <div class="tile s2 reveal">
+        <div class="tile-top"><div class="tile-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M8.29 15.04a5.25 5.25 0 0 1 7.42 0M5.11 11.86a9.75 9.75 0 0 1 13.79 0M1.92 8.68a14.25 14.25 0 0 1 20.16 0M12.53 18.22l-.53.53-.53-.53a.75.75 0 0 1 1.06 0Z"/></svg></div></div>
+        <div><h3>Reti &amp; Socket</h3><p>Comunicazione low-level e server TCP/IP performanti.</p>
+        <div class="chips"><span class="chip">TCP/IP</span><span class="chip">Cisco</span><span class="chip">Sockets</span></div></div>
+      </div>
+      <div class="tile s2 reveal">
+        <div class="tile-top"><div class="tile-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Zm9.75-9.75H18a2.25 2.25 0 0 0 2.25-2.25V6A2.25 2.25 0 0 0 18 3.75h-2.25A2.25 2.25 0 0 0 13.5 6v2.25a2.25 2.25 0 0 0 2.25 2.25ZM13.5 16.88h6.75m-3.38-3.38v6.75"/></svg></div></div>
+        <div><h3>Software Architecture</h3><p>Design pattern, TDD e DDD per sistemi scalabili.</p>
+        <div class="chips"><span class="chip">TDD</span><span class="chip">DDD</span><span class="chip">Patterns</span></div></div>
+      </div>
+      <div class="tile s2 reveal">
+        <div class="tile-top"><div class="tile-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 0 0 2.25-2.25V6.75a2.25 2.25 0 0 0-2.25-2.25H6.75A2.25 2.25 0 0 0 4.5 6.75v10.5a2.25 2.25 0 0 0 2.25 2.25Zm.75-12h9v9h-9v-9Z"/></svg></div></div>
+        <div><h3>IoT</h3><p>Firmware per dispositivi connessi e integrazione cloud.</p>
+        <div class="chips"><span class="chip">ESP32</span><span class="chip">Raspberry Pi</span><span class="chip">MQTT</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-            if (dynamicWordEl) {
-                dynamicWordEl.innerHTML = words[0];
+<!-- PROGETTI -->
+<section id="progetti" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <div class="eyebrow">Progetti</div>
+        <h2>Strumenti nati in aula, <span class="accent">pubblicati su GitHub</span>.</h2>
+      </div>
+      <a href="https://github.com/rosariomarra" target="_blank" rel="noopener" class="btn btn-ghost">Profilo GitHub
+        <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.79-.26.79-.58v-2.23c-3.34.73-4.03-1.42-4.03-1.42-.55-1.39-1.33-1.76-1.33-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.49 1 .11-.78.42-1.31.76-1.6-2.67-.31-5.47-1.34-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.65 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.62-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.19.69.8.58C20.57 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12Z"/></svg>
+      </a>
+    </div>
 
-                setInterval(() => {
-                    dynamicWordEl.classList.add('fade-out');
-                    setTimeout(() => {
-                        index = (index + 1) % words.length;
-                        dynamicWordEl.innerHTML = words[index]; 
-                        dynamicWordEl.classList.remove('fade-out');
-                    }, 400); 
-                }, 3000);
-            }
+    <div class="projects">
+      <a href="https://rosariomarra.github.io/FlowLab/" target="_blank" rel="noopener" class="proj reveal">
+        <div class="proj-visual">
+          <svg viewBox="0 0 560 180" preserveAspectRatio="xMidYMid slice"><g fill="none" stroke="var(--blue)" stroke-width="1.5" opacity=".9"><rect x="60" y="60" width="90" height="56" rx="10"/><rect x="235" y="30" width="90" height="56" rx="10"/><rect x="235" y="100" width="90" height="56" rx="10" stroke="var(--orange)"/><rect x="410" y="60" width="90" height="56" rx="10"/><path d="M150 88c40 0 45-30 85-30M150 88c40 0 45 40 85 40M325 58c40 0 45 30 85 30M325 128c40 0 45-40 85-40" stroke-dasharray="4 4"/></g><g fill="var(--blue)"><circle cx="150" cy="88" r="4"/><circle cx="410" cy="88" r="4"/></g></svg>
+        </div>
+        <div class="proj-body">
+          <div class="proj-meta"><span class="badge live">Live</span><span class="badge">JavaScript · Canvas</span></div>
+          <h3>FlowLab</h3>
+          <p>Ambiente interattivo per la programmazione a flussi e la simulazione di sistemi dinamici.</p>
+          <span class="proj-link">Apri FlowLab <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"/></svg></span>
+        </div>
+      </a>
+      <a href="https://github.com/rosariomarra" target="_blank" rel="noopener" class="proj reveal">
+        <div class="proj-visual">
+          <svg viewBox="0 0 560 180" preserveAspectRatio="xMidYMid slice"><g font-family="JetBrains Mono,monospace" font-size="13"><text x="60" y="55" fill="var(--orange)">@app.route(<tspan fill="var(--green)">"/api/studenti"</tspan>)</text><text x="60" y="80" fill="var(--blue)">def <tspan fill="var(--text)">lista_studenti</tspan>():</text><text x="90" y="105" fill="var(--muted)">rows = db.query(Studente).all()</text><text x="90" y="130" fill="var(--blue)">return <tspan fill="var(--muted)">jsonify(rows), 200</tspan></text></g></svg>
+        </div>
+        <div class="proj-body">
+          <div class="proj-meta"><span class="badge">Open source</span><span class="badge">Python · Flask · SQLite</span></div>
+          <h3>Framework didattico Python</h3>
+          <p>Un micro-framework per insegnare i concetti base dello sviluppo web e delle API REST.</p>
+          <span class="proj-link">Vedi su GitHub <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"/></svg></span>
+        </div>
+      </a>
+      <a href="https://github.com/rosariomarra" target="_blank" rel="noopener" class="proj reveal">
+        <div class="proj-visual">
+          <svg viewBox="0 0 560 180" preserveAspectRatio="xMidYMid slice"><g stroke="var(--line-2)"><line x1="60" y1="150" x2="500" y2="150"/></g><g fill="var(--blue)" opacity=".85"><rect x="80" y="100" width="28" height="50" rx="4"/><rect x="130" y="70" width="28" height="80" rx="4"/><rect x="180" y="85" width="28" height="65" rx="4"/><rect x="230" y="45" width="28" height="105" rx="4" fill="var(--orange)"/><rect x="280" y="60" width="28" height="90" rx="4"/></g><path d="M340 120 L380 95 L420 105 L460 60 L500 70" fill="none" stroke="var(--green)" stroke-width="2.5"/><g fill="var(--green)"><circle cx="380" cy="95" r="4"/><circle cx="460" cy="60" r="4"/></g></svg>
+        </div>
+        <div class="proj-body">
+          <div class="proj-meta"><span class="badge">Didattica</span><span class="badge">Pandas · Matplotlib</span></div>
+          <h3>Analisi dati con Pandas</h3>
+          <p>Script per l'analisi e la visualizzazione di dataset complessi, pensati per la classe.</p>
+          <span class="proj-link">Vedi su GitHub <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"/></svg></span>
+        </div>
+      </a>
+      <a href="https://github.com/rosariomarra" target="_blank" rel="noopener" class="proj reveal">
+        <div class="proj-visual">
+          <svg viewBox="0 0 560 180" preserveAspectRatio="xMidYMid slice"><g fill="none" stroke-width="1.5"><circle cx="280" cy="90" r="34" stroke="var(--orange)"/><circle cx="140" cy="55" r="22" stroke="var(--blue)"/><circle cx="140" cy="130" r="22" stroke="var(--blue)"/><circle cx="420" cy="55" r="22" stroke="var(--blue)"/><circle cx="420" cy="130" r="22" stroke="var(--blue)"/><path d="M162 60 246 82M162 125 246 98M398 60 314 82M398 125 314 98" stroke="var(--line-2)" stroke-dasharray="3 4"/></g><text x="280" y="95" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" fill="var(--orange)">gateway</text></svg>
+        </div>
+        <div class="proj-body">
+          <div class="proj-meta"><span class="badge">Demo</span><span class="badge">Docker · Node.js</span></div>
+          <h3>Architettura a Microservizi</h3>
+          <p>Gestione ordini con microservizi containerizzati e orchestrati con Docker Compose.</p>
+          <span class="proj-link">Vedi su GitHub <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"/></svg></span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
 
-            // --- 2. Animazione Macchina da Scrivere ---
-            const typedTextOutput = document.getElementById('typed-output');
-            const typedTextParts = ["Sono ", "<strong>Rosario Marra</strong>", ". Aiuto aziende, studenti e docenti a navigare la complessità tecnologica."];
-            let partIndex = 0;
-            let charIndex = 0;
-            const typingSpeed = 50; 
-            const eraseSpeed = 30; 
-            const pauseTime = 5000;
+<!-- E-LEARNING -->
+<section id="e-learning" style="padding-top:0">
+  <div class="wrap">
+    <div class="elearn reveal">
+      <div>
+        <div class="eyebrow">Studenti</div>
+        <h3>Materiale didattico studenti</h3>
+        <p>Dispense, esercitazioni e slide divise per materia, sempre aggiornate e pronte da scaricare.</p>
+        <div class="course-pills"><span>Sistemi e Reti</span><span>TPSIT</span><span>Informatica</span><span>Tecnologie Informatiche</span><span>AI-ML</span><span>Robotica</span></div>
+      </div>
+      <a href="e-learning.html" class="btn btn-primary">Vai al materiale
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
 
-            function typeWriter() {
-                if (!typedTextOutput) return;
-                if (partIndex < typedTextParts.length) {
-                    const currentPart = typedTextParts[partIndex];
-                    if (currentPart.startsWith("<strong")) {
-                        typedTextOutput.innerHTML += currentPart;
-                        partIndex++;
-                        setTimeout(typeWriter, typingSpeed);
-                    } else {
-                        if (charIndex < currentPart.length) {
-                            typedTextOutput.innerHTML += currentPart.charAt(charIndex);
-                            charIndex++;
-                            setTimeout(typeWriter, typingSpeed);
-                        } else {
-                            partIndex++;
-                            charIndex = 0;
-                            setTimeout(typeWriter, typingSpeed);
-                        }
-                    }
-                } else {
-                    setTimeout(eraseWriter, pauseTime);
-                }
-            }
+<!-- CONTATTI -->
+<section id="contatti" class="contact">
+  <div class="wrap">
+    <div class="eyebrow reveal" style="justify-content:center">Contatti</div>
+    <h2 class="reveal">Pronto a <span class="accent">collaborare</span>?</h2>
+    <p class="reveal">Che si tratti di formare un team, trovare un talento o guidare un progetto, scrivimi e ne parliamo.</p>
+    <div class="contact-cards">
+      <a href="mailto:rosario.marra@itscremona.it" class="ccard reveal">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0-9.75 6.75L2.25 6.75"/></svg>
+        <div><small>Email</small><b>rosario.marra@itscremona.it</b></div>
+      </a>
+      <a href="tel:+393286217534" class="ccard reveal">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.28 6.72 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.37c0-.52-.35-.97-.85-1.09l-4.42-1.11c-.44-.11-.9.06-1.17.42l-.97 1.29a1.13 1.13 0 0 1-1.21.38 12.04 12.04 0 0 1-7.14-7.14 1.13 1.13 0 0 1 .38-1.21l1.29-.97c.36-.27.53-.73.42-1.17L6.97 3.6a1.13 1.13 0 0 0-1.09-.85H4.5A2.25 2.25 0 0 0 2.25 5v1.75Z"/></svg>
+        <div><small>Telefono</small><b>+39 328 621 7534</b></div>
+      </a>
+      <a href="https://linkedin.com/in/rosario-marra-2182bb107" target="_blank" rel="noopener" class="ccard reveal">
+        <svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 0H5a5 5 0 0 0-5 5v14a5 5 0 0 0 5 5h14a5 5 0 0 0 5-5V5a5 5 0 0 0-5-5ZM8 19H5V8h3v11ZM6.5 6.73a1.76 1.76 0 1 1 0-3.53 1.76 1.76 0 0 1 0 3.53ZM20 19h-3v-5.6c0-3.37-4-3.12-4 0V19h-3V8h3v1.77c1.4-2.59 7-2.78 7 2.47V19Z"/></svg>
+        <div><small>LinkedIn</small><b>Rosario Marra</b></div>
+      </a>
+    </div>
+    <div class="reveal" style="color:var(--faint);font-size:.9rem;display:flex;gap:8px;justify-content:center;align-items:center">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.14-7.5 11.25-7.5 11.25S4.5 17.64 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
+      Crema, Lombardia
+    </div>
+  </div>
+</section>
+</main>
 
-            function eraseWriter() {
-                if (!typedTextOutput) return;
-                let currentHTML = typedTextOutput.innerHTML;
-                if (currentHTML.length > 0) {
-                    if (currentHTML.endsWith("</strong>")) {
-                        typedTextOutput.innerHTML = currentHTML.substring(0, currentHTML.length - "<strong>Rosario Marra</strong>".length);
-                    } else {
-                        typedTextOutput.innerHTML = currentHTML.substring(0, currentHTML.length - 1);
-                    }
-                    setTimeout(eraseWriter, eraseSpeed);
-                } else {
-                    partIndex = 0;
-                    charIndex = 0;
-                    setTimeout(typeWriter, 500);
-                }
-            }
-            
-            if (typedTextOutput) {
-                typeWriter(); 
-            }
+<footer>
+  <div class="wrap foot">
+    <img src="Logo Rosario Marra-09.png" alt="Rosario Marra">
+    <span>© 2025 Rosario Marra. Tutti i diritti riservati.</span>
+    <div class="foot-links"><a href="https://www.iubenda.com/privacy-policy/63130272" target="_blank" rel="noopener">Privacy Policy</a><a href="Cv_Rosario.Marra.pdf" download>CV</a><a href="#top">Torna su ↑</a></div>
+  </div>
+</footer>
 
-            // --- 3. Animazioni allo Scorrimento (Scroll-Reveal) ---
-            const revealElements = document.querySelectorAll('.reveal');
-            if ('IntersectionObserver' in window) {
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('show');
-                            observer.unobserve(entry.target);
-                        }
-                    });
-                }, { threshold: 0.1 }); 
-                revealElements.forEach(el => {
-                    observer.observe(el);
-                });
-            } else {
-                revealElements.forEach(el => {
-                    el.classList.add('show');
-                });
-            }
+<script>
+(() => {
+  const root = document.documentElement;
+  // Tema: preferenza salvata, altrimenti quella di sistema
+  let saved = null;
+  try { saved = localStorage.getItem('theme'); } catch (e) {}
+  const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+  root.dataset.theme = saved || (prefersLight ? 'light' : 'dark');
+  document.getElementById('themeBtn').addEventListener('click', () => {
+    root.dataset.theme = root.dataset.theme === 'light' ? 'dark' : 'light';
+    try { localStorage.setItem('theme', root.dataset.theme); } catch (e) {}
+  });
 
-            // --- 4. Logica Menu Hamburger ---
-            const hamburger = document.querySelector('.hamburger-menu');
-            const body = document.body;
-            const navLinks = document.querySelectorAll('.nav-menu a');
+  // Menu mobile
+  document.getElementById('burger').addEventListener('click', () => document.body.classList.toggle('menu-open'));
+  document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => document.body.classList.remove('menu-open')));
 
-            if (hamburger) {
-                hamburger.addEventListener('click', () => {
-                    body.classList.toggle('nav-open');
-                });
-            }
+  // Nav con ombra allo scroll + link attivo
+  const nav = document.getElementById('nav');
+  const links = [...document.querySelectorAll('.nav-links a')];
+  const sections = links.map(l => document.querySelector(l.getAttribute('href')));
+  addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', scrollY > 20);
+    let current = -1;
+    sections.forEach((s, i) => { if (s && s.getBoundingClientRect().top < 140) current = i; });
+    links.forEach((l, i) => l.classList.toggle('active', i === current));
+  }, { passive: true });
 
-            navLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    if (!link.parentElement.classList.contains('nav-button-outline') && !link.parentElement.classList.contains('nav-button-primary')) {
-                         body.classList.remove('nav-open');
-                    }
-                    if (link.getAttribute('href').startsWith('#')) {
-                        body.classList.remove('nav-open');
-                    }
-                });
-            });
+  // Parola rotante
+  const words = [['la Formazione', ''], ['il Talento', 'o'], ['la Crescita', '']];
+  const rot = document.getElementById('rotator');
+  let wi = 0;
+  setInterval(() => {
+    rot.classList.add('out');
+    setTimeout(() => {
+      wi = (wi + 1) % words.length;
+      rot.textContent = words[wi][0];
+      rot.className = 'rotator ' + words[wi][1];
+    }, 350);
+  }, 2800);
 
-            // --- 5. Logica Carosello Progetti ---
-            const projectGrid = document.querySelector('.projects-slider-container .project-grid');
-            const leftArrow = document.querySelector('.slider-arrow.left');
-            const rightArrow = document.querySelector('.slider-arrow.right');
-            const cardWidth = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--card-width')) || 320;
-            const gapWidth = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--gap-width')) || 25;
-            
-            const scrollAmount = cardWidth + gapWidth;
-            let scrollInterval; 
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const finePointer = matchMedia('(pointer: fine)').matches;
+  const goTo = id => setTimeout(() => document.querySelector(id).scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' }), 700);
 
-            const startAutoScroll = () => {
-                clearInterval(scrollInterval); 
-                scrollInterval = setInterval(() => {
-                    if (!projectGrid) return; 
-                    if (projectGrid.scrollLeft + projectGrid.clientWidth >= projectGrid.scrollWidth - scrollAmount) {
-                        projectGrid.scrollTo({ left: 0, behavior: 'smooth' });
-                    } else {
-                        projectGrid.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-                    }
-                }, 5000); 
-            };
+  // Terminale interattivo: intro animata, poi il visitatore può digitare comandi
+  const term = document.getElementById('term');
+  const termOut = document.getElementById('termOut');
+  const termLine = document.getElementById('termLine');
+  const termInput = document.getElementById('termInput');
+  const prompt = cmd => `<span class="p">➜</span> <span class="k">${cmd}</span>`;
+  const print = html => { termOut.insertAdjacentHTML('beforeend', html + '\n'); term.scrollTop = term.scrollHeight; };
+  const escapeHtml = s => s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-            const stopAutoScroll = () => {
-                clearInterval(scrollInterval);
-            };
+  const commands = {
+    help: () => [
+      '<span class="w">Comandi disponibili:</span>',
+      '  <span class="k">whoami</span>     chi sono',
+      '  <span class="k">servizi</span>    cosa posso fare per te',
+      '  <span class="k">libro</span>      il mio libro su Docker',
+      '  <span class="k">skills</span>     le tecnologie che insegno',
+      '  <span class="k">progetti</span>   i progetti su GitHub',
+      '  <span class="k">corsi</span>      i corsi e-learning',
+      '  <span class="k">contatti</span>   come raggiungermi',
+      '  <span class="k">docker ps</span>  i "container" attivi',
+      '  <span class="k">tema</span>       cambia tema chiaro/scuro',
+      '  <span class="k">clear</span>      pulisce lo schermo',
+    ],
+    whoami: () => ['Rosario Marra — ingegnere, docente ICT, recruiter tecnico e mentor.', '<span class="c"># base: Crema (CR), Lombardia</span>'],
+    servizi: () => { goTo('#servizi'); return ['<span class="g">01</span> Formazione ICT &amp; Curriculum', '<span class="g">02</span> Recruiting tecnico', '<span class="g">03</span> Mentoring', '<span class="c"># ti porto alla sezione…</span>']; },
+    libro: () => { goTo('#libro'); return ['📘 <span class="w">Docker: Guida Completa per Sviluppatori e DevOps</span>', 'Dai concetti base agli scenari multi-container e all\'orchestrazione.', '<span class="c"># apro il libro… prova a girarlo!</span>']; },
+    skills: () => { goTo('#competenze'); return ['<span class="g">✔</span> Docker &amp; DevOps   <span class="g">✔</span> Python', '<span class="g">✔</span> AI &amp; ML           <span class="g">✔</span> Reti &amp; Socket', '<span class="g">✔</span> Software Arch.    <span class="g">✔</span> IoT']; },
+    progetti: () => { goTo('#progetti'); return ['FlowLab · Framework didattico Python · Analisi dati · Microservizi', '<span class="c"># scorro ai progetti…</span>']; },
+    corsi: () => { goTo('#e-learning'); return ['Sistemi e Reti · TPSIT · Informatica · Tecnologie Informatiche · AI-ML · Robotica', '<span class="c"># ti porto ai corsi…</span>']; },
+    contatti: () => ['✉  <a href="mailto:rosario.marra@itscremona.it">rosario.marra@itscremona.it</a>', '☎  <a href="tel:+393286217534">+39 328 621 7534</a>', 'in <a href="https://linkedin.com/in/rosario-marra-2182bb107" target="_blank" rel="noopener">linkedin.com/in/rosario-marra</a>'],
+    'docker ps': () => [
+      '<span class="c">CONTAINER ID   IMAGE                STATUS</span>',
+      'a1f3c9e2b7d4   rosario/formazione   <span class="g">Up da anni</span>',
+      'b8e2d1f6c3a9   rosario/recruiting   <span class="g">Up</span>',
+      'c4d7a2e9f1b5   rosario/mentoring    <span class="g">Up</span>',
+    ],
+    ls: () => ['servizi/  libro/  competenze/  progetti/  corsi/  contatti.txt'],
+    tema: () => { document.getElementById('themeBtn').click(); return [`Tema impostato su <span class="w">${root.dataset.theme === 'light' ? 'chiaro' : 'scuro'}</span>.`]; },
+    'sudo assumi rosario': () => { goTo('#contatti'); return ['<span class="g">[sudo] permesso concesso ✔</span>', 'Ottima scelta. Ti porto ai contatti…']; },
+    clear: () => { termOut.innerHTML = ''; return []; },
+  };
+  const aliases = { aiuto: 'help', '?': 'help', contact: 'contatti', email: 'contatti', book: 'libro', cv: 'whoami', 'sudo hire rosario': 'sudo assumi rosario', theme: 'tema', cls: 'clear' };
+  const history = [];
+  let histIdx = 0;
 
-            if (leftArrow && rightArrow && projectGrid) { 
-                leftArrow.addEventListener('click', () => {
-                    projectGrid.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-                    stopAutoScroll(); 
-                });
+  const run = raw => {
+    const input = raw.trim().replace(/\s+/g, ' ');
+    print(prompt(escapeHtml(input)));
+    if (!input) return;
+    history.push(input);
+    histIdx = history.length;
+    const key = input.toLowerCase();
+    const cmd = commands[key] || commands[aliases[key]];
+    const out = cmd ? cmd() : [`<span class="e">comando non trovato:</span> ${escapeHtml(input)}`, 'Scrivi <span class="k">help</span> per la lista dei comandi.'];
+    out.forEach(print);
+  };
 
-                rightArrow.addEventListener('click', () => {
-                    projectGrid.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-                    stopAutoScroll(); 
-                });
+  termInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { run(termInput.value); termInput.value = ''; }
+    else if (e.key === 'ArrowUp' && history.length) { histIdx = Math.max(0, histIdx - 1); termInput.value = history[histIdx]; e.preventDefault(); }
+    else if (e.key === 'ArrowDown' && history.length) { histIdx = Math.min(history.length, histIdx + 1); termInput.value = history[histIdx] || ''; e.preventDefault(); }
+  });
+  term.addEventListener('click', () => { if (!termLine.hidden && !getSelection().toString()) termInput.focus({ preventScroll: true }); });
+  document.getElementById('termChips').addEventListener('click', e => {
+    const b = e.target.closest('button');
+    if (b) { termLine.hidden = false; run(b.dataset.cmd); }
+  });
 
-                startAutoScroll();
+  const intro = [
+    [prompt('whoami'), 400],
+    ['Rosario Marra — Docente ICT · Recruiter · Mentor', 500],
+    ['', 80],
+    [prompt('docker run') + ' rosario/collaborazione', 500],
+    ['<span class="g">✔</span> container avviato', 300],
+    ['', 80],
+    ['<span class="c"># Questo terminale è vero: scrivi </span><span class="k">help</span><span class="c"> e premi Invio,</span>', 0],
+    ['<span class="c"># oppure usa i comandi rapidi qui sotto.</span>', 0],
+  ];
+  let ii = 0;
+  const typeIntro = () => {
+    if (ii >= intro.length) { termLine.hidden = false; return; }
+    const [text, pause] = intro[ii++];
+    print(text);
+    setTimeout(typeIntro, reduceMotion ? 0 : pause + 160);
+  };
+  setTimeout(typeIntro, reduceMotion ? 0 : 600);
 
-                projectGrid.addEventListener('mouseenter', stopAutoScroll);
-                projectGrid.addEventListener('mouseleave', startAutoScroll); 
-                projectGrid.addEventListener('mousedown', stopAutoScroll, { passive: true });
-                projectGrid.addEventListener('touchstart', stopAutoScroll, { passive: true });
-            }
-            
-            // --- 6. Logica Accordion Competenze ---
-            const techCards = document.querySelectorAll('.tech-card');
-            techCards.forEach(card => {
-                card.addEventListener('click', () => { 
-                    const isActive = card.classList.contains('active');
-                    techCards.forEach(otherCard => {
-                        otherCard.classList.remove('active');
-                    });
-                    if (!isActive) {
-                        card.classList.add('active');
-                    }
-                });
-            });
+  // Canvas dell'hero: rete di "container" che reagisce al cursore
+  const canvas = document.getElementById('heroCanvas');
+  const ctx = canvas.getContext('2d');
+  const hero = canvas.parentElement;
+  let nodes = [], cw = 0, ch = 0, dpr = 1, colors = {}, heroVisible = true, frame = 0;
+  const mouse = { x: -9999, y: -9999 };
+  const readColors = () => {
+    const cs = getComputedStyle(root);
+    colors = { blue: cs.getPropertyValue('--blue').trim(), orange: cs.getPropertyValue('--orange').trim(), light: root.dataset.theme === 'light' };
+  };
+  const resize = () => {
+    dpr = Math.min(devicePixelRatio || 1, 2);
+    cw = hero.clientWidth; ch = hero.clientHeight;
+    canvas.width = cw * dpr; canvas.height = ch * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const count = Math.min(90, Math.round(cw * ch / 16000));
+    nodes = Array.from({ length: count }, () => ({
+      x: Math.random() * cw, y: Math.random() * ch,
+      vx: (Math.random() - .5) * .35, vy: (Math.random() - .5) * .35,
+      s: 2 + Math.random() * 3, o: Math.random() < .15,
+    }));
+  };
+  const hexA = (hex, a) => {
+    const n = parseInt(hex.replace('#', ''), 16);
+    return `rgba(${n >> 16 & 255},${n >> 8 & 255},${n & 255},${a})`;
+  };
+  const draw = () => {
+    if (frame++ % 60 === 0) readColors();
+    ctx.clearRect(0, 0, cw, ch);
+    const linkDist = 130, mouseDist = 170, base = colors.light ? .22 : .28;
+    for (const n of nodes) {
+      if (!reduceMotion) {
+        const dx = n.x - mouse.x, dy = n.y - mouse.y, d = Math.hypot(dx, dy);
+        if (d < mouseDist && d > 0) { const f = (1 - d / mouseDist) * .6; n.x += dx / d * f; n.y += dy / d * f; }
+        n.x += n.vx; n.y += n.vy;
+        if (n.x < 0 || n.x > cw) n.vx *= -1;
+        if (n.y < 0 || n.y > ch) n.vy *= -1;
+      }
+    }
+    for (let i = 0; i < nodes.length; i++) {
+      const a = nodes[i];
+      for (let j = i + 1; j < nodes.length; j++) {
+        const b = nodes[j], d = Math.hypot(a.x - b.x, a.y - b.y);
+        if (d < linkDist) {
+          ctx.strokeStyle = hexA(colors.blue, (1 - d / linkDist) * base);
+          ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+        }
+      }
+      const dm = Math.hypot(a.x - mouse.x, a.y - mouse.y);
+      if (dm < mouseDist) {
+        ctx.strokeStyle = hexA(colors.orange, (1 - dm / mouseDist) * .55);
+        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
+      }
+      const near = dm < mouseDist;
+      ctx.fillStyle = hexA(a.o || near ? colors.orange : colors.blue, near ? .9 : .55);
+      ctx.fillRect(a.x - a.s, a.y - a.s, a.s * 2, a.s * 2);
+    }
+    if (!reduceMotion && heroVisible && !document.hidden) requestAnimationFrame(draw);
+  };
+  hero.addEventListener('pointermove', e => { const r = hero.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; });
+  hero.addEventListener('pointerleave', () => { mouse.x = mouse.y = -9999; });
+  addEventListener('resize', () => { resize(); if (reduceMotion) draw(); });
+  new IntersectionObserver(([en]) => {
+    const was = heroVisible; heroVisible = en.isIntersecting;
+    if (heroVisible && !was && !reduceMotion) requestAnimationFrame(draw);
+  }).observe(hero);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && heroVisible && !reduceMotion) requestAnimationFrame(draw); });
+  document.getElementById('themeBtn').addEventListener('click', () => { readColors(); if (reduceMotion) draw(); });
+  readColors(); resize(); draw();
 
-            // --- 7. Animazione di Caricamento Codice ---
-            const loadingTextEl = document.getElementById('loading-text');
-            if (loadingTextEl) {
-                const loadingWords = [
-                    "01101001 01101110 01101001...", 
-                    "#include <stdio.h>",
-                    "int main() {",
-                    "char* dev = \"Rosario\";",
-                    "printf(\"Loading...\");",
-                    "}",
-                    "01100101 01111000 01100101..." 
-                ];
-                
-                let wordIndex = 0;
-                let charIndex = 0;
-                let isDeleting = false;
-                const typeSpeed = 100; 
-                const deleteSpeed = 50; 
-                const pauseTime = 1500; 
+  // Libro 3D: tilt col mouse, trascinamento per ruotarlo, clic per girarlo
+  const stage = document.getElementById('bookStage');
+  const book = document.getElementById('book');
+  const BASE_RY = -28, BASE_RX = 6;
+  let flip = 0, drag = null;
+  const setBook = (ry, rx) => { book.style.setProperty('--ry', ry + 'deg'); book.style.setProperty('--rx', rx + 'deg'); };
+  const flipBook = () => { flip += 180; book.style.setProperty('--flip', flip + 'deg'); };
+  stage.addEventListener('pointerdown', e => {
+    drag = { x: e.clientX, ry: parseFloat(book.style.getPropertyValue('--ry')) || BASE_RY, moved: false };
+    stage.setPointerCapture(e.pointerId);
+  });
+  stage.addEventListener('pointermove', e => {
+    const r = stage.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+    book.style.setProperty('--gx', px * 100 + '%');
+    book.style.setProperty('--gy', py * 100 + '%');
+    if (drag) {
+      const dx = e.clientX - drag.x;
+      if (Math.abs(dx) > 5) { drag.moved = true; book.classList.add('dragging'); stage.style.cursor = 'grabbing'; }
+      if (drag.moved) setBook(drag.ry + dx * .6, BASE_RX);
+    } else if (finePointer && !reduceMotion) {
+      setBook(BASE_RY + (px - .5) * 36, BASE_RX - (py - .5) * 16);
+    }
+  });
+  const endDrag = () => {
+    if (!drag) return;
+    if (!drag.moved) flipBook();
+    book.classList.remove('dragging'); stage.style.cursor = '';
+    drag = null;
+  };
+  stage.addEventListener('pointerup', endDrag);
+  stage.addEventListener('pointercancel', endDrag);
+  stage.addEventListener('pointerleave', () => { if (!drag) setBook(BASE_RY, BASE_RX); });
+  stage.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flipBook(); } });
 
-                function typeLoadingText() {
-                    if (!loadingTextEl) return; 
-                    
-                    const currentWord = loadingWords[wordIndex];
-                    let displayText = '';
+  // Bolle che salgono nella sezione del libro
+  if (!reduceMotion) {
+    const bubbles = document.getElementById('bubbles');
+    for (let i = 0; i < 18; i++) {
+      const b = document.createElement('span');
+      const size = 6 + Math.random() * 18;
+      b.className = 'bubble';
+      b.style.cssText = `width:${size}px;height:${size}px;left:${Math.random() * 100}%;animation-duration:${9 + Math.random() * 9}s;animation-delay:${-Math.random() * 15}s;--drift:${(Math.random() - .5) * 120}px`;
+      bubbles.appendChild(b);
+    }
+  }
 
-                    if (isDeleting) {
-                        displayText = currentWord.substring(0, charIndex - 1);
-                        charIndex--;
-                        if (charIndex === 0) {
-                            isDeleting = false;
-                            wordIndex = (wordIndex + 1) % loadingWords.length; 
-                            setTimeout(typeLoadingText, 500); 
-                            return;
-                        }
-                    } else {
-                        displayText = currentWord.substring(0, charIndex + 1);
-                        charIndex++;
-                        if (charIndex === currentWord.length) {
-                            isDeleting = true;
-                            setTimeout(typeLoadingText, pauseTime); 
-                            return;
-                        }
-                    }
-                    loadingTextEl.textContent = displayText;
-                    const speed = isDeleting ? deleteSpeed : typeSpeed;
-                    setTimeout(typeLoadingText, speed);
-                }
-                typeLoadingText(); 
-            }
+  // Barra di progresso dello scroll + parallax dello sfondo hero
+  const progress = document.getElementById('progress');
+  const heroBg = document.querySelector('.hero-bg');
+  const onScroll = () => {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    progress.style.setProperty('--p', max > 0 ? scrollY / max : 0);
+    if (!reduceMotion && scrollY < innerHeight * 1.2) heroBg.style.transform = `translateY(${scrollY * .3}px)`;
+  };
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 
-            // --- 8. Animazione "return Marra;" ---
-            const footerLoadingTextEl = document.getElementById('loading-text-footer');
-            if (footerLoadingTextEl) {
-                const closingText = "return Marra;";
-                let closeCharIndex = 0;
-                const closeTypeSpeed = 150; 
+  // Alone del cursore e pulsanti magnetici (solo mouse, niente movimento ridotto)
+  if (finePointer && !reduceMotion) {
+    const glow = document.getElementById('cursorGlow');
+    let gx = innerWidth / 2, gy = innerHeight / 2, tx = gx, ty = gy;
+    addEventListener('pointermove', e => { tx = e.clientX; ty = e.clientY; document.body.classList.add('has-cursor'); }, { passive: true });
+    document.addEventListener('pointerleave', () => document.body.classList.remove('has-cursor'));
+    const follow = () => {
+      gx += (tx - gx) * .12; gy += (ty - gy) * .12;
+      glow.style.transform = `translate(${gx}px,${gy}px)`;
+      requestAnimationFrame(follow);
+    };
+    follow();
 
-                function typeClosingText() {
-                    if (closeCharIndex < closingText.length) {
-                        footerLoadingTextEl.textContent += closingText.charAt(closeCharIndex);
-                        closeCharIndex++;
-                        setTimeout(typeClosingText, closeTypeSpeed);
-                    }
-                }
-                const observer = new IntersectionObserver((entries) => {
-                    if (entries[0].isIntersecting) {
-                        setTimeout(() => { 
-                             typeClosingText(); 
-                        }, 500);
-                        observer.unobserve(footerLoadingTextEl.parentElement); 
-                    }
-                }, { threshold: 0.8 }); 
-                observer.observe(footerLoadingTextEl.parentElement); 
-            }
-            
-            // --- 9. Pulsante Scroll-to-Top ---
-            const scrollToTopBtn = document.getElementById('scrollToTopBtn');
-            if (scrollToTopBtn) {
-                window.addEventListener('scroll', () => {
-                    if (window.scrollY > 400) { 
-                        scrollToTopBtn.classList.add('show');
-                    } else {
-                        scrollToTopBtn.classList.remove('show');
-                    }
-                }, { passive: true }); 
+    document.querySelectorAll('.btn').forEach(btn => {
+      btn.addEventListener('pointermove', e => {
+        const r = btn.getBoundingClientRect();
+        btn.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * .25}px,${(e.clientY - r.top - r.height / 2) * .35}px)`;
+      });
+      btn.addEventListener('pointerleave', () => { btn.style.transform = ''; });
+    });
+  }
 
-                scrollToTopBtn.addEventListener('click', () => {
-                    window.scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
-                    });
-                });
-            }
+  // Riflettore che segue il mouse su riquadri, progetti e contatti
+  document.querySelectorAll('.tile,.proj').forEach(card => card.addEventListener('pointermove', e => {
+    const r = card.getBoundingClientRect();
+    card.style.setProperty('--sx', (e.clientX - r.left) + 'px');
+    card.style.setProperty('--sy', (e.clientY - r.top) + 'px');
+  }));
 
-            // --- 10. LOGICA TOGGLE LIGHT/DARK MODE ---
-            const themeBtn = document.getElementById('themeToggleBtn');
-            const bodyEl = document.body;
-
-            // Controlla se l'utente aveva già salvato una preferenza
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'light') {
-                bodyEl.classList.add('light-mode');
-            }
-
-            if (themeBtn) {
-                themeBtn.addEventListener('click', () => {
-                    bodyEl.classList.toggle('light-mode');
-                    if (bodyEl.classList.contains('light-mode')) {
-                        localStorage.setItem('theme', 'light');
-                    } else {
-                        localStorage.setItem('theme', 'dark');
-                    }
-                });
-            }
-
+  // Titoli di sezione rivelati parola per parola
+  const splitWords = el => {
+    let i = 0;
+    const walk = node => [...node.childNodes].forEach(child => {
+      if (child.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        child.textContent.split(/(\s+)/).forEach(part => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+          const w = document.createElement('span');
+          w.className = 'word'; w.style.setProperty('--i', i++); w.textContent = part;
+          frag.appendChild(w);
         });
-    </script>
+        child.replaceWith(frag);
+      } else if (child.nodeType === 1) walk(child);
+    });
+    walk(el);
+    el.classList.add('split');
+  };
+  if (!reduceMotion) document.querySelectorAll('.sec-head h2,.book-info h2,.contact h2').forEach(splitWords);
+
+  // Glow che segue il mouse sulle card servizi
+  document.querySelectorAll('.svc').forEach(card => card.addEventListener('pointermove', e => {
+    const r = card.getBoundingClientRect();
+    card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+    card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+  }));
+
+  // Scroll reveal
+  const io = new IntersectionObserver(entries => entries.forEach(en => {
+    if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+  }), { threshold: .12 });
+  document.querySelectorAll('.reveal').forEach((el, i) => { el.style.transitionDelay = (i % 4) * 70 + 'ms'; io.observe(el); });
+  document.querySelectorAll('.split').forEach(el => io.observe(el));
+})();
+</script>
 </body>
 </html>
+
