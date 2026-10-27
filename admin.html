@@ -179,16 +179,29 @@ td .p{display:block;font-family:var(--mono);font-size:.72rem;color:var(--faint)}
     r.readAsDataURL(file);
   });
 
-  async function gh(path, opts = {}) {
-    const r = await fetch(`${API}/repos/${cfg.owner}/${cfg.repo}${path}`, {
+  const WRITE_HINT = 'Serve il permesso di scrittura: token fine-grained con "Contents: Read and write", oppure token classico con "public_repo".';
+
+  // Traduce gli errori più comuni di GitHub in indicazioni pratiche
+  function explain(status, message) {
+    if (status === 401) return 'Token non valido, scaduto o copiato male: creane uno nuovo e incollalo di nuovo.';
+    if (status === 403 && /not accessible|permission/i.test(message)) return 'Il token non ha questo permesso. ' + WRITE_HINT;
+    if (status === 403 && /rate limit/i.test(message)) return 'Troppe richieste a GitHub: riprova tra qualche minuto.';
+    if (status === 409) return 'Conflitto con una modifica fatta altrove: ricarica la pagina e riprova.';
+    if (status === 422 && /too large|size/i.test(message)) return 'File troppo grande per GitHub.';
+    return message || 'Errore ' + status;
+  }
+
+  async function api(url, opts = {}) {
+    const r = await fetch(url, {
       ...opts,
       headers: { Authorization: `Bearer ${cfg.token}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28', ...(opts.headers || {}) },
     });
     if (r.status === 404) return null;
     const j = await r.json().catch(() => ({}));
-    if (!r.ok) throw new Error(j.message || 'Errore ' + r.status);
+    if (!r.ok) throw new Error(explain(r.status, j.message));
     return j;
   }
+  const gh = (path, opts) => api(`${API}/repos/${cfg.owner}/${cfg.repo}${path}`, opts);
   const contentsUrl = p => `/contents/${p.split('/').map(encodeURIComponent).join('/')}`;
 
   async function loadManifest() {
@@ -206,33 +219,76 @@ td .p{display:block;font-family:var(--mono);font-size:.72rem;color:var(--faint)}
     manifestSha = j.content.sha;
   }
 
-  async function connect() {
+  // Ogni controllo è [stato, testo, dettaglio]: stato true = ok, false = fallito, null = in corso
+  function showChecks(list) {
+    const failed = list.some(c => c[0] === false), done = list.every(c => c[0] === true);
+    $('connMsg').className = 'msg show ' + (failed ? 'err' : done ? 'ok' : 'info');
+    $('connMsg').innerHTML = list.map(([ok, text, detail]) =>
+      `<div style="margin:4px 0">${ok === true ? '✔' : ok === false ? '✖' : '…'} ${esc(text)}${detail ? `<div style="font-size:.85rem;opacity:.9;margin:2px 0 0 20px">${esc(detail)}</div>` : ''}</div>`).join('');
+  }
+
+  // fullTest = true prova anche una scrittura reale (creando e cancellando un branch temporaneo,
+  // così non si genera nessun commit e GitHub Pages non riparte)
+  async function connect(fullTest = false) {
     if (!cfg.token || !cfg.owner || !cfg.repo) { setConn('', 'Non connesso'); return; }
-    setConn('', 'Connessione…');
+    setConn('', 'Verifica…');
+    const steps = [];
+    const step = async (label, fn) => {
+      steps.push([null, label]); showChecks(steps);
+      try { const r = await fn(); steps[steps.length - 1] = [true, label]; showChecks(steps); return r; }
+      catch (e) { steps[steps.length - 1] = [false, label, e.message]; showChecks(steps); throw e; }
+    };
     try {
-      const repo = await gh('');
-      if (!repo) throw new Error('Repository non trovata o token senza accesso.');
-      if (!repo.permissions?.push) throw new Error('Il token non ha il permesso di scrittura.');
+      const user = await step('Token valido', async () => {
+        const u = await api(`${API}/user`);
+        if (!u) throw new Error('Token non riconosciuto da GitHub.');
+        return u;
+      });
+      steps[0][1] = `Token valido (account ${user.login})`; showChecks(steps);
+
+      const repo = await step(`Accesso alla repository ${cfg.owner}/${cfg.repo}`, async () => {
+        const r = await gh('');
+        if (!r) throw new Error('Repository non trovata, oppure il token non include questa repository. Controlla utente e nome, e nel token la voce "Repository access".');
+        return r;
+      });
       cfg.branch ||= repo.default_branch;
       $('branch').value = cfg.branch;
-      await loadManifest();
+
+      const head = await step(`Branch "${cfg.branch}"`, async () => {
+        const h = await gh(`/git/ref/heads/${encodeURIComponent(cfg.branch)}`);
+        if (!h) throw new Error(`Branch non trovato. Quello principale di questa repo è "${repo.default_branch}".`);
+        return h;
+      });
+
+      await step('Lettura dell\'elenco dei file', loadManifest);
+
+      if (fullTest) {
+        await step('Permesso di scrittura (prova reale)', async () => {
+          const ref = `verifica-token-${Date.now()}`;
+          const created = await gh('/git/refs', { method: 'POST', body: JSON.stringify({ ref: 'refs/heads/' + ref, sha: head.object.sha }) });
+          if (!created) throw new Error('GitHub ha rifiutato la scrittura. ' + WRITE_HINT);
+          await gh(`/git/refs/heads/${ref}`, { method: 'DELETE' });
+        });
+      }
+
+      try { localStorage.setItem('gh-admin', JSON.stringify(cfg)); } catch (e) {}
       setConn('ok', `${cfg.owner}/${cfg.repo}`);
       $('app').classList.remove('locked');
-      $('setup').open = false;
-      $('connMsg').className = 'msg';
+      if (fullTest) steps.push([true, 'Tutto funziona: puoi caricare ed eliminare file.']);
+      else { $('setup').open = false; $('connMsg').className = 'msg'; }
+      if (fullTest) showChecks(steps);
       renderAll();
     } catch (e) {
       setConn('err', 'Errore');
       $('app').classList.add('locked');
       $('setup').open = true;
-      msg($('connMsg'), 'err', esc(e.message));
     }
   }
 
   $('saveConn').onclick = () => {
     cfg = { owner: $('owner').value.trim(), repo: $('repo').value.trim(), branch: $('branch').value.trim(), token: $('token').value.trim() };
     try { localStorage.setItem('gh-admin', JSON.stringify(cfg)); } catch (e) {}
-    connect();
+    connect(true);
   };
   $('logout').onclick = () => {
     try { localStorage.removeItem('gh-admin'); } catch (e) {}
