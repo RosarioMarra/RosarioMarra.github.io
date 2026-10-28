@@ -292,6 +292,15 @@ main,footer{position:relative;z-index:1}
 /* Progetti e blog */
 .work-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:stretch}
 .feature-proj .proj-visual{height:220px}
+.mock-shot{display:block;padding:18px 18px 0;background:linear-gradient(160deg,var(--bg-2),color-mix(in srgb,var(--blue) 12%,var(--bg-2)))}
+.mock-bar{display:flex;align-items:center;gap:5px;padding:7px 10px;background:#EEF0F3;border-radius:10px 10px 0 0;border:1px solid #DDE1E6;border-bottom:0}
+.mock-bar i{width:7px;height:7px;border-radius:50%;background:#FF5F57}.mock-bar i:nth-child(2){background:#FEBC2E}.mock-bar i:nth-child(3){background:#28C840}
+.mock-bar span{margin-left:8px;padding:2px 10px;border-radius:5px;background:#fff;color:#6B7280;font-family:var(--mono);font-size:.62rem}
+.mock-shot img{display:block;width:100%;height:auto;border:1px solid #DDE1E6;border-top:0;transition:transform .5s cubic-bezier(.2,.7,.2,1);transform-origin:top center}
+.feature-proj:hover .mock-shot img{transform:translateY(-6px)}
+.proj-actions{display:flex;gap:20px;flex-wrap:wrap;align-items:center}
+.proj-link-2{color:var(--muted)}
+.proj-link-2:hover{color:var(--text)}
 .posts{display:grid;gap:12px}
 .post{display:block;padding:20px 22px;border-radius:16px;background:var(--card);border:1px solid var(--line);transition:border-color .2s,transform .2s}
 .post:hover{border-color:var(--blue);transform:translateX(4px)}
@@ -615,17 +624,21 @@ footer{border-top:1px solid var(--line);padding:40px 0}
     </div>
 
     <div class="work-grid">
-      <a href="https://rosariomarra.github.io/FlowLab/" target="_blank" rel="noopener" class="proj feature-proj reveal" id="progetti">
-        <div class="proj-visual">
-          <svg viewBox="0 0 560 180" preserveAspectRatio="xMidYMid slice"><g fill="none" stroke="var(--blue)" stroke-width="1.5" opacity=".9"><rect x="60" y="60" width="90" height="56" rx="10"/><rect x="235" y="30" width="90" height="56" rx="10"/><rect x="235" y="100" width="90" height="56" rx="10" stroke="var(--orange)"/><rect x="410" y="60" width="90" height="56" rx="10"/><path d="M150 88c40 0 45-30 85-30M150 88c40 0 45 40 85 40M325 58c40 0 45 30 85 30M325 128c40 0 45-40 85-40" stroke-dasharray="4 4"/></g><g fill="var(--blue)"><circle cx="150" cy="88" r="4"/><circle cx="410" cy="88" r="4"/></g></svg>
-        </div>
+      <div class="proj feature-proj reveal" id="progetti">
+        <a href="https://rosariomarra.github.io/FlowLab/" target="_blank" rel="noopener" class="proj-visual mock-shot" aria-label="Apri FlowLab">
+          <div class="mock-bar"><i></i><i></i><i></i><span>rosariomarra.github.io/FlowLab</span></div>
+          <img src="immagini/blog/flowlab-desktop.jpg" alt="Schermata di FlowLab con un diagramma di flusso" width="800" height="500" loading="lazy">
+        </a>
         <div class="proj-body">
           <div class="proj-meta"><span class="badge live">Live</span><span class="badge">JavaScript · Canvas</span></div>
           <h3>FlowLab</h3>
-          <p>Ambiente interattivo per la programmazione a flussi e la simulazione di sistemi dinamici. Lo uso in classe per far ragionare gli studenti per blocchi prima di scrivere codice.</p>
-          <span class="proj-link">Apri FlowLab <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"/></svg></span>
+          <p>App web gratuita per creare ed eseguire diagrammi di flusso: esecuzione passo passo, variabili in tempo reale ed export del codice in C e Python.</p>
+          <div class="proj-actions">
+            <a href="https://rosariomarra.github.io/FlowLab/" target="_blank" rel="noopener" class="proj-link">Apri FlowLab <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"/></svg></a>
+            <a href="blog/flowlab-diagrammi-di-flusso.html" class="proj-link proj-link-2">Leggi la guida →</a>
+          </div>
         </div>
-      </a>
+      </div>
 
       <div class="posts" id="ultimiArticoli">
         <a href="blog/docker-primo-container.html" class="post reveal">
@@ -638,10 +651,10 @@ footer{border-top:1px solid var(--line);padding:40px 0}
           <h3>Subnetting spiegato semplice, con esempi</h3>
           <p>Maschere, CIDR e calcolo delle sottoreti senza formule a memoria: il metodo che uso con le mie classi.</p>
         </a>
-        <a href="blog/python-analisi-dati-pandas.html" class="post reveal">
-          <div class="post-meta"><span class="post-tag">Python</span><span>14 ott 2026 · 6 min</span></div>
-          <h3>Analisi dati con Python e Pandas: da dove iniziare</h3>
-          <p>Caricare un CSV, pulire i dati e ottenere il primo grafico in poche righe di codice.</p>
+        <a href="blog/flowlab-diagrammi-di-flusso.html" class="post reveal">
+          <div class="post-meta"><span class="post-tag">Didattica</span><span>28 ott 2026 · 5 min</span></div>
+          <h3>FlowLab: imparare gli algoritmi con i diagrammi di flusso</h3>
+          <p>L'app web che ho creato per far ragionare gli studenti per blocchi, passo passo, fino al codice.</p>
         </a>
       </div>
     </div>
