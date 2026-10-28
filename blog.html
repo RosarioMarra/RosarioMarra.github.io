@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog · Rosario Marra</title>
+<meta name="description" content="Guide pratiche di Rosario Marra su Docker, reti, Python e intelligenza artificiale, scritte per studenti e sviluppatori.">
+<meta name="author" content="Rosario Marra">
+<link rel="canonical" href="https://rosariomarra.github.io/blog.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="it_IT">
+<meta property="og:url" content="https://rosariomarra.github.io/blog.html">
+<meta property="og:title" content="Blog · Rosario Marra">
+<meta property="og:description" content="Guide pratiche su Docker, reti, Python e AI.">
+<meta property="og:image" content="https://rosariomarra.github.io/immagini/foto-rosario.webp">
+<link rel="icon" href="immagini/Logo Rosario Marra nero.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="blog/stile.css">
+<script src="blog/tema.js"></script>
+</head>
+<body>
+<header class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><img src="Logo Rosario Marra-09.png" alt="Rosario Marra"></a>
+    <ul class="nav-links">
+      <li><a href="index.html#chi-sono">Chi sono</a></li>
+      <li><a href="index.html#libro">Libro</a></li>
+      <li><a href="blog.html" class="active">Blog</a></li>
+      <li><a href="e-learning.html">Materiale didattico</a></li>
+    </ul>
+    <button class="icon-btn theme-btn" id="themeBtn" aria-label="Cambia tema">
+      <svg class="moon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 15A9.72 9.72 0 0 1 18 15.75 9.75 9.75 0 0 1 8.25 6c0-1.33.27-2.6.75-3.75A9.75 9.75 0 1 0 21.75 15Z"/></svg>
+      <svg class="sun" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.36.39-1.59 1.59M21 12h-2.25m-.39 6.36-1.59-1.59M12 18.75V21m-4.77-4.23-1.59 1.59M5.25 12H3m4.23-4.77L5.64 5.64M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="page-head">
+    <div class="eyebrow">Blog</div>
+    <h1>Guide pratiche, <span class="accent">dalla classe al codice</span>.</h1>
+    <p>Articoli brevi su Docker, reti, Python e AI, scritti come li spiego a lezione: pochi concetti, esempi concreti.</p>
+    <div class="tags" id="tags">
+      <button class="on" data-t="">Tutti</button><button data-t="Docker">Docker</button><button data-t="Reti">Reti</button><button data-t="Python">Python</button>
+    </div>
+  </div>
+
+  <div class="post-list" id="list">
+    <a class="card" href="blog/docker-primo-container.html" data-t="Docker">
+      <div class="meta"><b>Docker</b><span>28 ott 2026 · 6 min</span></div>
+      <h2>Docker in 15 minuti: il tuo primo container</h2>
+      <p>Installazione, primo <code>docker run</code> e il Dockerfile minimo per mettere online una pagina web.</p>
+      <span class="more">Leggi →</span>
+    </a>
+    <a class="card" href="blog/subnetting-spiegato-semplice.html" data-t="Reti">
+      <div class="meta"><b>Reti</b><span>21 ott 2026 · 7 min</span></div>
+      <h2>Subnetting spiegato semplice, con esempi</h2>
+      <p>Maschere, CIDR e calcolo delle sottoreti senza formule a memoria: il metodo che uso con le mie classi.</p>
+      <span class="more">Leggi →</span>
+    </a>
+    <a class="card" href="blog/python-analisi-dati-pandas.html" data-t="Python">
+      <div class="meta"><b>Python</b><span>14 ott 2026 · 6 min</span></div>
+      <h2>Analisi dati con Python e Pandas: da dove iniziare</h2>
+      <p>Caricare un CSV, pulire i dati e ottenere il primo grafico in poche righe di codice.</p>
+      <span class="more">Leggi →</span>
+    </a>
+  </div>
+</main>
+
+<footer><div class="wrap foot"><span>© 2026 Rosario Marra</span><a href="index.html">← Torna alla home</a></div></footer>
+
+<script src="blog/articoli.js"></script>
+<script>
+  const tags = document.getElementById('tags');
+  tags.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    tags.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+    document.querySelectorAll('#list .card').forEach(c => c.hidden = !!b.dataset.t && c.dataset.t !== b.dataset.t);
+  });
+
+  const { esc, meta } = Articoli;
+  Articoli.render(document.getElementById('list'), a => `
+    <a class="card" href="${esc(a.url)}" data-t="${esc(a.categoria)}">
+      <div class="meta"><b>${esc(a.categoria)}</b><span>${esc(meta(a))}</span></div>
+      <h2>${esc(a.titolo)}</h2>
+      <p>${esc(a.descrizione)}</p>
+      <span class="more">Leggi →</span>
+    </a>`).then(list => {
+    if (!list.length) return;
+    const cats = [...new Set(list.map(a => a.categoria))];
+    tags.innerHTML = '<button class="on" data-t="">Tutti</button>' + cats.map(c => `<button data-t="${esc(c)}">${esc(c)}</button>`).join('');
+  });
+</script>
+</body>
+</html>

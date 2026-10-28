@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analisi dati con Python e Pandas: da dove iniziare · Rosario Marra</title>
+<meta name="description" content="Introduzione pratica all'analisi dati con Python e Pandas: leggere un CSV, esplorare e pulire i dati, raggruppare e creare il primo grafico con Matplotlib.">
+<meta name="author" content="Rosario Marra">
+<meta property="article:published_time" content="2026-10-14">
+<meta property="article:section" content="Python">
+<meta name="reading-time" content="6">
+<link rel="canonical" href="https://rosariomarra.github.io/blog/python-analisi-dati-pandas.html">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="it_IT">
+<meta property="og:url" content="https://rosariomarra.github.io/blog/python-analisi-dati-pandas.html">
+<meta property="og:title" content="Analisi dati con Python e Pandas: da dove iniziare">
+<meta property="og:description" content="Caricare un CSV, pulire i dati e ottenere il primo grafico in poche righe.">
+<meta property="og:image" content="https://rosariomarra.github.io/immagini/foto-rosario.webp">
+<link rel="icon" href="../immagini/Logo Rosario Marra nero.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="stile.css">
+<script src="tema.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Analisi dati con Python e Pandas: da dove iniziare",
+  "description": "Leggere un CSV, esplorare e pulire i dati, raggruppare e creare il primo grafico con Matplotlib.",
+  "datePublished": "2026-10-14",
+  "inLanguage": "it",
+  "author": { "@type": "Person", "name": "Rosario Marra", "url": "https://rosariomarra.github.io/" },
+  "mainEntityOfPage": "https://rosariomarra.github.io/blog/python-analisi-dati-pandas.html"
+}
+</script>
+</head>
+<body>
+<header class="nav">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo"><img src="../Logo Rosario Marra-09.png" alt="Rosario Marra"></a>
+    <ul class="nav-links">
+      <li><a href="../index.html#chi-sono">Chi sono</a></li>
+      <li><a href="../index.html#libro">Libro</a></li>
+      <li><a href="../blog.html" class="active">Blog</a></li>
+      <li><a href="../e-learning.html">Materiale didattico</a></li>
+    </ul>
+    <button class="icon-btn theme-btn" id="themeBtn" aria-label="Cambia tema">
+      <svg class="moon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 15A9.72 9.72 0 0 1 18 15.75 9.75 9.75 0 0 1 8.25 6c0-1.33.27-2.6.75-3.75A9.75 9.75 0 1 0 21.75 15Z"/></svg>
+      <svg class="sun" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.36.39-1.59 1.59M21 12h-2.25m-.39 6.36-1.59-1.59M12 18.75V21m-4.77-4.23-1.59 1.59M5.25 12H3m4.23-4.77L5.64 5.64M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"/></svg>
+    </button>
+  </div>
+</header>
+
+<article class="article">
+  <a href="../blog.html" class="back">← Tutti gli articoli</a>
+  <div class="eyebrow">Python</div>
+  <h1>Analisi dati con Python e Pandas: da dove iniziare</h1>
+  <p class="lead">Un file CSV, una decina di righe di Python e hai già risposto a domande vere sui tuoi dati. Vediamo il flusso completo con un esempio semplice: i voti di una classe.</p>
+  <div class="byline"><img src="../immagini/foto-rosario.webp" alt=""><div><b>Rosario Marra</b>14 ottobre 2026 · 6 min di lettura</div></div>
+
+  <div class="prose">
+    <h2>1. Installa le librerie</h2>
+<pre><code>pip install pandas matplotlib</code></pre>
+    <p>Lavoriamo su un file <code>voti.csv</code> con tre colonne:</p>
+<pre><code>studente,materia,voto
+Anna,Informatica,8
+Luca,Informatica,5.5
+Anna,Sistemi e Reti,7
+Luca,Sistemi e Reti,
+Marco,TPSIT,6.5</code></pre>
+    <p>Nota il voto mancante di Luca in Sistemi e Reti: nei dati reali capita sempre.</p>
+
+    <h2>2. Carica ed esplora i dati</h2>
+<pre><code>import pandas as pd
+
+df = pd.read_csv("voti.csv")
+print(df.head())      # prime righe
+df.info()             # colonne, tipi e valori mancanti
+print(df.describe())  # media, minimo, massimo...</code></pre>
+    <p>Un <strong>DataFrame</strong> è una tabella: righe e colonne con un nome. <code>info()</code> è il primo comando da lanciare, perché ti dice subito quante celle sono vuote.</p>
+
+    <h2>3. Pulisci i dati</h2>
+<pre><code>df = df.dropna(subset=["voto"])      # elimina le righe senza voto
+df["materia"] = df["materia"].str.strip()</code></pre>
+    <div class="note"><p>In alternativa a <code>dropna</code> puoi riempire i vuoti con <code>fillna()</code>. La scelta dipende dalla domanda a cui vuoi rispondere: inventare un voto, di solito, non è una buona idea.</p></div>
+
+    <h2>4. Fai domande ai dati</h2>
+<pre><code># Chi ha un voto insufficiente?
+insufficienti = df[df["voto"] &lt; 6]
+print(insufficienti)
+
+# Media per materia, dalla più bassa alla più alta
+media = df.groupby("materia")["voto"].mean().sort_values()
+print(media)</code></pre>
+    <p>Il <strong>filtro</strong> con le parentesi quadre e <strong>groupby</strong> sono i due strumenti che userai più spesso: il primo seleziona righe, il secondo riassume gruppi.</p>
+
+    <h2>5. Il primo grafico</h2>
+<pre><code>import matplotlib.pyplot as plt
+
+media.plot(kind="barh", title="Media voti per materia")
+plt.xlabel("Voto medio")
+plt.tight_layout()
+plt.show()</code></pre>
+    <p>Con <code>kind="barh"</code> ottieni barre orizzontali, più leggibili quando i nomi delle categorie sono lunghi.</p>
+
+    <h2>Riepilogo</h2>
+    <ul>
+      <li><code>read_csv</code> per caricare, <code>info</code> e <code>describe</code> per capire i dati;</li>
+      <li><code>dropna</code> / <code>fillna</code> per gestire i valori mancanti;</li>
+      <li>filtri e <code>groupby</code> per rispondere alle domande;</li>
+      <li><code>.plot()</code> per trasformare il risultato in un grafico.</li>
+    </ul>
+  </div>
+
+  <div class="cta">
+    <h3>Vuoi esercitarti?</h3>
+    <p>Nella sezione Materiale didattico trovi dataset ed esercitazioni di Python e AI-ML da scaricare.</p>
+    <a class="btn" href="../e-learning.html">Vai al materiale</a><a class="btn btn-ghost" href="../blog.html">Altri articoli</a>
+  </div>
+</article>
+
+<footer><div class="wrap foot"><span>© 2026 Rosario Marra</span><a href="../index.html">← Torna alla home</a></div></footer>
+</body>
+</html>

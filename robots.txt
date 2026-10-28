@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+# il modello degli articoli non va indicizzato
+Disallow: /blog/_
 
 Sitemap: https://rosariomarra.github.io/sitemap.xml

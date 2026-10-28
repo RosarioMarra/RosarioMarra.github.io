@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Docker in 15 minuti: il tuo primo container · Rosario Marra</title>
+<meta name="description" content="Guida pratica a Docker per principianti: installazione, primo docker run, comandi base e un Dockerfile minimo per pubblicare una pagina web.">
+<meta name="author" content="Rosario Marra">
+<meta property="article:published_time" content="2026-10-28">
+<meta property="article:section" content="Docker">
+<meta name="reading-time" content="6">
+<link rel="canonical" href="https://rosariomarra.github.io/blog/docker-primo-container.html">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="it_IT">
+<meta property="og:url" content="https://rosariomarra.github.io/blog/docker-primo-container.html">
+<meta property="og:title" content="Docker in 15 minuti: il tuo primo container">
+<meta property="og:description" content="Installazione, primo docker run e un Dockerfile minimo per pubblicare una pagina web.">
+<meta property="og:image" content="https://rosariomarra.github.io/immagini/cover-front.jpg">
+<link rel="icon" href="../immagini/Logo Rosario Marra nero.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="stile.css">
+<script src="tema.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Docker in 15 minuti: il tuo primo container",
+  "description": "Installazione, primo docker run, comandi base e un Dockerfile minimo per pubblicare una pagina web.",
+  "datePublished": "2026-10-28",
+  "inLanguage": "it",
+  "image": "https://rosariomarra.github.io/immagini/cover-front.jpg",
+  "author": { "@type": "Person", "name": "Rosario Marra", "url": "https://rosariomarra.github.io/" },
+  "mainEntityOfPage": "https://rosariomarra.github.io/blog/docker-primo-container.html"
+}
+</script>
+</head>
+<body>
+<header class="nav">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo"><img src="../Logo Rosario Marra-09.png" alt="Rosario Marra"></a>
+    <ul class="nav-links">
+      <li><a href="../index.html#chi-sono">Chi sono</a></li>
+      <li><a href="../index.html#libro">Libro</a></li>
+      <li><a href="../blog.html" class="active">Blog</a></li>
+      <li><a href="../e-learning.html">Materiale didattico</a></li>
+    </ul>
+    <button class="icon-btn theme-btn" id="themeBtn" aria-label="Cambia tema">
+      <svg class="moon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 15A9.72 9.72 0 0 1 18 15.75 9.75 9.75 0 0 1 8.25 6c0-1.33.27-2.6.75-3.75A9.75 9.75 0 1 0 21.75 15Z"/></svg>
+      <svg class="sun" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.36.39-1.59 1.59M21 12h-2.25m-.39 6.36-1.59-1.59M12 18.75V21m-4.77-4.23-1.59 1.59M5.25 12H3m4.23-4.77L5.64 5.64M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"/></svg>
+    </button>
+  </div>
+</header>
+
+<article class="article">
+  <a href="../blog.html" class="back">← Tutti gli articoli</a>
+  <div class="eyebrow">Docker</div>
+  <h1>Docker in 15 minuti: il tuo primo container</h1>
+  <p class="lead">Niente teoria infinita: installiamo Docker, avviamo un web server con un solo comando e costruiamo la nostra prima immagine.</p>
+  <div class="byline"><img src="../immagini/foto-rosario.webp" alt=""><div><b>Rosario Marra</b>28 ottobre 2026 · 6 min di lettura</div></div>
+
+  <div class="prose">
+    <h2>Immagine e container: l'unica teoria che serve</h2>
+    <p>Un'<strong>immagine</strong> è un pacchetto pronto all'uso: contiene un'applicazione e tutto ciò che le serve per funzionare. Un <strong>container</strong> è un'immagine in esecuzione. Dalla stessa immagine puoi avviare tutti i container che vuoi, come da una ricetta puoi preparare più piatti uguali.</p>
+
+    <h2>1. Installa Docker</h2>
+    <ul>
+      <li><strong>Windows e macOS</strong>: scarica e installa <a href="https://www.docker.com/products/docker-desktop/" target="_blank" rel="noopener">Docker Desktop</a>, poi avvialo.</li>
+      <li><strong>Linux</strong>: installa Docker Engine seguendo la guida ufficiale per la tua distribuzione.</li>
+    </ul>
+    <p>Apri un terminale e controlla che tutto funzioni:</p>
+<pre><code>docker --version
+docker run hello-world</code></pre>
+    <p>Se compare il messaggio "Hello from Docker!", sei pronto.</p>
+
+    <h2>2. Avvia un web server con un comando</h2>
+<pre><code>docker run -d -p 8080:80 --name web nginx</code></pre>
+    <ul>
+      <li><code>-d</code> avvia il container in background;</li>
+      <li><code>-p 8080:80</code> collega la porta 8080 del tuo computer alla porta 80 del container;</li>
+      <li><code>--name web</code> dà un nome al container;</li>
+      <li><code>nginx</code> è l'immagine, che Docker scarica da Docker Hub se non ce l'hai.</li>
+    </ul>
+    <p>Apri il browser su <code>http://localhost:8080</code>: vedrai la pagina di benvenuto di Nginx.</p>
+
+    <h2>3. I comandi che userai ogni giorno</h2>
+    <table>
+      <tr><th>Comando</th><th>A cosa serve</th></tr>
+      <tr><td><code>docker ps</code></td><td>Elenca i container in esecuzione (<code>-a</code> anche quelli fermi)</td></tr>
+      <tr><td><code>docker logs web</code></td><td>Mostra l'output del container</td></tr>
+      <tr><td><code>docker stop web</code></td><td>Ferma il container</td></tr>
+      <tr><td><code>docker rm web</code></td><td>Elimina il container</td></tr>
+      <tr><td><code>docker images</code></td><td>Elenca le immagini scaricate</td></tr>
+    </table>
+
+    <h2>4. La tua prima immagine con un Dockerfile</h2>
+    <p>Crea una cartella con un file <code>index.html</code> qualsiasi e, accanto, un file chiamato <code>Dockerfile</code>:</p>
+<pre><code>FROM nginx:alpine
+COPY index.html /usr/share/nginx/html/index.html</code></pre>
+    <p>La prima riga parte da un'immagine Nginx leggera, la seconda copia la tua pagina al posto di quella predefinita. Ora costruisci e avvia:</p>
+<pre><code>docker build -t mio-sito .
+docker run -d -p 8080:80 --name mio-sito mio-sito</code></pre>
+    <div class="note"><p>Se la porta 8080 è già occupata dal container di prima, fermalo con <code>docker stop web</code> oppure usa un'altra porta, ad esempio <code>-p 8081:80</code>.</p></div>
+    <p>Su <code>http://localhost:8080</code> ora c'è la tua pagina, servita da un container che puoi avviare identico su qualsiasi computer con Docker.</p>
+
+    <h2>Prossimi passi</h2>
+    <p>Da qui si passa a volumi, reti tra container e Docker Compose per gestire applicazioni con più servizi, come un'API con il suo database.</p>
+  </div>
+
+  <div class="cta">
+    <h3>Vuoi andare più a fondo?</h3>
+    <p>Nel mio libro <strong>Docker: Guida Completa per Sviluppatori e DevOps</strong> trovi immagini ottimizzate, Compose, networking e pipeline CI/CD, con esempi pronti.</p>
+    <a class="btn" href="https://www.amazon.it/s?k=Docker+Guida+Completa+per+Sviluppatori+e+DevOps+Rosario+Marra" target="_blank" rel="noopener">Scopri il libro</a><a class="btn btn-ghost" href="../blog.html">Altri articoli</a>
+  </div>
+</article>
+
+<footer><div class="wrap foot"><span>© 2026 Rosario Marra</span><a href="../index.html">← Torna alla home</a></div></footer>
+</body>
+</html>
