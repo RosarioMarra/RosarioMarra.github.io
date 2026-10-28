@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FlowLab: imparare gli algoritmi con i diagrammi di flusso · Rosario Marra</title>
+<meta name="description" content="FlowLab è un'app web gratuita per creare ed eseguire diagrammi di flusso: blocchi, variabili, cicli, esecuzione passo passo ed export del codice in C e Python.">
+<meta name="author" content="Rosario Marra">
+<meta property="article:published_time" content="2026-10-28">
+<meta property="article:section" content="Didattica">
+<meta name="reading-time" content="5">
+<link rel="canonical" href="https://rosariomarra.github.io/blog/flowlab-diagrammi-di-flusso.html">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="it_IT">
+<meta property="og:url" content="https://rosariomarra.github.io/blog/flowlab-diagrammi-di-flusso.html">
+<meta property="og:title" content="FlowLab: imparare gli algoritmi con i diagrammi di flusso">
+<meta property="og:description" content="L'app web che ho creato per far ragionare gli studenti per blocchi: diagrammi eseguibili, passo passo, e poi tradotti in C e Python.">
+<meta property="og:image" content="https://rosariomarra.github.io/immagini/blog/flowlab-desktop.jpg">
+<link rel="icon" href="../immagini/Logo Rosario Marra nero.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="stile.css">
+<script src="tema.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "FlowLab: imparare gli algoritmi con i diagrammi di flusso",
+  "description": "App web gratuita per creare ed eseguire diagrammi di flusso, con esecuzione passo passo ed export in C e Python.",
+  "datePublished": "2026-10-28",
+  "inLanguage": "it",
+  "image": "https://rosariomarra.github.io/immagini/blog/flowlab-desktop.jpg",
+  "author": { "@type": "Person", "name": "Rosario Marra", "url": "https://rosariomarra.github.io/" },
+  "mainEntityOfPage": "https://rosariomarra.github.io/blog/flowlab-diagrammi-di-flusso.html",
+  "about": { "@type": "SoftwareApplication", "name": "FlowLab", "url": "https://rosariomarra.github.io/FlowLab/", "applicationCategory": "EducationalApplication", "operatingSystem": "Web", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" } }
+}
+</script>
+<style>
+  /* Mockup specifiche di questo articolo */
+  .mock{margin:26px -40px 30px;}
+  .mock figcaption{font-size:.85rem;color:var(--faint);text-align:center;margin-top:12px}
+  .browser{border-radius:14px;overflow:hidden;border:1px solid var(--line-2);box-shadow:0 30px 70px -30px rgba(0,0,0,.55);background:#fff}
+  .browser-bar{display:flex;align-items:center;gap:7px;padding:10px 14px;background:#EEF0F3;border-bottom:1px solid #DDE1E6}
+  .browser-bar i{width:10px;height:10px;border-radius:50%;background:#FF5F57}
+  .browser-bar i:nth-child(2){background:#FEBC2E}.browser-bar i:nth-child(3){background:#28C840}
+  .browser-bar span{flex:1;margin-left:10px;padding:4px 12px;border-radius:7px;background:#fff;color:#6B7280;font-family:var(--mono);font-size:.72rem;max-width:340px}
+  .browser img,.browser svg{display:block;width:100%;height:auto}
+  .shot{position:relative}
+  .pin{position:absolute;width:26px;height:26px;border-radius:50%;background:var(--orange);color:#fff;font:600 .78rem var(--body);display:grid;place-items:center;box-shadow:0 0 0 4px rgba(255,122,26,.25)}
+  .legend{display:grid;grid-template-columns:1fr 1fr;gap:10px 22px;margin:0 0 24px;padding:0;list-style:none}
+  .legend li{display:flex;gap:10px;align-items:baseline;margin:0}
+  .legend b{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:var(--orange);color:#fff;font-size:.72rem;display:grid;place-items:center}
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:stretch}
+  .duo pre{margin:0;height:100%}
+  .phone-wrap{display:flex;gap:34px;align-items:center;margin:26px 0 30px}
+  .phone{width:220px;flex-shrink:0;border-radius:34px;padding:10px;background:#111;box-shadow:0 30px 60px -25px rgba(0,0,0,.6)}
+  .phone svg{display:block;width:100%;border-radius:26px}
+  @media (max-width:860px){.mock{margin-left:0;margin-right:0}}
+  @media (max-width:620px){.legend,.duo{grid-template-columns:1fr}.phone-wrap{flex-direction:column}.pin{width:20px;height:20px;font-size:.65rem}}
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo"><img src="../Logo Rosario Marra-09.png" alt="Rosario Marra"></a>
+    <ul class="nav-links">
+      <li><a href="../index.html#chi-sono">Chi sono</a></li>
+      <li><a href="../index.html#libro">Libro</a></li>
+      <li><a href="../blog.html" class="active">Blog</a></li>
+      <li><a href="../e-learning.html">Materiale didattico</a></li>
+    </ul>
+    <button class="icon-btn theme-btn" id="themeBtn" aria-label="Cambia tema">
+      <svg class="moon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 15A9.72 9.72 0 0 1 18 15.75 9.75 9.75 0 0 1 8.25 6c0-1.33.27-2.6.75-3.75A9.75 9.75 0 1 0 21.75 15Z"/></svg>
+      <svg class="sun" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.36.39-1.59 1.59M21 12h-2.25m-.39 6.36-1.59-1.59M12 18.75V21m-4.77-4.23-1.59 1.59M5.25 12H3m4.23-4.77L5.64 5.64M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"/></svg>
+    </button>
+  </div>
+</header>
+
+<article class="article">
+  <a href="../blog.html" class="back">← Tutti gli articoli</a>
+  <div class="eyebrow">Didattica</div>
+  <h1>FlowLab: imparare gli algoritmi con i diagrammi di flusso</h1>
+  <p class="lead">Prima di scrivere codice bisogna imparare a ragionare per passi. Per questo ho creato FlowLab: un'app web gratuita in cui gli studenti costruiscono un diagramma di flusso, lo eseguono e lo vedono trasformarsi in codice.</p>
+  <div class="byline"><img src="../immagini/foto-rosario.webp" alt=""><div><b>Rosario Marra</b>28 ottobre 2026 · 5 min di lettura</div></div>
+
+  <div class="prose">
+    <p>FlowLab funziona direttamente nel browser, senza installare nulla e senza account, su computer, tablet e telefono. Una volta aperto continua a funzionare anche <strong>offline</strong>, utile nei laboratori dove la rete non è sempre affidabile.</p>
+    <p><a href="https://rosariomarra.github.io/FlowLab/" target="_blank" rel="noopener">Apri FlowLab</a> in un'altra scheda e segui la guida passo passo.</p>
+
+    <h2>L'interfaccia in un colpo d'occhio</h2>
+  </div>
+
+  <figure class="mock">
+    <div class="browser">
+      <div class="browser-bar"><i></i><i></i><i></i><span>rosariomarra.github.io/FlowLab</span></div>
+      <div class="shot">
+        <img src="../immagini/blog/flowlab-desktop.jpg" alt="Schermata di FlowLab: palette dei blocchi a sinistra, diagramma al centro, pannelli variabili e console a destra" width="800" height="500" loading="lazy">
+        <span class="pin" style="left:3%;top:15%">1</span>
+        <span class="pin" style="left:40%;top:26%">2</span>
+        <span class="pin" style="left:90%;top:14%">3</span>
+        <span class="pin" style="left:90%;top:66%">4</span>
+        <span class="pin" style="left:14%;top:0.5%">5</span>
+      </div>
+    </div>
+    <figcaption>Schermata reale di FlowLab con un diagramma d'esempio.</figcaption>
+  </figure>
+
+  <div class="prose">
+    <ul class="legend">
+      <li><b>1</b><span><strong>Blocchi</strong>: la palette da cui scegli le istruzioni. Basta un clic per aggiungerle al diagramma.</span></li>
+      <li><b>2</b><span><strong>Canvas</strong>: il diagramma. Puoi zoomare con la rotellina e spostarti trascinando.</span></li>
+      <li><b>3</b><span><strong>Variabili</strong>: mostra in tempo reale il valore di ogni variabile.</span></li>
+      <li><b>4</b><span><strong>Console</strong>: dove compaiono gli Output e dove si rispondono gli Input.</span></li>
+      <li><b>5</b><span><strong>Comandi</strong>: Esegui, Passo, Stop, velocità, salvataggio, export PNG e generazione del codice in C e Python.</span></li>
+    </ul>
+
+    <h2>I blocchi disponibili</h2>
+    <p>I blocchi seguono le forme classiche dei diagrammi di flusso, ognuna con il suo colore, così la struttura di un algoritmo si riconosce a colpo d'occhio.</p>
+    <table>
+      <tr><th>Gruppo</th><th>Blocchi</th><th>A cosa servono</th></tr>
+      <tr><td>Base</td><td>Start, End</td><td>Inizio e fine del programma</td></tr>
+      <tr><td>Interazione</td><td>Input, Output</td><td>Leggere dati e mostrare risultati</td></tr>
+      <tr><td>Variabili</td><td>Dichiara, Assegna</td><td>Creare variabili e cambiarne il valore</td></tr>
+      <tr><td>Selezione</td><td>If, Else</td><td>Prendere decisioni con una condizione</td></tr>
+      <tr><td>Cicli</td><td>For, While, Do-While, Break</td><td>Ripetere istruzioni</td></tr>
+      <tr><td>Utility</td><td>Commento</td><td>Spiegare il diagramma con delle note</td></tr>
+    </table>
+    <p>La sintassi è volutamente vicina al linguaggio naturale:</p>
+<pre><code>Input nome
+Output "Ciao " &amp; nome
+If x &gt; 5 AND x &lt; 10</code></pre>
+
+    <h2>Esecuzione passo passo</h2>
+    <p>È la funzione più utile in classe. Con <strong>Passo</strong> il programma avanza di un blocco alla volta: il blocco attivo si illumina, il pannello Variabili si aggiorna e la console mostra cosa succede. Così gli studenti <em>vedono</em> perché un ciclo non termina o perché un If prende il ramo sbagliato.</p>
+  </div>
+
+  <figure class="mock">
+    <div class="browser">
+      <div class="browser-bar"><i></i><i></i><i></i><span>rosariomarra.github.io/FlowLab</span></div>
+      <svg viewBox="0 0 800 430" xmlns="http://www.w3.org/2000/svg" font-family="Inter, system-ui, sans-serif" role="img" aria-label="Illustrazione: esecuzione passo passo di un programma pari o dispari">
+        <defs>
+          <pattern id="dots" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#E3E7EC"/></pattern>
+          <filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#2563EB" flood-opacity=".55"/></filter>
+          <marker id="ar" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0 0 8 4 0 8z" fill="#6B7280"/></marker>
+        </defs>
+        <rect width="800" height="430" fill="#FFFFFF"/>
+        <!-- barra comandi -->
+        <rect width="800" height="40" fill="#FFFFFF"/><line x1="0" y1="40" x2="800" y2="40" stroke="#E5E7EB"/>
+        <text x="18" y="25" font-size="13" font-weight="700" fill="#1F2A44">FlowLab</text>
+        <rect x="86" y="9" width="62" height="22" rx="5" fill="#E5EDFF" stroke="#2563EB"/><text x="117" y="24" font-size="10.5" text-anchor="middle" fill="#2563EB" font-weight="600">▶ Esegui</text>
+        <rect x="154" y="9" width="56" height="22" rx="5" fill="#2563EB"/><text x="182" y="24" font-size="10.5" text-anchor="middle" fill="#fff" font-weight="600">⏭ Passo</text>
+        <rect x="216" y="9" width="50" height="22" rx="5" fill="#fff" stroke="#E5E7EB"/><text x="241" y="24" font-size="10.5" text-anchor="middle" fill="#E5484D">■ Stop</text>
+        <text x="560" y="25" font-size="10.5" fill="#2563EB" font-family="JetBrains Mono, monospace">In esecuzione · step 4</text>
+        <!-- canvas -->
+        <rect x="0" y="41" width="560" height="389" fill="url(#dots)"/>
+        <g font-size="10" text-anchor="middle">
+          <rect x="220" y="56" width="120" height="30" rx="15" fill="#EBDDF7" stroke="#9B6BC4"/><text x="280" y="75" fill="#7A4FA6" font-weight="600">START</text>
+          <line x1="280" y1="86" x2="280" y2="100" stroke="#6B7280" marker-end="url(#ar)"/>
+          <rect x="215" y="104" width="130" height="34" fill="#FDF3C4" stroke="#C9A227"/><line x1="227" y1="104" x2="227" y2="138" stroke="#C9A227"/><text x="286" y="118" fill="#8A6D0B" font-weight="600" font-size="8.5">DICHIARA</text><text x="286" y="131" fill="#3F3F46" font-family="JetBrains Mono, monospace">Intero n</text>
+          <line x1="280" y1="138" x2="280" y2="152" stroke="#6B7280" marker-end="url(#ar)"/>
+          <path d="M228 156h126l-14 34H214z" fill="#DCEBFB" stroke="#3A7BD5"/><text x="284" y="170" fill="#2B5FA8" font-weight="600" font-size="8.5">INPUT</text><text x="284" y="183" fill="#3F3F46" font-family="JetBrains Mono, monospace">n</text>
+          <line x1="280" y1="190" x2="280" y2="204" stroke="#6B7280" marker-end="url(#ar)"/>
+          <g filter="url(#glow)"><path d="M280 208l70 30-70 30-70-30z" fill="#FBD5DD" stroke="#2563EB" stroke-width="2.5"/></g>
+          <text x="280" y="234" fill="#B4234A" font-weight="600" font-size="8.5">IF</text><text x="280" y="248" fill="#3F3F46" font-family="JetBrains Mono, monospace">n % 2 == 0</text>
+          <path d="M350 238h80v40" fill="none" stroke="#16A34A" stroke-width="1.5"/><rect x="356" y="224" width="34" height="15" rx="3" fill="#fff" stroke="#16A34A"/><text x="373" y="235" fill="#16A34A" font-size="8.5" font-weight="600">Vero</text>
+          <path d="M210 238h-80v40" fill="none" stroke="#DC2626" stroke-width="1.5"/><rect x="168" y="224" width="36" height="15" rx="3" fill="#fff" stroke="#DC2626"/><text x="186" y="235" fill="#DC2626" font-size="8.5" font-weight="600">Falso</text>
+          <path d="M378 282h112l-12 32H366z" fill="#D7F0D4" stroke="#3E9B4F"/><text x="428" y="295" fill="#2F7A3D" font-weight="600" font-size="8.5">OUTPUT</text><text x="428" y="308" fill="#3F3F46" font-family="JetBrains Mono, monospace">"pari"</text>
+          <path d="M82 282h112l-12 32H70z" fill="#D7F0D4" stroke="#3E9B4F"/><text x="132" y="295" fill="#2F7A3D" font-weight="600" font-size="8.5">OUTPUT</text><text x="132" y="308" fill="#3F3F46" font-family="JetBrains Mono, monospace">"dispari"</text>
+          <path d="M430 314v26H286M130 314v26h144" fill="none" stroke="#6B7280"/><circle cx="280" cy="340" r="5" fill="#fff" stroke="#6B7280"/>
+          <line x1="280" y1="345" x2="280" y2="358" stroke="#6B7280" marker-end="url(#ar)"/>
+          <rect x="220" y="362" width="120" height="30" rx="15" fill="#EBDDF7" stroke="#9B6BC4"/><text x="280" y="381" fill="#7A4FA6" font-weight="600">END</text>
+        </g>
+        <!-- pannelli laterali -->
+        <rect x="560" y="41" width="240" height="389" fill="#FAFBFC"/><line x1="560" y1="41" x2="560" y2="430" stroke="#E5E7EB"/>
+        <text x="576" y="64" font-size="9.5" font-weight="700" fill="#6B7280" letter-spacing=".6">VARIABILI</text>
+        <rect x="576" y="76" width="208" height="40" rx="8" fill="#fff" stroke="#BFD3FF"/>
+        <text x="590" y="100" font-size="12" font-family="JetBrains Mono, monospace" fill="#1F2A44" font-weight="600">n</text>
+        <text x="612" y="100" font-size="9.5" fill="#9CA3AF">Intero</text>
+        <text x="770" y="101" font-size="14" font-family="JetBrains Mono, monospace" fill="#2563EB" font-weight="700" text-anchor="end">7</text>
+        <line x1="560" y1="230" x2="800" y2="230" stroke="#E5E7EB"/>
+        <text x="576" y="254" font-size="9.5" font-weight="700" fill="#6B7280" letter-spacing=".6">CONSOLE</text>
+        <g font-family="JetBrains Mono, monospace" font-size="10.5">
+          <text x="576" y="280" fill="#9CA3AF">[FlowLab] Esecuzione avviata</text>
+          <text x="576" y="300" fill="#374151">Inserisci n: <tspan fill="#2563EB" font-weight="700">7</tspan></text>
+          <text x="576" y="320" fill="#9CA3AF">→ valuto n % 2 == 0 …</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>Illustrazione: il blocco If è quello attivo. Con n = 7 la condizione è falsa e il programma prenderà il ramo "dispari".</figcaption>
+  </figure>
+
+  <div class="prose">
+    <p>Con il cursore <strong>Velocità</strong> si può anche lasciar scorrere l'esecuzione da sola, abbastanza lenta da seguirla con gli occhi.</p>
+
+    <h2>Dal diagramma al codice</h2>
+    <p>Quando il diagramma funziona, con i pulsanti <strong>C</strong> e <strong>Py</strong> FlowLab genera il programma equivalente, da copiare o scaricare. È il ponte tra il ragionamento e il primo linguaggio di programmazione: lo stesso algoritmo, scritto in due modi.</p>
+  </div>
+
+  <figure class="mock">
+    <div class="duo">
+      <div class="browser" style="background:#fff">
+        <div class="browser-bar"><i></i><i></i><i></i><span>Diagramma</span></div>
+        <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" font-family="Inter, system-ui, sans-serif" role="img" aria-label="Diagramma: somma dei numeri da 1 a n">
+          <defs><marker id="ar2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0 0 8 4 0 8z" fill="#6B7280"/></marker></defs>
+          <rect width="300" height="300" fill="#FFFFFF"/>
+          <g font-size="9" text-anchor="middle">
+            <rect x="100" y="12" width="100" height="24" rx="12" fill="#EBDDF7" stroke="#9B6BC4"/><text x="150" y="28" fill="#7A4FA6" font-weight="600">START</text>
+            <line x1="150" y1="36" x2="150" y2="46" stroke="#6B7280" marker-end="url(#ar2)"/>
+            <path d="M108 50h96l-12 26H96z" fill="#DCEBFB" stroke="#3A7BD5"/><text x="150" y="67" fill="#3F3F46" font-family="JetBrains Mono, monospace">Input n</text>
+            <line x1="150" y1="76" x2="150" y2="86" stroke="#6B7280" marker-end="url(#ar2)"/>
+            <rect x="95" y="90" width="110" height="26" fill="#FEF9DB" stroke="#C9A227"/><text x="150" y="107" fill="#3F3F46" font-family="JetBrains Mono, monospace">somma = 0</text>
+            <line x1="150" y1="116" x2="150" y2="126" stroke="#6B7280" marker-end="url(#ar2)"/>
+            <path d="M104 130h92l12 15-12 15h-92l-12-15z" fill="#FDE4CC" stroke="#E07B1F"/><text x="150" y="149" fill="#3F3F46" font-family="JetBrains Mono, monospace">For i = 1 to n</text>
+            <path d="M208 145h30v58h-33" fill="none" stroke="#6B7280"/>
+            <line x1="150" y1="160" x2="150" y2="186" stroke="#6B7280" marker-end="url(#ar2)"/>
+            <rect x="85" y="190" width="130" height="26" fill="#FEF9DB" stroke="#C9A227"/><text x="150" y="207" fill="#3F3F46" font-family="JetBrains Mono, monospace">somma = somma + i</text>
+            <path d="M85 203H62v-58h30" fill="none" stroke="#6B7280" marker-end="url(#ar2)"/>
+            <line x1="238" y1="203" x2="238" y2="236" stroke="#6B7280"/><path d="M238 236H150v4" fill="none" stroke="#6B7280"/>
+            <path d="M108 244h96l-12 26H96z" fill="#D7F0D4" stroke="#3E9B4F"/><text x="150" y="261" fill="#3F3F46" font-family="JetBrains Mono, monospace">Output somma</text>
+            <line x1="150" y1="270" x2="150" y2="276" stroke="#6B7280"/>
+            <rect x="110" y="278" width="80" height="18" rx="9" fill="#EBDDF7" stroke="#9B6BC4"/><text x="150" y="290" fill="#7A4FA6" font-weight="600">END</text>
+          </g>
+        </svg>
+      </div>
+<pre><code><span style="color:#6B7385"># Generato da FlowLab — linguaggio Python</span>
+
+def main():
+    n = int(input())
+    somma = 0
+    for i in range(1, n + 1):
+        somma = somma + i
+    print(somma)
+
+
+if __name__ == "__main__":
+    main()</code></pre>
+    </div>
+    <figcaption>Esempio: la somma dei numeri da 1 a n, come diagramma e come codice Python.</figcaption>
+  </figure>
+
+  <div class="prose">
+    <p>Il diagramma si può anche salvare in un file, per riaprirlo dopo, o esportare come <strong>immagine PNG</strong> da inserire in una relazione o in una verifica.</p>
+
+    <h2>Anche dal telefono</h2>
+  </div>
+
+  <div class="phone-wrap">
+    <div class="phone">
+      <svg viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg" font-family="Inter, system-ui, sans-serif" role="img" aria-label="Illustrazione: FlowLab su smartphone">
+        <defs><pattern id="dots3" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".8" fill="#E3E7EC"/></pattern></defs>
+        <rect width="200" height="400" fill="#fff"/>
+        <rect width="200" height="44" fill="#fff"/><line x1="0" y1="44" x2="200" y2="44" stroke="#E5E7EB"/>
+        <circle cx="20" cy="26" r="8" fill="#1F2A44"/><text x="34" y="30" font-size="11" font-weight="700" fill="#1F2A44">FlowLab</text>
+        <rect x="166" y="16" width="22" height="20" rx="5" fill="#fff" stroke="#E5E7EB"/><text x="177" y="30" font-size="10" text-anchor="middle" fill="#1F2A44">···</text>
+        <rect x="0" y="45" width="200" height="295" fill="url(#dots3)"/>
+        <g font-size="7.5" text-anchor="middle">
+          <rect x="60" y="66" width="80" height="22" rx="11" fill="#EBDDF7" stroke="#9B6BC4"/><text x="100" y="80" fill="#7A4FA6" font-weight="600">START</text>
+          <line x1="100" y1="88" x2="100" y2="100" stroke="#6B7280"/>
+          <path d="M66 100h76l-10 22H56z" fill="#DCEBFB" stroke="#3A7BD5"/><text x="99" y="114" fill="#3F3F46" font-family="JetBrains Mono, monospace">Input voto</text>
+          <line x1="100" y1="122" x2="100" y2="134" stroke="#6B7280"/>
+          <path d="M100 134l48 22-48 22-48-22z" fill="#FBD5DD" stroke="#C8304F"/><text x="100" y="159" fill="#3F3F46" font-family="JetBrains Mono, monospace">voto &gt;= 6</text>
+          <path d="M148 156h24v30M52 156H28v30" fill="none" stroke="#6B7280"/>
+          <path d="M150 186h40l-6 18h-40z" fill="#D7F0D4" stroke="#3E9B4F"/><text x="167" y="198" fill="#3F3F46">"Promosso"</text>
+          <path d="M16 186h40l-6 18H10z" fill="#D7F0D4" stroke="#3E9B4F"/><text x="33" y="198" fill="#3F3F46">"Rimandato"</text>
+          <path d="M165 204v20H100M30 204v20h70v14" fill="none" stroke="#6B7280"/>
+          <rect x="60" y="240" width="80" height="22" rx="11" fill="#EBDDF7" stroke="#9B6BC4"/><text x="100" y="254" fill="#7A4FA6" font-weight="600">END</text>
+        </g>
+        <rect x="0" y="340" width="200" height="60" fill="#fff"/><line x1="0" y1="340" x2="200" y2="340" stroke="#E5E7EB"/>
+        <text x="28" y="378" font-size="8" text-anchor="middle" fill="#374151">Blocchi</text><text x="28" y="364" font-size="11" text-anchor="middle" fill="#374151">≡</text>
+        <rect x="62" y="352" width="76" height="32" rx="16" fill="#F3F4F6" stroke="#E5E7EB"/>
+        <circle cx="78" cy="368" r="11" fill="#fff" stroke="#E5E7EB"/><text x="78" y="372" font-size="9" text-anchor="middle" fill="#1F2A44">⏭</text>
+        <circle cx="100" cy="368" r="11" fill="#2563EB"/><text x="101" y="372" font-size="9" text-anchor="middle" fill="#fff">▶</text>
+        <circle cx="122" cy="368" r="11" fill="#fff" stroke="#E5E7EB"/><rect x="118" y="364" width="8" height="8" rx="1.5" fill="#FCA5A5"/>
+        <text x="172" y="378" font-size="8" text-anchor="middle" fill="#374151">Console</text><rect x="167" y="356" width="10" height="9" fill="none" stroke="#374151"/>
+      </svg>
+    </div>
+    <div class="prose">
+      <p>Su smartphone l'interfaccia si riorganizza: il diagramma occupa tutto lo schermo, mentre <strong>Blocchi</strong> e <strong>Console</strong> si aprono dalla barra in basso, insieme ai comandi Passo, Esegui e Stop.</p>
+      <p>Gli studenti possono così esercitarsi anche a casa o sul bus, senza un computer.</p>
+    </div>
+  </div>
+
+  <div class="prose">
+    <h2>Come lo uso in classe</h2>
+    <ol>
+      <li><strong>Prima il problema, poi i blocchi.</strong> Faccio descrivere l'algoritmo a parole, poi lo si costruisce in FlowLab.</li>
+      <li><strong>Previsione e verifica.</strong> Prima di premere Passo chiedo: "Quale ramo prenderà l'If?". Poi lo si controlla insieme.</li>
+      <li><strong>Il salto al codice.</strong> Solo quando il diagramma funziona si genera il codice in C o Python e lo si confronta riga per riga.</li>
+    </ol>
+    <p>FlowLab è gratuito: se lo usi con i tuoi studenti, <a href="../index.html#contatti">scrivimi</a> e raccontami come va.</p>
+  </div>
+
+  <div class="cta">
+    <h3>Provalo subito</h3>
+    <p>Si apre nel browser, senza installazioni né registrazione.</p>
+    <a class="btn" href="https://rosariomarra.github.io/FlowLab/" target="_blank" rel="noopener">Apri FlowLab</a><a class="btn btn-ghost" href="../blog.html">Altri articoli</a>
+  </div>
+</article>
+
+<footer><div class="wrap foot"><span>© 2026 Rosario Marra</span><a href="../index.html">← Torna alla home</a></div></footer>
+</body>
+</html>
