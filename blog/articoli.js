@@ -7,7 +7,7 @@
   const REPO = 'RosarioMarra/RosarioMarra.github.io';
   const BRANCH = 'main';
   const DIR = 'blog';
-  const CACHE = 'articoli-v1';
+  const CACHE = 'articoli-v2';
 
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const fmt = d => d ? new Date(d).toLocaleDateString('it-IT', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
@@ -28,7 +28,11 @@
   }
 
   async function load() {
-    try { const c = sessionStorage.getItem(CACHE); if (c) return JSON.parse(c); } catch (e) {}
+    // L'elenco salvato vale 5 minuti, così i nuovi articoli compaiono senza chiudere la scheda.
+    try {
+      const c = JSON.parse(sessionStorage.getItem(CACHE) || 'null');
+      if (c && Date.now() - c.t < 5 * 60 * 1000) return c.list;
+    } catch (e) {}
     const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${DIR}?ref=${BRANCH}`);
     if (!r.ok) throw new Error('Elenco non disponibile');
     const nomi = (await r.json())
@@ -37,7 +41,7 @@
     const list = (await Promise.all(nomi.map(n => leggi(n).catch(() => null))))
       .filter(Boolean)
       .sort((a, b) => (b.data || '').localeCompare(a.data || ''));
-    try { sessionStorage.setItem(CACHE, JSON.stringify(list)); } catch (e) {}
+    try { sessionStorage.setItem(CACHE, JSON.stringify({ t: Date.now(), list })); } catch (e) {}
     return list;
   }
 
