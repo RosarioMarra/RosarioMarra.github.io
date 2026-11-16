@@ -233,10 +233,8 @@ body.menu-open .mmenu-foot{opacity:1;transform:none}
 /* About */
 .about-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:80px;align-items:center}
 .portrait{position:relative;aspect-ratio:4/5;border-radius:24px;overflow:hidden;background:var(--card);border:1px solid var(--line)}
-/* La foto originale è ritagliata a cerchio: la ingrandiamo perché il bordo rotondo resti fuori dalla cornice */
-.portrait{background:#000}
-.portrait img{width:100%;height:100%;object-fit:cover;filter:grayscale(.15) contrast(1.03);transform:scale(1.44);transform-origin:52% 44%;transition:transform 1.2s var(--ease)}
-.portrait:hover img{transform:scale(1.48)}
+.portrait img{width:100%;height:100%;object-fit:cover;filter:grayscale(.15) contrast(1.03);transition:transform 1.2s var(--ease)}
+.portrait:hover img{transform:scale(1.03)}
 .portrait figcaption{position:absolute;left:16px;bottom:16px;right:16px;display:flex;justify-content:space-between;font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.6)}
 .about-text h2{font-size:clamp(2rem,3.8vw,3rem);margin-bottom:26px}
 .about-text p{color:var(--muted);font-size:1.08rem;margin-bottom:18px;max-width:580px}
