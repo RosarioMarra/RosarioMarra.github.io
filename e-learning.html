@@ -112,7 +112,25 @@ section{padding:50px 0 90px}
 footer{border-top:1px solid var(--line);padding:36px 0;color:var(--faint);font-size:.88rem}
 .foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 
-@media (max-width:720px){.nav-links{display:none}.files{grid-template-columns:1fr}}
+/* Corsi interattivi */
+.courses{padding:10px 0 20px}
+.course{display:grid;grid-template-columns:1.3fr 1fr;border-radius:24px;overflow:hidden;border:1px solid var(--line);background:var(--card);transition:border-color .3s,transform .3s}
+.course:hover{border-color:var(--blue);transform:translateY(-3px)}
+.course-body{padding:38px 40px;display:flex;flex-direction:column;gap:14px}
+.course-body .meta{display:flex;gap:8px;flex-wrap:wrap}
+.course-body .tag{font-family:var(--mono);font-size:.7rem;padding:4px 10px;border-radius:999px;border:1px solid var(--line-2);color:var(--muted)}
+.course-body .tag.new{color:var(--green);border-color:color-mix(in srgb,var(--green) 40%,transparent)}
+.course-body h3{font-size:clamp(1.6rem,3vw,2.2rem)}
+.course-body p{color:var(--muted)}
+.course-stats{display:flex;gap:28px;flex-wrap:wrap;margin:6px 0 4px}
+.course-stats b{display:block;font-family:var(--display);font-size:1.6rem;line-height:1}
+.course-stats span{font-size:.8rem;color:var(--faint)}
+.course-body .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.course-visual{position:relative;min-height:280px;background:radial-gradient(420px 300px at 60% 40%,#5a7dff,#2b2f8f 60%,#141633);overflow:hidden}
+.course-visual svg{position:absolute;inset:0;width:100%;height:100%}
+.course-visual .lg{position:absolute;left:28px;bottom:24px;width:54px;height:54px;border-radius:16px;background:linear-gradient(135deg,#4f7cff,#9b7bff);display:grid;place-items:center;color:#fff;font-weight:800;font-family:var(--display);font-size:1.25rem;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+
+@media (max-width:720px){.nav-links{display:none}.files{grid-template-columns:1fr}.course{grid-template-columns:1fr}.course-visual{min-height:200px;order:-1}.course-body{padding:28px 24px}}
 </style>
 </head>
 <body>
@@ -146,6 +164,40 @@ footer{border-top:1px solid var(--line);padding:36px 0;color:var(--faint);font-s
       </a>
     </div>
   </div>
+
+  <section class="courses" id="corsi">
+    <div class="wrap">
+      <div class="sec-title"><h2>Corsi interattivi</h2></div>
+      <a class="course" href="corsi/ia-ml/">
+        <div class="course-body">
+          <div class="meta"><span class="tag new">Nuovo</span><span class="tag">ITS Academy Cremona</span><span class="tag">Scene 3D · Colab</span></div>
+          <h3>Intelligenza Artificiale e Machine Learning</h3>
+          <p>Dai dati dei sensori alle reti neurali, con esempi presi dal mondo della produzione. Ogni concetto è una scena 3D da esplorare passo dopo passo, e ogni lezione si chiude con un laboratorio in Google Colab.</p>
+          <div class="course-stats">
+            <div><b>10</b><span>ore</span></div>
+            <div><b>5</b><span>lezioni</span></div>
+            <div><b>5</b><span>laboratori</span></div>
+          </div>
+          <div class="acts">
+            <span class="btn btn-primary">Apri il corso
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="course-visual" aria-hidden="true">
+          <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+            <g stroke="rgba(255,255,255,.28)" stroke-width="1">
+              <line x1="90" y1="70" x2="200" y2="110"/><line x1="90" y1="70" x2="200" y2="190"/><line x1="90" y1="150" x2="200" y2="110"/><line x1="90" y1="150" x2="200" y2="190"/><line x1="90" y1="230" x2="200" y2="110"/><line x1="90" y1="230" x2="200" y2="190"/>
+              <line x1="200" y1="110" x2="310" y2="150"/><line x1="200" y1="190" x2="310" y2="150"/>
+            </g>
+            <g fill="#fff"><circle cx="90" cy="70" r="9" opacity=".85"/><circle cx="90" cy="150" r="9" opacity=".85"/><circle cx="90" cy="230" r="9" opacity=".85"/><circle cx="200" cy="110" r="11"/><circle cx="200" cy="190" r="11"/></g>
+            <circle cx="310" cy="150" r="14" fill="#2ec4a0"/>
+          </svg>
+          <div class="lg">IA</div>
+        </div>
+      </a>
+    </div>
+  </section>
 
   <section id="materiali">
     <div class="wrap">
