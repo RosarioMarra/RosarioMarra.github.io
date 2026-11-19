@@ -130,8 +130,8 @@ footer{border-top:1px solid var(--line);padding:36px 0;color:var(--faint);font-s
 .course-visual svg{position:absolute;inset:0;width:100%;height:100%}
 .course+.course{margin-top:18px}
 .course-visual.office{background:radial-gradient(420px 300px at 60% 40%,#2fbf71,#145c38 60%,#0b2618)}
-.course-visual.office img{position:absolute;left:12%;top:14%;width:96%;max-width:none;border-radius:10px;box-shadow:0 24px 50px -18px rgba(0,0,0,.6);transform:rotate(-3deg);transition:transform .6s}
-.course:hover .course-visual.office img{transform:rotate(-1deg) translateY(-6px)}
+.course-visual.office img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .8s}
+.course:hover .course-visual.office img{transform:scale(1.04)}
 .course-visual.office .lg{background:linear-gradient(135deg,#2fbf71,#1d7a46)}
 .course-visual .lg{position:absolute;left:28px;bottom:24px;width:54px;height:54px;border-radius:16px;background:linear-gradient(135deg,#4f7cff,#9b7bff);display:grid;place-items:center;color:#fff;font-weight:800;font-family:var(--display);font-size:1.25rem;box-shadow:0 10px 30px rgba(0,0,0,.35)}
 
@@ -218,7 +218,7 @@ footer{border-top:1px solid var(--line);padding:36px 0;color:var(--faint);font-s
           </div>
         </div>
         <div class="course-visual office" aria-hidden="true">
-          <img src="corsi/office-automation/materiali/copertine/copertina-excel-fogli.jpg" alt="" width="760" height="428" loading="lazy">
+          <img src="corsi/office-automation/materiali/copertine/copertina-corso.svg" alt="" width="760" height="460" loading="lazy">
           <div class="lg">XL</div>
         </div>
       </a>
