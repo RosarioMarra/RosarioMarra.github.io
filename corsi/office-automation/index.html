@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Office Automation · Informatica di base e Office · ITS Academy Cremona · Rosario Marra</title>
+<meta name="description" content="Corso di Informatica di base e Office automation per ITS Academy Cremona: 20 ore, slide in PDF e 32 esercizi su Excel e Google Fogli con casi reali di produzione. Docente: Rosario Marra.">
+<meta name="author" content="Rosario Marra">
+<link rel="canonical" href="https://rosariomarra.github.io/corsi/office-automation/">
+<link rel="icon" href="../../immagini/Logo%20Rosario%20Marra%20nero.png" type="image/png">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="it_IT">
+<meta property="og:url" content="https://rosariomarra.github.io/corsi/office-automation/">
+<meta property="og:title" content="Office Automation · ITS Academy Cremona">
+<meta property="og:description" content="20 ore, slide e 32 esercizi su Excel e Google Fogli con casi reali di produzione.">
+<meta property="og:image" content="https://rosariomarra.github.io/corsi/office-automation/materiali/copertine/copertina-excel-fogli.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0A0B0E; --bg-2:#111318; --card:#14171D; --card-2:#1A1E26;
+  --text:#F2F4F7; --muted:#9AA3B2; --faint:#5F6878;
+  --line:rgba(255,255,255,.08); --line-2:rgba(255,255,255,.14);
+  --blue:#3B8BFF; --blue-soft:rgba(59,139,255,.12);
+  --green:#2FBF71; --green-soft:rgba(47,191,113,.13); --xl:#1D7A46;
+  --orange:#FF7A1A;
+  --display:'Space Grotesk',Inter,system-ui,sans-serif;
+  --body:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+  --shadow:0 24px 60px -28px rgba(0,0,0,.65);
+  --logo-filter:none;
+}
+:root[data-theme="light"]{
+  --bg:#F7F7F4; --bg-2:#EFEFEA; --card:#FFFFFF; --card-2:#F5F5F1;
+  --text:#14161A; --muted:#545C69; --faint:#8A919C;
+  --line:rgba(0,0,0,.08); --line-2:rgba(0,0,0,.14);
+  --blue:#1F6FEB; --blue-soft:rgba(31,111,235,.09);
+  --green:#1E9E5A; --green-soft:rgba(30,158,90,.1);
+  --shadow:0 24px 50px -28px rgba(20,22,26,.28);
+  --logo-filter:invert(1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:150px}
+body{font-family:var(--body);background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+h1,h2,h3,h4{font-family:var(--display);letter-spacing:-.02em;line-height:1.12}
+.eyebrow{font-family:var(--mono);font-size:.74rem;color:var(--green);letter-spacing:.1em;text-transform:uppercase;display:inline-flex;align-items:center;gap:10px;margin-bottom:16px}
+.eyebrow::before{content:"";width:22px;height:1px;background:currentColor}
+.btn{display:inline-flex;align-items:center;gap:9px;padding:12px 20px;border-radius:999px;font-weight:600;font-size:.92rem;border:1px solid transparent;transition:transform .2s,background .2s,border-color .2s;cursor:pointer;font-family:inherit;white-space:nowrap}
+.btn svg{width:17px;height:17px;flex-shrink:0}
+.btn small{font-weight:500;opacity:.75;font-size:.78rem}
+.btn-sm{padding:9px 15px;font-size:.85rem}
+.btn-primary{background:var(--green);color:#fff}
+.btn-primary:hover{transform:translateY(-2px)}
+.btn-ghost{border-color:var(--line-2);color:var(--text)}
+.btn-ghost:hover{border-color:var(--text)}
+
+/* Nav */
+.nav{position:fixed;top:14px;left:0;right:0;z-index:100;padding:0 16px}
+.nav-inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 12px 10px 20px;border-radius:999px;background:color-mix(in srgb,var(--bg) 74%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line)}
+.nav-logo img{height:26px;filter:var(--logo-filter)}
+.nav-links{display:flex;gap:4px;list-style:none}
+.nav-links a{padding:8px 14px;border-radius:999px;font-size:.9rem;color:var(--muted)}
+.nav-links a:hover{color:var(--text);background:var(--line)}
+.icon-btn{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line);background:transparent;color:var(--text);cursor:pointer}
+.icon-btn svg{width:18px;height:18px}
+.theme-btn .sun{display:none}
+:root[data-theme="light"] .theme-btn .sun{display:block}
+:root[data-theme="light"] .theme-btn .moon{display:none}
+
+/* Hero */
+.hero{position:relative;padding:150px 0 56px;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(640px 340px at 85% 10%,var(--green-soft),transparent 70%),radial-gradient(460px 280px at 0% 100%,var(--blue-soft),transparent 70%)}
+.crumb{display:inline-flex;gap:8px;align-items:center;font-size:.86rem;color:var(--muted);margin-bottom:26px}
+.crumb:hover{color:var(--text)}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}
+.hero h1{font-size:clamp(2.4rem,5.2vw,4rem);margin-bottom:10px}
+.hero h1 span{color:var(--green)}
+.hero .sub{font-family:var(--display);font-size:clamp(1.1rem,2vw,1.35rem);color:var(--muted);margin-bottom:18px}
+.hero p.lead{color:var(--muted);font-size:1.05rem;max-width:560px;margin-bottom:28px}
+.hero-acts{display:flex;gap:12px;flex-wrap:wrap}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);margin-top:40px;border-top:1px solid var(--line)}
+.stat{padding:16px 16px 0 0}
+.stat+.stat{padding-left:18px;border-left:1px solid var(--line)}
+.stat b{display:block;font-family:var(--display);font-size:1.7rem;font-weight:600;letter-spacing:-.02em}
+.stat small{color:var(--faint);font-size:.8rem;line-height:1.3;display:block}
+.covers{position:relative;height:380px}
+.covers img{position:absolute;width:78%;border-radius:12px;box-shadow:var(--shadow),0 0 0 1px var(--line-2);transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.covers img:nth-child(1){left:0;top:6%;transform:rotate(-6deg)}
+.covers img:nth-child(2){left:11%;top:24%;transform:rotate(1deg);z-index:2}
+.covers img:nth-child(3){right:0;top:44%;transform:rotate(5deg);z-index:3}
+.covers:hover img:nth-child(1){transform:rotate(-8deg) translate(-10px,-8px)}
+.covers:hover img:nth-child(3){transform:rotate(7deg) translate(10px,8px)}
+
+/* Barra di navigazione delle lezioni */
+.jump{position:sticky;top:84px;z-index:50;margin-top:8px}
+.jump-inner{display:flex;gap:6px;align-items:center;overflow-x:auto;scrollbar-width:none;padding:8px;border-radius:999px;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);width:max-content;max-width:100%}
+.jump-inner::-webkit-scrollbar{display:none}
+.jump a{padding:7px 13px;border-radius:999px;font-size:.84rem;color:var(--muted);white-space:nowrap;font-family:var(--mono)}
+.jump a:hover,.jump a.on{background:var(--text);color:var(--bg)}
+
+section{padding:64px 0}
+.sec-head{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end;margin-bottom:30px;padding-bottom:20px;border-bottom:1px solid var(--line)}
+.sec-head h2{font-size:clamp(1.8rem,3.4vw,2.6rem)}
+.sec-head p{color:var(--muted);max-width:460px;justify-self:end}
+
+/* Slide */
+.decks{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.deck{border:1px solid var(--line);border-radius:22px;overflow:hidden;background:var(--card);display:flex;flex-direction:column;transition:border-color .25s,transform .25s}
+.deck:hover{border-color:var(--line-2);transform:translateY(-3px)}
+.deck-cover{display:block;aspect-ratio:16/9;overflow:hidden;border-bottom:1px solid var(--line);background:var(--bg-2)}
+.deck-cover img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.deck:hover .deck-cover img{transform:scale(1.03)}
+.deck-body{padding:20px 22px 22px;display:flex;flex-direction:column;flex:1}
+.deck-meta{display:flex;justify-content:space-between;gap:10px;font-family:var(--mono);font-size:.72rem;color:var(--faint);margin-bottom:10px}
+.deck-meta span:first-child{color:var(--green)}
+.deck h3{font-size:1.3rem;margin-bottom:6px}
+.deck p{color:var(--muted);font-size:.92rem;margin-bottom:18px}
+.deck-acts{display:flex;gap:8px;margin-top:auto}
+
+/* Fondamenti */
+.mods{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.mod{position:relative;padding:20px 20px 18px;border-radius:18px;border:1px solid var(--line);background:var(--card);transition:border-color .2s,transform .2s}
+.mod:hover{border-color:var(--green);transform:translateY(-2px)}
+.mod-n{font-family:var(--mono);font-size:.7rem;color:var(--faint);letter-spacing:.08em;text-transform:uppercase}
+.mod h4{font-size:1.12rem;margin:8px 0 6px}
+.mod p{color:var(--muted);font-size:.88rem;line-height:1.5}
+.mod-t{position:absolute;top:18px;right:18px;font-family:var(--mono);font-size:.7rem;color:var(--muted);padding:2px 8px;border-radius:999px;border:1px solid var(--line-2)}
+.labs{margin-top:14px;padding:18px 20px;border-radius:18px;border:1px dashed var(--line-2);color:var(--muted);font-size:.92rem}
+.labs b{color:var(--text)}
+
+/* Lezioni */
+.block-title{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin:8px 0 18px}
+.block-title h3{font-size:1.4rem}
+.block-title span{font-family:var(--mono);font-size:.76rem;color:var(--faint)}
+.lessons{display:grid;gap:18px;margin-bottom:46px}
+.lesson{display:grid;grid-template-columns:330px 1fr;border:1px solid var(--line);border-radius:24px;background:var(--card);overflow:hidden}
+.lesson-side{padding:28px;border-right:1px solid var(--line);background:linear-gradient(170deg,var(--green-soft),transparent 55%);display:flex;flex-direction:column}
+.lesson-num{font-family:var(--display);font-size:3rem;font-weight:700;line-height:1;color:var(--green);letter-spacing:-.04em}
+.lesson-ore{font-family:var(--mono);font-size:.72rem;color:var(--faint);letter-spacing:.06em;text-transform:uppercase;margin:12px 0 6px}
+.lesson h3{font-size:1.45rem;margin-bottom:10px}
+.lesson-side>p{color:var(--muted);font-size:.9rem;margin-bottom:20px}
+.lesson-acts{display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin-top:auto}
+.lesson-time{margin-top:14px;font-size:.78rem;color:var(--faint)}
+.ex-list{list-style:none;display:grid}
+.ex{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;padding:18px 22px;border-bottom:1px solid var(--line);transition:background .2s}
+.ex:last-child{border-bottom:0}
+.ex:hover{background:var(--card-2)}
+.xl{width:42px;height:48px;border-radius:9px;background:var(--xl);color:#fff;display:grid;place-items:end center;padding-bottom:7px;font-family:var(--mono);font-size:.6rem;font-weight:500;position:relative}
+.xl::before{content:"";position:absolute;top:0;right:0;width:12px;height:12px;background:linear-gradient(225deg,var(--card) 50%,rgba(255,255,255,.35) 50%);border-radius:0 9px 0 3px}
+.ex-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:3px}
+.ex-n{font-family:var(--mono);font-size:.74rem;color:var(--green)}
+.ex h4{font-size:1.02rem}
+.ex-t{font-family:var(--mono);font-size:.7rem;color:var(--faint)}
+.ex p{color:var(--muted);font-size:.86rem;line-height:1.5}
+.dl{display:inline-flex;flex-direction:column;align-items:center;gap:3px;min-width:58px;padding:9px 8px;border-radius:14px;border:1px solid var(--line);color:var(--green);transition:.2s}
+.dl svg{width:18px;height:18px}
+.dl span{font-family:var(--mono);font-size:.64rem;color:var(--faint)}
+.ex:hover .dl{background:var(--green);border-color:var(--green);color:#fff}
+.ex:hover .dl span{color:rgba(255,255,255,.85)}
+
+/* Come si lavora */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;counter-reset:s}
+.step{padding:22px;border-radius:18px;border:1px solid var(--line);background:var(--card);counter-increment:s}
+.step::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:.74rem;color:var(--green)}
+.step h4{font-size:1.05rem;margin:10px 0 6px}
+.step p{color:var(--muted);font-size:.88rem}
+.step code{font-family:var(--mono);font-size:.8rem;background:var(--card-2);border:1px solid var(--line);padding:1px 6px;border-radius:6px;color:var(--text)}
+.final{margin-top:22px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;padding:26px 28px;border-radius:22px;background:linear-gradient(120deg,var(--green-soft),var(--blue-soft));border:1px solid var(--line)}
+.final h3{font-size:1.35rem;margin-bottom:4px}
+.final p{color:var(--muted);font-size:.92rem}
+
+footer{border-top:1px solid var(--line);padding:32px 0;color:var(--faint);font-size:.88rem}
+.foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.foot a:hover{color:var(--text)}
+
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .7s,transform .7s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+
+@media (max-width:980px){
+  .hero-grid{grid-template-columns:1fr;gap:34px}
+  .covers{height:300px;max-width:520px}
+  .decks{grid-template-columns:1fr 1fr}
+  .mods{grid-template-columns:1fr 1fr}
+  .lesson{grid-template-columns:1fr}
+  .lesson-side{border-right:0;border-bottom:1px solid var(--line)}
+  .lesson-acts{flex-direction:row;flex-wrap:wrap}
+  .steps{grid-template-columns:1fr 1fr}
+  .sec-head{grid-template-columns:1fr;gap:10px}
+  .sec-head p{justify-self:start}
+}
+@media (max-width:720px){
+  .nav-links{display:none}
+  .hero{padding:120px 0 36px}
+  .covers{height:220px}
+  .stats{grid-template-columns:1fr 1fr}
+  .stat:nth-child(3){padding-left:0;border-left:0}
+  .stat b{font-size:1.4rem}
+  section{padding:42px 0}
+  .jump{top:76px}
+  .decks,.mods,.steps{grid-template-columns:1fr}
+  .lesson-side{padding:22px}
+  .lesson-num{font-size:2.4rem}
+  .ex{padding:14px 16px;gap:12px}
+  .xl{display:none}
+}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-logo"><img src="../../Logo%20Rosario%20Marra-09.png" alt="Rosario Marra"></a>
+    <ul class="nav-links">
+      <li><a href="#slide">Slide</a></li>
+      <li><a href="#fondamenti">Fondamenti</a></li>
+      <li><a href="#lezioni">Lezioni ed esercizi</a></li>
+      <li><a href="#come-si-lavora">Come si lavora</a></li>
+    </ul>
+    <button class="icon-btn theme-btn" id="themeBtn" aria-label="Cambia tema">
+      <svg class="moon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 15A9.72 9.72 0 0 1 18 15.75 9.75 9.75 0 0 1 8.25 6c0-1.33.27-2.6.75-3.75A9.75 9.75 0 1 0 21.75 15Z"/></svg>
+      <svg class="sun" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.36.39-1.59 1.59M21 12h-2.25m-.39 6.36-1.59-1.59M12 18.75V21m-4.77-4.23-1.59 1.59M5.25 12H3m4.23-4.77L5.64 5.64M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="wrap">
+      <a class="crumb" href="../../e-learning.html">← Materiale didattico</a>
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow">ITS Academy Cremona · Prima annualità</div>
+          <h1>Office <span>Automation</span></h1>
+          <div class="sub">Informatica di base e Office · Digitalizzazione dei processi industriali</div>
+          <p class="lead">Dai bit al sistema operativo, poi Excel e Google Fogli dalla prima formula fino a previsioni, matematica finanziaria e automazione. Ogni esercizio parte da un caso reale di produzione.</p>
+          <div class="hero-acts">
+            <a class="btn btn-primary" href="materiali/zip/Office_Automation_ITS_Cremona_materiale_completo.zip" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>Scarica tutto il materiale <small>4,8 MB</small></a>
+            <a class="btn btn-ghost" href="#lezioni">Vai alle lezioni</a>
+          </div>
+          <div class="stats">
+            <div class="stat"><b>20</b><small>ore di corso</small></div>
+            <div class="stat"><b>8+1</b><small>lezioni più i fondamenti</small></div>
+            <div class="stat"><b>32</b><small>esercizi su file Excel</small></div>
+            <div class="stat"><b>135</b><small>slide in PDF</small></div>
+          </div>
+        </div>
+        <div class="covers" aria-hidden="true">
+          <img src="materiali/copertine/copertina-fondamenti.jpg" alt="" width="760" height="428"><img src="materiali/copertine/copertina-excel-fogli.jpg" alt="" width="760" height="428"><img src="materiali/copertine/copertina-decidere.jpg" alt="" width="760" height="428">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="jump wrap" aria-label="Vai alla lezione">
+    <div class="jump-inner"><a href="#slide">Slide</a><a href="#fondamenti">Ore 1–4</a><a href="#lezione-1">L1</a><a href="#lezione-2">L2</a><a href="#lezione-3">L3</a><a href="#lezione-4">L4</a><a href="#lezione-5">L5</a><a href="#lezione-6">L6</a><a href="#lezione-7">L7</a><a href="#lezione-8">L8</a><a href="#come-si-lavora">Consegna</a></div>
+  </nav>
+
+  <section id="slide">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div><div class="eyebrow">Le slide</div><h2>Tre presentazioni per venti ore.</h2></div>
+        <p>Da aprire durante la lezione o da ripassare a casa. Ogni lezione qui sotto ha anche il collegamento diretto alla sua prima slide.</p>
+      </div>
+      <div class="decks">
+      <article class="deck reveal">
+        <a class="deck-cover" href="materiali/slide/Slide_Ore_01-04_Informatica_di_base.pdf" target="_blank" rel="noopener" aria-label="Apri le slide: Informatica di base">
+          <img src="materiali/copertine/copertina-fondamenti.jpg" alt="Copertina delle slide «Informatica di base»" width="760" height="428" loading="lazy">
+        </a>
+        <div class="deck-body">
+          <div class="deck-meta"><span>Ore 1–4</span><span>57 slide · PDF 2,5 MB</span></div>
+          <h3>Informatica di base</h3>
+          <p>Dai bit al sistema operativo, fino agli strumenti Office per il lavoro di ogni giorno.</p>
+          <div class="deck-acts">
+            <a class="btn btn-ghost btn-sm" href="materiali/slide/Slide_Ore_01-04_Informatica_di_base.pdf" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>Apri</a>
+            <a class="btn btn-ghost btn-sm" href="materiali/slide/Slide_Ore_01-04_Informatica_di_base.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>Scarica</a>
+          </div>
+        </div>
+      </article>
+      <article class="deck reveal">
+        <a class="deck-cover" href="materiali/slide/Slide_Lezioni_1-5_Excel_e_Google_Fogli.pdf" target="_blank" rel="noopener" aria-label="Apri le slide: Excel e Google Fogli">
+          <img src="materiali/copertine/copertina-excel-fogli.jpg" alt="Copertina delle slide «Excel e Google Fogli»" width="760" height="428" loading="lazy">
+        </a>
+        <div class="deck-body">
+          <div class="deck-meta"><span>Ore 5–14</span><span>52 slide · PDF 1,2 MB</span></div>
+          <h3>Excel e Google Fogli</h3>
+          <p>Dalla prima formula alle tabelle pivot: due strumenti a confronto, con 20 esercizi.</p>
+          <div class="deck-acts">
+            <a class="btn btn-ghost btn-sm" href="materiali/slide/Slide_Lezioni_1-5_Excel_e_Google_Fogli.pdf" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>Apri</a>
+            <a class="btn btn-ghost btn-sm" href="materiali/slide/Slide_Lezioni_1-5_Excel_e_Google_Fogli.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>Scarica</a>
+          </div>
+        </div>
+      </article>
+      <article class="deck reveal">
+        <a class="deck-cover" href="materiali/slide/Slide_Lezioni_6-8_Fogli_di_calcolo_per_decidere.pdf" target="_blank" rel="noopener" aria-label="Apri le slide: Fogli di calcolo per decidere">
+          <img src="materiali/copertine/copertina-decidere.jpg" alt="Copertina delle slide «Fogli di calcolo per decidere»" width="760" height="428" loading="lazy">
+        </a>
+        <div class="deck-body">
+          <div class="deck-meta"><span>Ore 15–20</span><span>26 slide · PDF 887 KB</span></div>
+          <h3>Fogli di calcolo per decidere</h3>
+          <p>Statistica e previsioni, matematica finanziaria, dati esterni, automazione e progetto finale.</p>
+          <div class="deck-acts">
+            <a class="btn btn-ghost btn-sm" href="materiali/slide/Slide_Lezioni_6-8_Fogli_di_calcolo_per_decidere.pdf" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>Apri</a>
+            <a class="btn btn-ghost btn-sm" href="materiali/slide/Slide_Lezioni_6-8_Fogli_di_calcolo_per_decidere.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>Scarica</a>
+          </div>
+        </div>
+      </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="fondamenti" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div><div class="eyebrow">Ore 1–4</div><h2>Informatica di base in sei moduli.</h2></div>
+        <p>Ogni modulo parte da una domanda e si chiude con esercizi e domande di verifica. Clicca un modulo per aprire le sue slide.</p>
+      </div>
+      <div class="mods reveal">
+        <a class="mod" href="materiali/slide/Slide_Ore_01-04_Informatica_di_base.pdf#page=4" target="_blank" rel="noopener">
+          <span class="mod-n">Modulo 1</span><h4>Fondamenti e storia</h4><p>Informatica, hardware e software, breve storia del computer, tipologie di elaboratori</p><span class="mod-t">30 min</span>
+        </a>
+        <a class="mod" href="materiali/slide/Slide_Ore_01-04_Informatica_di_base.pdf#page=11" target="_blank" rel="noopener">
+          <span class="mod-n">Modulo 2</span><h4>L&#x27;hardware del PC</h4><p>Input/output, periferiche, porte, scheda madre, CPU, Von Neumann, memorie</p><span class="mod-t">40 min</span>
+        </a>
+        <a class="mod" href="materiali/slide/Slide_Ore_01-04_Informatica_di_base.pdf#page=20" target="_blank" rel="noopener">
+          <span class="mod-n">Modulo 3</span><h4>Il mondo binario</h4><p>Dati e informazioni, bit e byte, conversioni, esadecimale, logica booleana</p><span class="mod-t">50 min</span>
+        </a>
+        <a class="mod" href="materiali/slide/Slide_Ore_01-04_Informatica_di_base.pdf#page=30" target="_blank" rel="noopener">
+          <span class="mod-n">Modulo 4</span><h4>Codificare le informazioni</h4><p>Interi con segno, numeri reali, ASCII, Unicode e UTF-8, misurare i dati</p><span class="mod-t">50 min</span>
+        </a>
+        <a class="mod" href="materiali/slide/Slide_Ore_01-04_Informatica_di_base.pdf#page=39" target="_blank" rel="noopener">
+          <span class="mod-n">Modulo 5</span><h4>Il sistema operativo</h4><p>Compiti, processi, kernel e shell, tipi di SO, macchine virtuali, avvio del PC</p><span class="mod-t">40 min</span>
+        </a>
+        <a class="mod" href="materiali/slide/Slide_Ore_01-04_Informatica_di_base.pdf#page=48" target="_blank" rel="noopener">
+          <span class="mod-n">Modulo 6</span><h4>Office al lavoro</h4><p>Word, Excel e PowerPoint: le basi e tre laboratori pratici</p><span class="mod-t">30 min</span>
+        </a>
+      </div>
+      <div class="labs reveal"><b>Laboratori del modulo 6.</b> Word: un'istruzione operativa con stili, sommario e tabella delle revisioni. Excel: analisi degli scarti con SE, CONTA.SE e formattazione condizionale. PowerPoint: 5-6 slide per presentare i risultati in 5 minuti.</div>
+    </div>
+  </section>
+
+  <section id="lezioni" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div><div class="eyebrow">Lezioni ed esercizi</div><h2>Otto lezioni, quattro esercizi ciascuna.</h2></div>
+        <p>Scarica i file della lezione, compila le celle gialle e consegna su Classroom. Funzionano sia in Excel sia in Google Fogli.</p>
+      </div>
+      <div class="block-title reveal"><h3>Excel e Google Fogli</h3><span>Ore 5–14 · dalla base all'avanzato</span></div>
+      <div class="lessons">
+    <article class="lesson reveal" id="lezione-1">
+      <div class="lesson-side">
+        <div class="lesson-num">01</div>
+        <div class="lesson-ore">Lezione 1 · ore 5–6</div>
+        <h3>Primi passi</h3>
+        <p>Formule e formati, SOMMA.PRODOTTO, statistiche (MEDIANA, DEV.ST, QUARTILE), arrotondamenti, QUOZIENTE e RESTO.</p>
+        <div class="lesson-acts">
+          <a class="btn btn-ghost btn-sm" href="materiali/slide/Slide_Lezioni_1-5_Excel_e_Google_Fogli.pdf#page=4" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5"/></svg>Slide della lezione</a>
+          <a class="btn btn-primary btn-sm" href="materiali/zip/Esercizi_Lezione_1.zip" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>Tutti e 4 gli esercizi <small>177 KB</small></a>
+        </div>
+        <div class="lesson-time">≈ 165 minuti di esercizi</div>
+      </div>
+      <ol class="ex-list">
+        <li class="ex">
+          <span class="xl" aria-hidden="true">XLS</span>
+          <div class="ex-info">
+            <div class="ex-head"><span class="ex-n">Es. 1.1</span><h4>OEE delle linee</h4><span class="ex-t">40 min</span></div>
+            <p>30 turni di 3 linee: Disponibilità × Prestazione × Qualità, SOMMA.PRODOTTO, MEDIANA, DEV.ST; OEE medio e aggregato.</p>
+          </div>
+          <a class="dl" href="materiali/esercizi/Lezione_1/L1_E1_OEE_linee.xlsx" download aria-label="Scarica OEE delle linee (76 KB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span>76 KB</span></a>
+        </li>
+        <li class="ex">
+          <span class="xl" aria-hidden="true">XLS</span>
+          <div class="ex-info">
+            <div class="ex-head"><span class="ex-n">Es. 1.2</span><h4>Distinta base e costo</h4><span class="ex-t">40 min</span></div>
+            <p>Distinta e ciclo di lavoro: costo industriale, margine sul prezzo, ARROTONDA.ECCESSO, GRANDE e PICCOLO, effetto del lotto.</p>
+          </div>
+          <a class="dl" href="materiali/esercizi/Lezione_1/L1_E2_Distinta_base_costo.xlsx" download aria-label="Scarica Distinta base e costo (76 KB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span>76 KB</span></a>
+        </li>
+        <li class="ex">
+          <span class="xl" aria-hidden="true">XLS</span>
+          <div class="ex-info">
+            <div class="ex-head"><span class="ex-n">Es. 1.3</span><h4>SPC e capacità di processo</h4><span class="ex-t">45 min</span></div>
+            <p>125 misure: carta X̄-R, limiti di controllo, Cp e Cpk, QUARTILE, PERCENTILE, punti fuori controllo.</p>
+          </div>
+          <a class="dl" href="materiali/esercizi/Lezione_1/L1_E3_SPC_capacita_processo.xlsx" download aria-label="Scarica SPC e capacità di processo (75 KB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span>75 KB</span></a>
+        </li>
+        <li class="ex">
+          <span class="xl" aria-hidden="true">XLS</span>
+          <div class="ex-info">
+            <div class="ex-head"><span class="ex-n">Es. 1.4</span><h4>Imballi e spedizioni</h4><span class="ex-t">40 min</span></div>
+            <p>QUOZIENTE, RESTO, ARROTONDA.PER.ECC, pallet e pesi, trasporto con minimo (MAX), tempi in [h]:mm.</p>
+          </div>
+          <a class="dl" href="materiali/esercizi/Lezione_1/L1_E4_Imballi_spedizioni.xlsx" download aria-label="Scarica Imballi e spedizioni (75 KB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span>75 KB</span></a>
+        </li>
+      </ol>
+    </article>
+    <article class="lesson reveal" id="lezione-2">
+      <div class="lesson-side">
+        <div class="lesson-num">02</div>
+        <div class="lesson-ore">Lezione 2 · ore 7–8</div>
+        <h3>Riferimenti e logica</h3>
+        <p>Riferimenti assoluti e misti, nomi, SE, E, O, PIÙ.SE, CONTA.SE, SOMMA.SE e le funzioni *.PIÙ.SE.</p>
+        <div class="lesson-acts">
+          <a class="btn btn-ghost btn-sm" href="materiali/slide/Slide_Lezioni_1-5_Excel_e_Google_Fogli.pdf#page=15" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5"/></svg>Slide della lezione</a>
+          <a class="btn btn-primary btn-sm" href="materiali/zip/Esercizi_Lezione_2.zip" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>Tutti e 4 gli esercizi <small>180 KB</small></a>
+        </div>
+        <div class="lesson-time">≈ 165 minuti di esercizi</div>
+      </div>
+      <ol class="ex-list">
+        <li class="ex">
+          <span class="xl" aria-hidden="true">XLS</span>
+          <div class="ex-info">
+            <div class="ex-head"><span class="ex-n">Es. 2.1</span><h4>Sensibilità prezzo × volume</h4><span class="ex-t">40 min</span></div>
+            <p>Tabella 13×16 con una sola formula a riferimenti misti, nomi definiti, prezzo e volume di pareggio.</p>
+          </div>
+          <a class="dl" href="materiali/esercizi/Lezione_2/L2_E1_Sensibilita_prezzo_volume.xlsx" download aria-label="Scarica Sensibilità prezzo × volume (75 KB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span>75 KB</span></a>
+        </li>
+        <li class="ex">
+          <span class="xl" aria-hidden="true">XLS</span>
+          <div class="ex-info">
+            <div class="ex-head"><span class="ex-n">Es. 2.2</span><h4>Collaudo multi-quota</h4><span class="ex-t">40 min</span></div>
+            <p>3 quote con tolleranze: ASS, E, O, NON, PIÙ.SE; classi A/B/Rilavorabile/Scarto; matrice CONTA.PIÙ.SE.</p>
+          </div>
+          <a class="dl" href="materiali/esercizi/Lezione_2/L2_E2_Collaudo_multi_quota.xlsx" download aria-label="Scarica Collaudo multi-quota (77 KB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span>77 KB</span></a>
+        </li>
+        <li class="ex">
+          <span class="xl" aria-hidden="true">XLS</span>
+          <div class="ex-info">
+            <div class="ex-head"><span class="ex-n">Es. 2.3</span><h4>MTTR, MTBF e Pareto</h4><span class="ex-t">45 min</span></div>
+            <p>90 fermi: carattere jolly «Guasto*», criteri sulle date, MTTR e MTBF, RANGO e cumulata per le classi ABC.</p>
+          </div>
+          <a class="dl" href="materiali/esercizi/Lezione_2/L2_E3_MTTR_MTBF_Pareto.xlsx" download aria-label="Scarica MTTR, MTBF e Pareto (77 KB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span>77 KB</span></a>
+        </li>
+        <li class="ex">
+          <span class="xl" aria-hidden="true">XLS</span>
+          <div class="ex-info">
+            <div class="ex-head"><span class="ex-n">Es. 2.4</span><h4>Premi a fasce</h4><span class="ex-t">40 min</span></div>
+            <p>CONFRONTA tipo 1 e SCEGLI, PIÙ.SE, esclusioni con O, MAX.PIÙ.SE e MEDIA.PIÙ.SE, criteri letti da cella.</p>
+          </div>
+          <a class="dl" href="materiali/esercizi/Lezione_2/L2_E4_Premi_a_fasce.xlsx" download aria-label="Scarica Premi a fasce (76 KB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span>76 KB</span></a>
+        </li>
+      </ol>
+    </article>
+    <article class="lesson reveal" id="lezione-3">
+      <div class="lesson-side">
+        <div class="lesson-num">03</div>
+        <div class="lesson-ore">Lezione 3 · ore 9–10</div>
+        <h3>Organizzare i dati</h3>
+        <p>Ordina, filtri, formattazione condizionale, convalida, funzioni di testo e di data, tabelle.</p>
+        <div class="lesson-acts">
+          <a class="btn btn-ghost btn-sm" href="materiali/slide/Slide_Lezioni_1-5_Excel_e_Google_Fogli.pdf#page=24" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5"/></svg>Slide della lezione</a>
+          <a class="btn btn-primary btn-sm" href="materiali/zip/Esercizi_Lezione_3.zip" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>Tutti e 4 gli esercizi <small>185 KB</small></a>
+        </div>
+        <div class="lesson-time">≈ 185 minuti di esercizi</div>
+      </div>
+      <ol class="ex-list">
+        <li class="ex">
+          <span class="xl" aria-hidden="true">XLS</span>
+          <div class="ex-info">
+            <div class="ex-head"><span class="ex-n">Es. 3.1</span><h4>Pulizia di un export gestionale</h4><span class="ex-t">45 min</span></div>
+            <p>Spazi, maiuscole, date e importi salvati come testo: TROVA, STRINGA.ESTRAI, SOSTITUISCI, VALORE, duplicati.</p>
+          </div>
+          <a class="dl" href="materiali/esercizi/Lezione_3/L3_E1_Pulizia_export_gestionale.xlsx" download aria-label="Scarica Pulizia di un export gestionale (78 KB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span>78 KB</span></a>
+        </li>
+        <li class="ex">
+          <span class="xl" aria-hidden="true">XLS</span>
+          <div class="ex-info">
+            <div class="ex-head"><span class="ex-n">Es. 3.2</span><h4>Gantt automatico</h4><span class="ex-t">50 min</span></div>
+            <p>Predecessori e GIORNO.LAVORATIVO con i festivi; barre e avanzamento con formattazione condizionale a formula.</p>
+          </div>
+          <a class="dl" href="materiali/esercizi/Lezione_3/L3_E2_Gantt_formattazione.xlsx" download aria-label="Scarica Gantt automatico (80 KB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span>80 KB</span></a>
+        </li>
+        <li class="ex">
+          <span class="xl" aria-hidden="true">XLS</span>
+          <div class="ex-info">
+            <div class="ex-head"><span class="ex-n">Es. 3.3</span><h4>Codici EAN-13 e lotti</h4><span class="ex-t">45 min</span></div>
+            <p>Cifra di controllo EAN-13 con riferimenti misti, lotti con settimana ISO, TESTO «000», decodifica.</p>
+          </div>
+          <a class="dl" href="materiali/esercizi/Lezione_3/L3_E3_Codici_EAN_lotti.xlsx" download aria-label="Scarica Codici EAN-13 e lotti (77 KB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span>77 KB</span></a>
+        </li>
+        <li class="ex">
+          <span class="xl" aria-hidden="true">XLS</span>
+          <div class="ex-info">
+            <div class="ex-head"><span class="ex-n">Es. 3.4</span><h4>Consegne in giorni lavorativi</h4><span class="ex-t">45 min</span></div>
+            <p>GIORNO.LAVORATIVO.INTL con sabato lavorativo, ritardi con GIORNI.LAVORATIVI.TOT, FINE.MESE, SCEGLI.</p>
+          </div>
+          <a class="dl" href="materiali/esercizi/Lezione_3/L3_E4_Pianificazione_giorni_lavorativi.xlsx" download aria-label="Scarica Consegne in giorni lavorativi (76 KB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span>76 KB</span></a>
+        </li>
+      </ol>
+    </article>
+    <article class="lesson reveal" id="lezione-4">
+      <div class="lesson-side">
+        <div class="lesson-num">04</div>
+        <div class="lesson-ore">Lezione 4 · ore 11–12</div>
+        <h3>Ricerca e grafici</h3>
+        <p>CERCA.VERT, CERCA.X, INDICE e CONFRONTA, lavoro su più fogli, grafici e sparkline.</p>
+        <div class="lesson-acts">
+          <a class="btn btn-ghost btn-sm" href="materiali/slide/Slide_Lezioni_1-5_Excel_e_Google_Fogli.pdf#page=33" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5"/></svg>Slide della lezione</a>
+          <a class="btn btn-primary btn-sm" href="materiali/zip/Esercizi_Lezione_4.zip" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>Tutti e 4 gli esercizi <small>192 KB</small></a>
+        </div>
+        <div class="lesson-time">≈ 200 minuti di esercizi</div>
+      </div>
+      <ol class="ex-list">
+        <li class="ex">
+          <span class="xl" aria-hidden="true">XLS</span>
+          <div class="ex-info">
+            <div class="ex-head"><span class="ex-n">Es. 4.1</span><h4>Listini, scaglioni, fornitori</h4><span class="ex-t">50 min</span></div>
+            <p>CERCA.VERT approssimata, INDICE a due dimensioni, sconti in cascata, MIN.PIÙ.SE e riga trovata con SOMMA.PRODOTTO.</p>
+          </div>
+          <a class="dl" href="materiali/esercizi/Lezione_4/L4_E1_Listini_scaglioni.xlsx" download aria-label="Scarica Listini, scaglioni, fornitori (81 KB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span>81 KB</span></a>
+        </li>
+        <li class="ex">
+          <span class="xl" aria-hidden="true">XLS</span>
+          <div class="ex-info">
+            <div class="ex-head"><span class="ex-n">Es. 4.2</span><h4>Matrici e medie mobili</h4><span class="ex-t">50 min</span></div>
+            <p>Routing articolo × macchina, INDICE(…;n;0), macchina più veloce, CERCA.ORIZZ, media mobile con SCARTO.</p>
+          </div>
+          <a class="dl" href="materiali/esercizi/Lezione_4/L4_E2_Matrici_INDICE_CONFRONTA.xlsx" download aria-label="Scarica Matrici e medie mobili (78 KB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span>78 KB</span></a>
+        </li>
+        <li class="ex">
+          <span class="xl" aria-hidden="true">XLS</span>
+          <div class="ex-info">
+            <div class="ex-head"><span class="ex-n">Es. 4.3</span><h4>Consolidamento con INDIRETTO</h4><span class="ex-t">50 min</span></div>
+            <p>6 fogli mensili con i reparti in ordine diverso: INDIRETTO, menu a tendina, cumulato YTD, riferimento 3D.</p>
+          </div>
+          <a class="dl" href="materiali/esercizi/Lezione_4/L4_E3_Consolidamento_INDIRETTO.xlsx" download aria-label="Scarica Consolidamento con INDIRETTO (79 KB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span>79 KB</span></a>
+        </li>
+        <li class="ex">
+          <span class="xl" aria-hidden="true">XLS</span>
+          <div class="ex-info">
+            <div class="ex-head"><span class="ex-n">Es. 4.4</span><h4>Pareto e grafici dinamici</h4><span class="ex-t">50 min</span></div>
+            <p>Classifica automatica con GRANDE e spareggio, grafico combinato, grafico che cambia con il menu.</p>
+          </div>
+          <a class="dl" href="materiali/esercizi/Lezione_4/L4_E4_Grafici_dinamici_Pareto.xlsx" download aria-label="Scarica Pareto e grafici dinamici (79 KB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span>79 KB</span></a>
+        </li>
+      </ol>
+    </article>
+    <article class="lesson reveal" id="lezione-5">
+      <div class="lesson-side">
+        <div class="lesson-num">05</div>
+        <div class="lesson-ore">Lezione 5 · ore 13–14</div>
+        <h3>Excel avanzato</h3>
+        <p>Tabelle pivot, funzioni dinamiche, LET, Risolutore, Ricerca obiettivo e dashboard.</p>
+        <div class="lesson-acts">
+          <a class="btn btn-ghost btn-sm" href="materiali/slide/Slide_Lezioni_1-5_Excel_e_Google_Fogli.pdf#page=42" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5"/></svg>Slide della lezione</a>
+          <a class="btn btn-primary btn-sm" href="materiali/zip/Esercizi_Lezione_5.zip" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>Tutti e 4 gli esercizi <small>236 KB</small></a>
+        </div>
+        <div class="lesson-time">≈ 220 minuti di esercizi</div>
+      </div>
+      <ol class="ex-list">
+        <li class="ex">
+          <span class="xl" aria-hidden="true">XLS</span>
+          <div class="ex-info">
+            <div class="ex-head"><span class="ex-n">Es. 5.1</span><h4>Pivot avanzate</h4><span class="ex-t">55 min</span></div>
+            <p>1.170 turni: raggruppa per data, campo calcolato, % del totale, primi N, filtro dati; 10 domande verificate a formula.</p>
+          </div>
+          <a class="dl" href="materiali/esercizi/Lezione_5/L5_E1_Pivot_avanzate.xlsx" download aria-label="Scarica Pivot avanzate (119 KB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span>119 KB</span></a>
+        </li>
+        <li class="ex">
+          <span class="xl" aria-hidden="true">XLS</span>
+          <div class="ex-info">
+            <div class="ex-head"><span class="ex-n">Es. 5.2</span><h4>Funzioni dinamiche e LET</h4><span class="ex-t">50 min</span></div>
+            <p>FILTRO a più condizioni, ORDINA e UNICI, ORDINA.PER, LET, CERCA.X dal fondo, SEQUENZA.</p>
+          </div>
+          <a class="dl" href="materiali/esercizi/Lezione_5/L5_E2_Funzioni_dinamiche_LET.xlsx" download aria-label="Scarica Funzioni dinamiche e LET (76 KB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span>76 KB</span></a>
+        </li>
+        <li class="ex">
+          <span class="xl" aria-hidden="true">XLS</span>
+          <div class="ex-info">
+            <div class="ex-head"><span class="ex-n">Es. 5.3</span><h4>Risolutore: il mix ottimo</h4><span class="ex-t">55 min</span></div>
+            <p>Modello con variabili, obiettivo e vincoli: Risolutore con interi, collo di bottiglia, Ricerca obiettivo.</p>
+          </div>
+          <a class="dl" href="materiali/esercizi/Lezione_5/L5_E3_Risolutore_mix_produttivo.xlsx" download aria-label="Scarica Risolutore: il mix ottimo (74 KB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span>74 KB</span></a>
+        </li>
+        <li class="ex">
+          <span class="xl" aria-hidden="true">XLS</span>
+          <div class="ex-info">
+            <div class="ex-head"><span class="ex-n">Es. 5.4</span><h4>Progetto: dashboard interattiva</h4><span class="ex-t">60 min</span></div>
+            <p>Menu linea/mese, KPI con SOMMA.PIÙ.SE e «*», confronto con il mese precedente, grafici, protezione.</p>
+          </div>
+          <a class="dl" href="materiali/esercizi/Lezione_5/L5_E4_Dashboard_interattiva.xlsx" download aria-label="Scarica Progetto: dashboard interattiva (95 KB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span>95 KB</span></a>
+        </li>
+      </ol>
+    </article>
+      </div>
+      <div class="block-title reveal"><h3>Fogli di calcolo per decidere</h3><span>Ore 15–20 · dal calcolo alla decisione</span></div>
+      <div class="lessons">
+    <article class="lesson reveal" id="lezione-6">
+      <div class="lesson-side">
+        <div class="lesson-num">06</div>
+        <div class="lesson-ore">Lezione 6 · ore 15–16</div>
+        <h3>Statistica e previsioni</h3>
+        <p>Regressione lineare, previsione della domanda (media mobile, smorzamento esponenziale, stagionalità), scorte e lotto economico, distribuzione normale e PPM.</p>
+        <div class="lesson-acts">
+          <a class="btn btn-ghost btn-sm" href="materiali/slide/Slide_Lezioni_6-8_Fogli_di_calcolo_per_decidere.pdf#page=3" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5"/></svg>Slide della lezione</a>
+          <a class="btn btn-primary btn-sm" href="materiali/zip/Esercizi_Lezione_6.zip" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>Tutti e 4 gli esercizi <small>183 KB</small></a>
+        </div>
+        <div class="lesson-time">≈ 190 minuti di esercizi</div>
+      </div>
+      <ol class="ex-list">
+        <li class="ex">
+          <span class="xl" aria-hidden="true">XLS</span>
+          <div class="ex-info">
+            <div class="ex-head"><span class="ex-n">Es. 6.1</span><h4>Regressione dei consumi</h4><span class="ex-t">45 min</span></div>
+            <p>PENDENZA, INTERCETTA, RQ, PREVISIONE.LINEARE, residui e giorni anomali, costo dell&#x27;energia del piano di dicembre.</p>
+          </div>
+          <a class="dl" href="materiali/esercizi/Lezione_6/L6_E1_Regressione_consumi_energia.xlsx" download aria-label="Scarica Regressione dei consumi (77 KB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span>77 KB</span></a>
+        </li>
+        <li class="ex">
+          <span class="xl" aria-hidden="true">XLS</span>
+          <div class="ex-info">
+            <div class="ex-head"><span class="ex-n">Es. 6.2</span><h4>Previsione della domanda</h4><span class="ex-t">50 min</span></div>
+            <p>Media mobile, smorzamento esponenziale, MAD e MAPE con SOMMA.PRODOTTO(ASS), tabella degli α, indici stagionali.</p>
+          </div>
+          <a class="dl" href="materiali/esercizi/Lezione_6/L6_E2_Previsione_domanda.xlsx" download aria-label="Scarica Previsione della domanda (77 KB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span>77 KB</span></a>
+        </li>
+        <li class="ex">
+          <span class="xl" aria-hidden="true">XLS</span>
+          <div class="ex-info">
+            <div class="ex-head"><span class="ex-n">Es. 6.3</span><h4>Scorte e simulazione</h4><span class="ex-t">50 min</span></div>
+            <p>EOQ con RADQ, INV.NORM.S, punto di riordino, classi ABC, simulazione di 40 giorni con INDICE e SCARTO.</p>
+          </div>
+          <a class="dl" href="materiali/esercizi/Lezione_6/L6_E3_Scorte_EOQ_simulazione.xlsx" download aria-label="Scarica Scorte e simulazione (77 KB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span>77 KB</span></a>
+        </li>
+        <li class="ex">
+          <span class="xl" aria-hidden="true">XLS</span>
+          <div class="ex-info">
+            <div class="ex-head"><span class="ex-n">Es. 6.4</span><h4>Normale, istogramma, PPM</h4><span class="ex-t">45 min</span></div>
+            <p>DISTRIB.NORM.N, PPM attesi e osservati, istogramma con CONTA.PIÙ.SE e curva attesa, effetto della centratura.</p>
+          </div>
+          <a class="dl" href="materiali/esercizi/Lezione_6/L6_E4_Distribuzione_normale_PPM.xlsx" download aria-label="Scarica Normale, istogramma, PPM (78 KB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span>78 KB</span></a>
+        </li>
+      </ol>
+    </article>
+    <article class="lesson reveal" id="lezione-7">
+      <div class="lesson-side">
+        <div class="lesson-num">07</div>
+        <div class="lesson-ore">Lezione 7 · ore 17–18</div>
+        <h3>Matematica finanziaria</h3>
+        <p>Valore del denaro nel tempo, RATA e piano di ammortamento, leasing, VAN, TIR, payback, ammortamento dei cespiti, scenari e sensibilità.</p>
+        <div class="lesson-acts">
+          <a class="btn btn-ghost btn-sm" href="materiali/slide/Slide_Lezioni_6-8_Fogli_di_calcolo_per_decidere.pdf#page=10" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5"/></svg>Slide della lezione</a>
+          <a class="btn btn-primary btn-sm" href="materiali/zip/Esercizi_Lezione_7.zip" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>Tutti e 4 gli esercizi <small>175 KB</small></a>
+        </div>
+        <div class="lesson-time">≈ 195 minuti di esercizi</div>
+      </div>
+      <ol class="ex-list">
+        <li class="ex">
+          <span class="xl" aria-hidden="true">XLS</span>
+          <div class="ex-info">
+            <div class="ex-head"><span class="ex-n">Es. 7.1</span><h4>Mutuo o leasing?</h4><span class="ex-t">50 min</span></div>
+            <p>RATA, INTERESSI, P.RATA, piano di 60 rate, CUM.INTERESSI, TASSO del leasing con canoni anticipati, confronto con VA.</p>
+          </div>
+          <a class="dl" href="materiali/esercizi/Lezione_7/L7_E1_Finanziamento_macchinario.xlsx" download aria-label="Scarica Mutuo o leasing? (76 KB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span>76 KB</span></a>
+        </li>
+        <li class="ex">
+          <span class="xl" aria-hidden="true">XLS</span>
+          <div class="ex-info">
+            <div class="ex-head"><span class="ex-n">Es. 7.2</span><h4>VAN, TIR e payback</h4><span class="ex-t">50 min</span></div>
+            <p>Flussi di cassa con imposte e ammortamento, VAN, TIR.COST, payback con CONFRONTA, profilo del VAN, scenari.</p>
+          </div>
+          <a class="dl" href="materiali/esercizi/Lezione_7/L7_E2_Valutazione_investimento_VAN_TIR.xlsx" download aria-label="Scarica VAN, TIR e payback (75 KB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span>75 KB</span></a>
+        </li>
+        <li class="ex">
+          <span class="xl" aria-hidden="true">XLS</span>
+          <div class="ex-info">
+            <div class="ex-head"><span class="ex-n">Es. 7.3</span><h4>Ammortamento dei cespiti</h4><span class="ex-t">45 min</span></div>
+            <p>AMMORT.COST, AMMORT.ANNUO, AMMORT.FISSO e metodo fiscale; valore contabile, risparmio d&#x27;imposta attualizzato.</p>
+          </div>
+          <a class="dl" href="materiali/esercizi/Lezione_7/L7_E3_Ammortamento_cespiti.xlsx" download aria-label="Scarica Ammortamento dei cespiti (74 KB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span>74 KB</span></a>
+        </li>
+        <li class="ex">
+          <span class="xl" aria-hidden="true">XLS</span>
+          <div class="ex-info">
+            <div class="ex-head"><span class="ex-n">Es. 7.4</span><h4>Make or buy</h4><span class="ex-t">50 min</span></div>
+            <p>Selettore di scenario con SCEGLI, prezzi a scaglioni, punto di indifferenza, tabella di sensibilità e grafico.</p>
+          </div>
+          <a class="dl" href="materiali/esercizi/Lezione_7/L7_E4_Make_or_buy_scenari.xlsx" download aria-label="Scarica Make or buy (75 KB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span>75 KB</span></a>
+        </li>
+      </ol>
+    </article>
+    <article class="lesson reveal" id="lezione-8">
+      <div class="lesson-side">
+        <div class="lesson-num">08</div>
+        <div class="lesson-ore">Lezione 8 · ore 19–20</div>
+        <h3>Dati, automazione, progetto</h3>
+        <p>Tabelle strutturate, elenchi a cascata, Power Query e QUERY, macro VBA e Apps Script, gestionale di magazzino.</p>
+        <div class="lesson-acts">
+          <a class="btn btn-ghost btn-sm" href="materiali/slide/Slide_Lezioni_6-8_Fogli_di_calcolo_per_decidere.pdf#page=18" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5"/></svg>Slide della lezione</a>
+          <a class="btn btn-primary btn-sm" href="materiali/zip/Esercizi_Lezione_8.zip" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>Tutti e 4 gli esercizi <small>193 KB</small></a>
+        </div>
+        <div class="lesson-time">≈ 205 minuti di esercizi</div>
+      </div>
+      <ol class="ex-list">
+        <li class="ex">
+          <span class="xl" aria-hidden="true">XLS</span>
+          <div class="ex-info">
+            <div class="ex-head"><span class="ex-n">Es. 8.1</span><h4>Tabelle ed elenchi a cascata</h4><span class="ex-t">45 min</span></div>
+            <p>Ctrl+T, colonne calcolate, riga dei totali, riferimenti strutturati, menu a cascata con nomi e INDIRETTO.</p>
+          </div>
+          <a class="dl" href="materiali/esercizi/Lezione_8/L8_E1_Tabelle_ed_elenchi_a_cascata.xlsx" download aria-label="Scarica Tabelle ed elenchi a cascata (79 KB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span>79 KB</span></a>
+        </li>
+        <li class="ex">
+          <span class="xl" aria-hidden="true">XLS</span>
+          <div class="ex-info">
+            <div class="ex-head"><span class="ex-n">Es. 8.2</span><h4>Power Query e QUERY</h4><span class="ex-t">50 min</span></div>
+            <p>Tre stabilimenti in formato largo: accoda, unpivot, raggruppa; in Fogli {…;…} e QUERY; verifica con le formule.</p>
+          </div>
+          <a class="dl" href="materiali/esercizi/Lezione_8/L8_E2_Power_Query_e_QUERY.xlsx" download aria-label="Scarica Power Query e QUERY (77 KB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span>77 KB</span></a>
+        </li>
+        <li class="ex">
+          <span class="xl" aria-hidden="true">XLS</span>
+          <div class="ex-info">
+            <div class="ex-head"><span class="ex-n">Es. 8.3</span><h4>Macro e Apps Script</h4><span class="ex-t">50 min</span></div>
+            <p>Registra una macro, leggi e correggi il VBA, pulsante, funzione personalizzata OEE() in VBA e in Apps Script.</p>
+          </div>
+          <a class="dl" href="materiali/esercizi/Lezione_8/L8_E3_Macro_e_Apps_Script.xlsx" download aria-label="Scarica Macro e Apps Script (75 KB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span>75 KB</span></a>
+        </li>
+        <li class="ex">
+          <span class="xl" aria-hidden="true">XLS</span>
+          <div class="ex-info">
+            <div class="ex-head"><span class="ex-n">Es. 8.4</span><h4>Progetto: gestionale di magazzino</h4><span class="ex-t">60 min</span></div>
+            <p>Giacenze, costo medio ponderato, sottoscorta e fermi, rotazione, scheda articolo, cruscotto protetto.</p>
+          </div>
+          <a class="dl" href="materiali/esercizi/Lezione_8/L8_E4_Progetto_gestionale_magazzino.xlsx" download aria-label="Scarica Progetto: gestionale di magazzino (87 KB)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span>87 KB</span></a>
+        </li>
+      </ol>
+    </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="come-si-lavora" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div><div class="eyebrow">Come si lavora</div><h2>Dal file alla consegna.</h2></div>
+        <p>Lo stesso metodo per tutti i 32 esercizi, in Excel o in Google Fogli.</p>
+      </div>
+      <div class="steps reveal">
+        <div class="step"><h4>Scarica il file</h4><p>Ogni esercizio è un file .xlsx. Per Google Fogli: caricalo su Drive e scegli «Apri con › Fogli Google».</p></div>
+        <div class="step"><h4>Leggi la Guida funzioni</h4><p>Il primo foglio spiega sintassi ed esempi funzionanti di tutte le funzioni che ti servono.</p></div>
+        <div class="step"><h4>Compila le celle gialle</h4><p>Il foglio «Istruzioni» dice cosa calcolare: le celle da completare sono evidenziate in giallo.</p></div>
+        <div class="step"><h4>Consegna su Classroom</h4><p>Rinomina il file come <code>Cognome_Nome_1_1.xlsx</code> (lezione_esercizio) e consegnalo nel compito.</p></div>
+      </div>
+      <div class="final reveal">
+        <div><h3>Tutto il corso in un unico file</h3><p>Le 3 presentazioni e i 32 esercizi divisi per lezione, con un file LEGGIMI.</p></div>
+        <a class="btn btn-primary" href="materiali/zip/Office_Automation_ITS_Cremona_materiale_completo.zip" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>Scarica lo zip <small>4,8 MB</small></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap foot"><span>© 2026 Rosario Marra · ITS Academy Cremona</span><a href="../../e-learning.html">← Torna al materiale didattico</a></div></footer>
+
+<script>
+(() => {
+  const root = document.documentElement;
+  let saved = null;
+  try { saved = localStorage.getItem('theme'); } catch (e) {}
+  root.dataset.theme = saved || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  document.getElementById('themeBtn').onclick = () => {
+    root.dataset.theme = root.dataset.theme === 'light' ? 'dark' : 'light';
+    try { localStorage.setItem('theme', root.dataset.theme); } catch (e) {}
+  };
+
+  // Comparsa morbida delle sezioni
+  const io = new IntersectionObserver(entries => entries.forEach(en => {
+    if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+  }), { threshold: .08 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Evidenzia nella barra la lezione che si sta leggendo
+  const links = [...document.querySelectorAll('.jump a')];
+  const targets = links.map(a => document.querySelector(a.getAttribute('href')));
+  const strip = document.querySelector('.jump-inner');
+  let current = null;
+  addEventListener('scroll', () => {
+    let i = -1;
+    targets.forEach((t, k) => { if (t && t.getBoundingClientRect().top < innerHeight * .4) i = k; });
+    if (i === current) return;
+    current = i;
+    links.forEach((a, k) => a.classList.toggle('on', k === i));
+    if (i >= 0) strip.scrollTo({ left: links[i].offsetLeft - 40, behavior: 'smooth' });
+  }, { passive: true });
+})();
+</script>
+</body>
+</html>
