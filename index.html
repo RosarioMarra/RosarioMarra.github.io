@@ -328,6 +328,26 @@ body.menu-open .mmenu-foot{opacity:1;transform:none}
 .proj-feature:hover .phone.p1{transform:translate(-74px,4px) rotate(-8deg)}
 .proj-feature:hover .phone.p2{transform:translate(82px,-20px) rotate(7deg)}
 .fl-feature{margin-top:20px;grid-template-columns:.95fr 1.05fr}
+/* Slider di pubblicazioni e app: stessa grafica, una scheda alla volta */
+.slider-bar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:26px}
+.slider-tabs{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.slider-tabs::-webkit-scrollbar{display:none}
+.slider-tab{display:inline-flex;align-items:center;gap:10px;padding:9px 16px;border-radius:999px;border:1px solid var(--line-2);background:transparent;color:var(--muted);font:inherit;font-size:.88rem;white-space:nowrap;cursor:pointer;transition:background .25s,color .25s,border-color .25s}
+.slider-tab small{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;color:var(--faint);transition:color .25s}
+.slider-tab:hover{color:var(--text);border-color:var(--text)}
+.slider-tab[aria-selected="true"]{background:var(--text);border-color:var(--text);color:var(--bg)}
+.slider-tab[aria-selected="true"] small{color:inherit;opacity:.6}
+.slider-arrows{display:flex;gap:8px;flex-shrink:0}
+.slider-arrow{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line-2);background:transparent;color:var(--text);cursor:pointer;transition:background .25s,color .25s,opacity .25s}
+.slider-arrow svg{width:18px;height:18px}
+.slider-arrow:hover:not(:disabled){background:var(--text);color:var(--bg)}
+.slider-arrow:disabled{opacity:.3;cursor:default}
+.slider-view{overflow:hidden;transition:height .6s var(--ease);touch-action:pan-y}
+.slider-track{display:flex;align-items:flex-start;transition:transform .7s var(--ease)}
+.slider-track>*{flex:0 0 100%;min-width:0;transition:opacity .6s var(--ease)}
+.slider-track>[inert]{opacity:0}
+.slider .book-row+.book-row{margin-top:0;padding-top:0;border-top:0}
+.slider .fl-feature{margin-top:0}
 .fl-feature .pf-text>.link{align-self:flex-start}
 /* Scena "da studio": parete sfumata, piano d'appoggio e luce dall'alto */
 .fl-visual{background:radial-gradient(90% 70% at 50% 18%,#33405a 0%,#161c28 55%,#0a0d13 100%);display:block}
@@ -467,6 +487,7 @@ footer{border-top:1px solid var(--line);padding:36px 0}
   .dev-phone{right:5%;width:24%;border-radius:18px;padding:3px}
   .ph-screen{border-radius:15px}
   .nav-cta{display:none}
+  .slider-arrows{display:none}
 }
 </style>
 </head>
@@ -481,7 +502,7 @@ footer{border-top:1px solid var(--line);padding:36px 0}
     <ul class="nav-links">
       <li><a href="#chi-sono">Chi sono</a></li>
       <li><a href="#servizi">Servizi</a></li>
-      <li><a href="#libri">Libri</a></li>
+      <li><a href="#libri">Pubblicazioni</a></li>
       <li><a href="#progetti">Progetti</a></li>
       <li><a href="#competenze">Competenze</a></li>
       <li><a href="#blog">Blog</a></li>
@@ -503,7 +524,7 @@ footer{border-top:1px solid var(--line);padding:36px 0}
   <ul class="mmenu-list">
     <li><a href="#chi-sono"><small>01</small>Chi sono</a></li>
     <li><a href="#servizi"><small>02</small>Servizi</a></li>
-    <li><a href="#libri"><small>03</small>Libri</a></li>
+    <li><a href="#libri"><small>03</small>Pubblicazioni</a></li>
     <li><a href="#progetti"><small>04</small>Progetti</a></li>
     <li><a href="#competenze"><small>05</small>Competenze</a></li>
     <li><a href="#blog"><small>06</small>Blog</a></li>
@@ -647,13 +668,15 @@ footer{border-top:1px solid var(--line);padding:36px 0}
   <div class="wrap">
     <div class="sec-head reveal">
       <div>
-        <div class="label">Libri</div>
+        <div class="label">Pubblicazioni</div>
         <h2>Quello che insegno in aula, messo su carta.</h2>
       </div>
       <p>Manuali pratici, pieni di esempi verificati ed esercizi, pensati per studenti, docenti e professionisti.</p>
     </div>
 
-    <div class="book-row">
+    <div class="slider" aria-roledescription="carosello" aria-label="Pubblicazioni">
+    <div class="slider-view"><div class="slider-track">
+    <div class="book-row" data-title="Python per le Scienze Applicate">
       <div class="book-stage reveal" style="--glow:rgba(160,90,255,.28)" role="button" tabindex="0" aria-label="Libro Python per le Scienze Applicate: clicca per girarlo e leggere il retro">
         <div class="book-float">
           <div class="book">
@@ -687,7 +710,7 @@ footer{border-top:1px solid var(--line);padding:36px 0}
       </div>
     </div>
 
-    <div class="book-row alt">
+    <div class="book-row alt" data-title="Docker: Guida Completa">
       <div class="book-stage reveal" role="button" tabindex="0" aria-label="Libro Docker: clicca per girarlo e leggere il retro">
         <div class="book-float">
           <div class="book">
@@ -712,6 +735,8 @@ footer{border-top:1px solid var(--line);padding:36px 0}
         </div>
       </div>
     </div>
+    </div></div>
+    </div>
   </div>
 </section>
 
@@ -726,7 +751,9 @@ footer{border-top:1px solid var(--line);padding:36px 0}
       <p>Strumenti che ho progettato e sviluppato da solo, dall'idea alla pubblicazione.</p>
     </div>
 
-    <article class="proj-feature reveal">
+    <div class="slider" aria-roledescription="carosello" aria-label="App">
+    <div class="slider-view"><div class="slider-track">
+    <article class="proj-feature reveal" data-title="ContaKM">
       <div class="pf-text">
         <div class="meta"><span class="badge live">Nuovo</span><span class="badge">Android · PWA</span><span class="badge">Capacitor · three.js</span></div>
         <div class="app-id">
@@ -757,7 +784,7 @@ footer{border-top:1px solid var(--line);padding:36px 0}
       </div>
     </article>
 
-    <article class="proj-feature fl-feature reveal">
+    <article class="proj-feature fl-feature reveal" data-title="FlowLab">
       <div class="pf-visual fl-visual" role="img" aria-label="FlowLab aperto su un portatile e su uno smartphone">
         <div class="dev-laptop">
           <div class="lap-lid">
@@ -798,6 +825,8 @@ footer{border-top:1px solid var(--line);padding:36px 0}
         </a>
       </div>
     </article>
+    </div></div>
+    </div>
   </div>
 </section>
 
@@ -1392,6 +1421,66 @@ footer{border-top:1px solid var(--line);padding:36px 0}
     stageEl.addEventListener('pointercancel', endDrag);
     stageEl.addEventListener('pointerleave', () => { if (!drag) setBook(BASE_RY, BASE_RX); });
     stageEl.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flipBook(); } });
+  });
+
+
+  // ================= SLIDER PUBBLICAZIONI E APP =================
+  const ARROW = d => `<svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="${d}"/></svg>`;
+  document.querySelectorAll('.slider').forEach((slider, si) => {
+    const view = slider.querySelector('.slider-view');
+    const track = slider.querySelector('.slider-track');
+    const slides = [...track.children];
+    if (slides.length < 2) return;
+    const bar = document.createElement('div');
+    bar.className = 'slider-bar';
+    bar.innerHTML = `<div class="slider-tabs" role="tablist">${slides.map((sl, i) => `<button class="slider-tab" role="tab" id="sl${si}-${i}" aria-selected="false"><small>${String(i + 1).padStart(2, '0')}</small>${sl.dataset.title}</button>`).join('')}</div>
+      <div class="slider-arrows"><button class="slider-arrow" aria-label="Precedente">${ARROW('M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18')}</button><button class="slider-arrow" aria-label="Successivo">${ARROW('M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3')}</button></div>`;
+    slider.prepend(bar);
+    const tabs = [...bar.querySelectorAll('.slider-tab')];
+    const [prev, next] = bar.querySelectorAll('.slider-arrow');
+    let cur = 0;
+    const fit = () => { view.style.height = slides[cur].offsetHeight + 'px'; };
+    const go = (i, user) => {
+      cur = Math.max(0, Math.min(slides.length - 1, i));
+      track.style.transform = `translateX(${-cur * 100}%)`;
+      slides.forEach((sl, k) => {
+        const on = k === cur;
+        sl.toggleAttribute('inert', !on);
+        sl.setAttribute('role', 'tabpanel');
+        sl.setAttribute('aria-labelledby', `sl${si}-${k}`);
+        tabs[k].setAttribute('aria-selected', on);
+        tabs[k].tabIndex = on ? 0 : -1;
+      });
+      if (user) {
+        [slides[cur], ...slides[cur].querySelectorAll('.reveal')].forEach(el => el.classList.add('in'));
+        const tl = bar.querySelector('.slider-tabs'), t = tabs[cur];
+        tl.scrollTo({ left: t.offsetLeft - tl.offsetLeft - 16, behavior: 'smooth' });
+      }
+      prev.disabled = cur === 0; next.disabled = cur === slides.length - 1;
+      fit();
+    };
+    tabs.forEach((t, i) => t.addEventListener('click', () => go(i, true)));
+    bar.querySelector('.slider-tabs').addEventListener('keydown', e => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      e.preventDefault(); go(cur + (e.key === 'ArrowRight' ? 1 : -1), true); tabs[cur].focus();
+    });
+    prev.addEventListener('click', () => go(cur - 1, true));
+    next.addEventListener('click', () => go(cur + 1, true));
+    // Scorrimento con il dito (non sui libri 3D, che si ruotano trascinando)
+    let sw = null;
+    view.addEventListener('pointerdown', e => {
+      if (e.pointerType === 'mouse' || e.target.closest('.book-stage')) return;
+      sw = { x: e.clientX, y: e.clientY };
+    });
+    view.addEventListener('pointerup', e => {
+      if (!sw) return;
+      const dx = e.clientX - sw.x, dy = e.clientY - sw.y; sw = null;
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) go(cur + (dx < 0 ? 1 : -1), true);
+    });
+    view.addEventListener('pointercancel', () => { sw = null; });
+    new ResizeObserver(fit).observe(track);
+    addEventListener('resize', fit);
+    go(0);
   });
 
   // Comparsa morbida delle sezioni
