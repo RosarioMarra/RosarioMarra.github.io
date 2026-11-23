@@ -3,7 +3,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://rosariomarra.github.io/</loc>
-    <lastmod>2026-11-12</lastmod>
+    <lastmod>2026-11-19</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
@@ -23,8 +23,18 @@
   </url>
   <url>
     <loc>https://rosariomarra.github.io/e-learning.html</loc>
-    <lastmod>2026-10-28</lastmod>
+    <lastmod>2026-11-19</lastmod>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://rosariomarra.github.io/corsi/ia-ml/</loc>
+    <lastmod>2026-11-19</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rosariomarra.github.io/corsi/office-automation/</loc>
+    <lastmod>2026-11-19</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://rosariomarra.github.io/blog/docker-primo-container.html</loc>
